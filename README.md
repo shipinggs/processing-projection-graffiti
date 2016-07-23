@@ -1,5 +1,4 @@
 # processing-projection-graffiti
------
 Interactive and animated projection graffiti for marketing campaign.
 
 Getting started
