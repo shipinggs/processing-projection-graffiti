@@ -8,6 +8,7 @@ final int LIGHT_GRAY = color(200);
 
 color currentColor;
 boolean typeIsRect;
+ColorPalette colorPalette;
 
 void setup()
 {
@@ -16,22 +17,27 @@ background(0,0,0,0);
 frameRate(60);
 currentColor = color(102);
 typeIsRect = true;
+colorPalette = new ColorPalette(10, 10);
 }
 
 void draw() {
   stroke(5);
   smooth();
-  ColorPalette palette = new ColorPalette(10, 10);
-  
+  colorPalette.render();
   // Now if the mouse is pressed, paint
   if (mousePressed) {
     noStroke();
     fill(currentColor);
     stroke(currentColor);
-    strokeWeight(5);
+    strokeWeight(20);
     line(mouseX, mouseY, pmouseX, pmouseY);
     println(mouseX, mouseY);
   }
+
+}
+
+void mouseClicked() {
+  colorPalette.toggleMinimize();
 }
 
 void mousePressed() {
