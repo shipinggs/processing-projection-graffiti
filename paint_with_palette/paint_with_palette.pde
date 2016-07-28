@@ -1,3 +1,5 @@
+import spout.*;
+
 // Setting up constant colour values
 final int YELLOW = color(255,255,0);
 final int RED = color(255,0,0);
