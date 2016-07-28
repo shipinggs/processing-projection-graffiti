@@ -33,12 +33,12 @@ public class ColorPicker
       int nB = (int)(Math.cos(rad + 4 * PI / 3) * 127 + 128);
       int nColor = nR | nG | nB;
       
-      setGradient( i, 0, 1, h/2, 0xFFFFFF, nColor );
-      setGradient( i, (h/2), 1, h/2, nColor, 0x000000 );
+      setGradient( i, 0, h/2, 0xFFFFFF, nColor );
+      setGradient( i, (h/2), h/2, nColor, 0x000000 );
     }
   }
 
-  private void setGradient(int x, int y, float w, float h, int c1, int c2 )
+  private void setGradient(int x, int y, float h, int c1, int c2 )
   {
     float deltaR = red(c2) - red(c1);
     float deltaG = green(c2) - green(c1);
@@ -51,18 +51,9 @@ public class ColorPicker
     }
   }
   
-  public void render ()
+  public void render()
   {
     image( colorPickerImage, x, y );
-    if (mousePressed && mouseX >= x && mouseX < x + w && mouseY >= y && mouseY < y + h) {
-      c = get( mouseX, mouseY );
-      println(getColor());
-    }
-    fill( c );
-    rect( x, y+h+10, 20, 20 );
   }
-  
-  public int getColor() {
-    return c;
-  }
+
 }

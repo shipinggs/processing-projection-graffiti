@@ -6,65 +6,66 @@ final int BLUE = color(0,0,255);
 final int GRAY = color(102);
 final int LIGHT_GRAY = color(200);
 
+
 color currentColor;
-boolean typeIsRect;
-ColorPalette colorPalette;
+ToolPanel toolPanel;
 
 void setup()
 {
-size(480,640);
+size(1366, 768);
 background(0,0,0,0);
-frameRate(60);
-currentColor = color(102);
-typeIsRect = true;
-colorPalette = new ColorPalette(10, 10);
+frameRate(240);
+currentColor = color(255);
+toolPanel = new ToolPanel(0, 0, 200, 768, 125);
 }
 
-void draw() {
+void draw()
+{
+  currentColor = color(toolPanel.getColor());
   stroke(5);
   smooth();
-  colorPalette.render();
   // Now if the mouse is pressed, paint
   if (mousePressed) {
     noStroke();
-    fill(currentColor);
+    noFill();
     stroke(currentColor);
     strokeWeight(20);
-    line(mouseX, mouseY, pmouseX, pmouseY);
-    println(mouseX, mouseY);
+    if (pmouseX == 0 || pmouseY == 0) {
+      line(mouseX, mouseY, mouseX, mouseY);
+    } else {
+      line(mouseX, mouseY, pmouseX, pmouseY);
+    }
   }
-
+  toolPanel.render();
+  
 }
 
-void mouseClicked() {
-  colorPalette.toggleMinimize();
+void mouseClicked()
+{
+   toolPanel.mouseClicked();
 }
 
-void mousePressed() {
+void mousePressed()
+{
   //rectangles
   if ((mouseX>20) && (mouseY>20) && (mouseX<40) && (mouseY<40))
   {
-    typeIsRect = true;
     currentColor = color(YELLOW);
   }
   if ((mouseX>50) && (mouseY>20) && (mouseX<70) && (mouseY<40))
   {
-    typeIsRect = true;
     currentColor = color(RED);
   }
   if ((mouseX>80) && (mouseY>20) && (mouseX<100) && (mouseY<40))
   {
-    typeIsRect = true;
     currentColor = color(GREEN);
   }
   if ((mouseX>110) && (mouseY>20) && (mouseX<130) && (mouseY<40))
   {
-    typeIsRect = true;
     currentColor = color(BLUE);
   }
   if ((mouseX>140) && (mouseY>20) && (mouseX<190) && (mouseY<70))
   {
-    typeIsRect = true;
     currentColor = color(GRAY);
   }
 }
