@@ -8,17 +8,19 @@ final int BLUE = color(0,0,255);
 final int GRAY = color(102);
 final int LIGHT_GRAY = color(200);
 
+private final int TOOL_PANEL_WIDTH = 200;
 
 color currentColor;
 ToolPanel toolPanel;
 
 void setup()
 {
-size(1366, 768);
-background(0,0,0,0);
-frameRate(240);
-currentColor = color(255);
-toolPanel = new ToolPanel(0, 0, 200, 768, 125);
+  //fullScreen();
+  size(1366, 768);
+  background(0,0,0,0);
+  frameRate(60);
+  currentColor = color(255);
+  toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, 0);
 }
 
 void draw()
@@ -44,30 +46,20 @@ void draw()
 
 void mouseClicked()
 {
+  if ((mouseX>0) && (mouseX<TOOL_PANEL_WIDTH))
+  {
    toolPanel.mouseClicked();
+  }
+  else
+  {
+    toolPanel.minimizeAll();
+  }
 }
 
 void mousePressed()
 {
-  //rectangles
-  if ((mouseX>20) && (mouseY>20) && (mouseX<40) && (mouseY<40))
+  if (mouseX>TOOL_PANEL_WIDTH)
   {
-    currentColor = color(YELLOW);
-  }
-  if ((mouseX>50) && (mouseY>20) && (mouseX<70) && (mouseY<40))
-  {
-    currentColor = color(RED);
-  }
-  if ((mouseX>80) && (mouseY>20) && (mouseX<100) && (mouseY<40))
-  {
-    currentColor = color(GREEN);
-  }
-  if ((mouseX>110) && (mouseY>20) && (mouseX<130) && (mouseY<40))
-  {
-    currentColor = color(BLUE);
-  }
-  if ((mouseX>140) && (mouseY>20) && (mouseX<190) && (mouseY<70))
-  {
-    currentColor = color(GRAY);
+    toolPanel.minimizeAll();
   }
 }

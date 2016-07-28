@@ -40,34 +40,48 @@ private class ColorPalette {
   
   public void render()
   { 
-    colorPicker.render();
-    
-    // To show current color selected
-    fill(currentColor);
+    fill(0);
     noStroke();
-    rect(posX, posY, paletteWidth, 5);
+    rect(posX, posY, paletteWidth, paletteHeight);
     
-    for (int i = 0; i < colorArray.length; i++)
+    if (paletteIsMinimized)
     {
-      fill(colorArray[i]);
+      // create marker for palette position
+      fill(WHITE);
       noStroke();
-      rect(i*fixedColorWidth, posY+5, fixedColorWidth,fixedColorHeight);
+      rect(paletteWidth-2, posY, 2, 4);
+    } 
+    else
+    {
+      colorPicker.render();
+      
+      // To show current color selected
+      fill(currentColor);
+      noStroke();
+      rect(posX, posY, paletteWidth, 5);
+      
+      for (int i = 0; i < colorArray.length; i++)
+      {
+        fill(colorArray[i]);
+        noStroke();
+        rect(i*fixedColorWidth, posY+5, fixedColorWidth,fixedColorHeight);
+      }
+         
+      if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight) {
+        currentColor = get( mouseX, mouseY );
+        println(getColor());
+      }
     }
-       
-    if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight) {
-      currentColor = get( mouseX, mouseY );
-      println(getColor());
-    }
+  }
+  
+  public void minimize()
+  {
+    paletteIsMinimized = true;
   }
   
   public void toggleMinimize()
   {
-    //if (paletteIsMinimized) {
-    //  posX += 1000;
-    //} else {
-    //  posX -= 1000;
-    //}
-    //paletteIsMinimized = !paletteIsMinimized;
+    paletteIsMinimized = !paletteIsMinimized;
   }
   
   public int getColor() {

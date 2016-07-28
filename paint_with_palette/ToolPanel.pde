@@ -1,9 +1,7 @@
 private class ToolPanel {
   private int posX, posY, panelWidth, panelHeight, panelColor;
   private ColorPalette colorPalette;
-  
-  private boolean isColorOpen = true;
-  
+    
   public ToolPanel(int posX, int posY, int panelWidth, int panelHeight, int panelColor)
   {
       this.posX = posX;
@@ -27,16 +25,23 @@ private class ToolPanel {
     noStroke();
     rect(posX, posY, panelWidth, panelHeight);
     
-    if (isColorOpen) {
-      colorPalette.render();
+    colorPalette.render();
+  }
+  
+  public void mouseClicked()
+  {
+    if ((mouseY>panelHeight/4*3)) {
+      colorPalette.toggleMinimize();
     }
   }
   
-  public void mouseClicked() {
-    colorPalette.toggleMinimize();
+  public int getColor()
+  {
+    return colorPalette.getColor();
   }
   
-  public int getColor() {
-    return colorPalette.getColor();
+  public void minimizeAll()
+  {
+    colorPalette.minimize();
   }
 }
