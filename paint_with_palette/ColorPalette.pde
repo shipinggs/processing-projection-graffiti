@@ -8,13 +8,12 @@ private class ColorPalette {
   private final int LIGHT_GRAY = color(200);
   
   // Coordinates of top-left corner of ColorPalette
-  private int coordX;
-  private int coordY;
+  private int coordX, coordY;
   
   // To determine if ColorPalette is minimized
   private boolean paletteIsMinimized = false;
   
-  ColorPalette(int coordX, int coordY) {
+  public ColorPalette(int coordX, int coordY) {
     this.coordX = coordX;
     this.coordY = coordY;
     
@@ -36,6 +35,9 @@ private class ColorPalette {
     }
   }
   
-  void update() {
+  private void init() {
+  }
+  
+  public void render() {
   }
 }

@@ -9,7 +9,6 @@ final int LIGHT_GRAY = color(200);
 color currentColor;
 boolean typeIsRect;
 
-
 void setup()
 {
 size(480,640);
@@ -22,7 +21,6 @@ typeIsRect = true;
 void draw() {
   stroke(5);
   smooth();
-  
   ColorPalette palette = new ColorPalette(10, 10);
   
   // Now if the mouse is pressed, paint
@@ -37,7 +35,7 @@ void draw() {
 }
 
 void mousePressed() {
-  //ractangles
+  //rectangles
   if ((mouseX>20) && (mouseY>20) && (mouseX<40) && (mouseY<40))
   {
     typeIsRect = true;
@@ -62,27 +60,5 @@ void mousePressed() {
   {
     typeIsRect = true;
     currentColor = color(GRAY);
-  }
-  
-  //elipses
-  if ((mouseX>20) && (mouseY>50) && (mouseX<40) && (mouseY<70))
-  {
-    typeIsRect = false;
-    currentColor = color(YELLOW);
-  }
-  if ((mouseX>50) && (mouseY>50) && (mouseX<70) && (mouseY<70))
-  {
-    typeIsRect = false;
-    currentColor = color(RED);
-  }
-  if ((mouseX>80) && (mouseY>50) && (mouseX<100) && (mouseY<70))
-  {
-    typeIsRect = false;
-    currentColor = color(GREEN);
-  }
-  if ((mouseX>110) && (mouseY>50) && (mouseX<130) && (mouseY<70))
-  {
-    typeIsRect = false;
-    currentColor = color(BLUE);
   }
 }
