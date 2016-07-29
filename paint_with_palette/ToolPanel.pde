@@ -33,8 +33,13 @@ private class ToolPanel {
   
   public void mouseClicked()
   {
-    if ((mouseX < panelWidth/2)) {
+    if (mouseX < panelWidth/2)
+    {
       colorPalette.toggleMinimize();
+    }
+    else if (mouseX > panelWidth/2)
+    {
+      brushPalette.toggleMinimize();
     }
   }
   
@@ -46,5 +51,6 @@ private class ToolPanel {
   public void minimizeAll()
   {
     colorPalette.minimize();
+    brushPalette.minimize();
   }
 }

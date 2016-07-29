@@ -3,11 +3,12 @@ private class ColorPalette {
   private final color WHITE = color(255);
   private final color GREY = color(127);
   private final color BLACK = color(0);
-  private final color LIGHT_BEER = color(252, 209, 94);
+  private final color LIGHT_BEER = color(255, 207, 0);
   private final color DARK_BEER = color(248, 174, 1);
-  private final color DESPERADOS_GREEN = color(2, 134, 48);
-  private final color DESPERADOS_RED = color(184, 32, 11);
-  private final int NUM_FIXED_COLORS = 7;
+  private final color DESPERADOS_GREEN = color(0, 143, 52);
+  private final color DESPERADOS_RED = color(229, 42, 19);
+  private final color DESPERADOS_BLUE = color(40, 50, 120);
+  private final int NUM_FIXED_COLORS = 8;
 
   // Coordinates of top-left corner of ColorPalette
   private int posX, posY, paletteWidth, paletteHeight;
@@ -17,7 +18,7 @@ private class ColorPalette {
   private final int currentColorBarHeight = 5;
 
   private ColorPicker colorPicker;
-  private color[] colorArray = { WHITE, LIGHT_BEER, DARK_BEER, DESPERADOS_GREEN, DESPERADOS_RED, GREY, BLACK };
+  private color[] colorArray = { WHITE, LIGHT_BEER, DARK_BEER, DESPERADOS_GREEN, DESPERADOS_RED, DESPERADOS_BLUE, GREY, BLACK };
   private int currentColor = WHITE;
   
   // To determine if ColorPalette is minimized
