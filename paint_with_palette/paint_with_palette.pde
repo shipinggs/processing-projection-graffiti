@@ -8,10 +8,11 @@ final int BLUE = color(0,0,255);
 final int GRAY = color(102);
 final int LIGHT_GRAY = color(200);
 
-private final int TOOL_PANEL_WIDTH = 200;
+private final int TOOL_PANEL_HEIGHT = 40;
 
-color currentColor;
-ToolPanel toolPanel;
+private color currentColor;
+private String brushType;
+private ToolPanel toolPanel;
 
 void setup()
 {
@@ -20,7 +21,7 @@ void setup()
   background(0,0,0,0);
   frameRate(60);
   currentColor = color(255);
-  toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, 0);
+  toolPanel = new ToolPanel(0, height - TOOL_PANEL_HEIGHT, width, TOOL_PANEL_HEIGHT, 0);
 }
 
 void draw()
@@ -46,7 +47,7 @@ void draw()
 
 void mouseClicked()
 {
-  if ((mouseX>0) && (mouseX<TOOL_PANEL_WIDTH))
+  if ((mouseY < height) && (mouseY > (height - TOOL_PANEL_HEIGHT)))
   {
    toolPanel.mouseClicked();
   }
@@ -58,7 +59,7 @@ void mouseClicked()
 
 void mousePressed()
 {
-  if (mouseX>TOOL_PANEL_WIDTH)
+  if (mouseY < (height - TOOL_PANEL_HEIGHT))
   {
     toolPanel.minimizeAll();
   }

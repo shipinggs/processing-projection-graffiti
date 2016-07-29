@@ -8,21 +8,21 @@ private class ColorPalette {
   private final color DESPERADOS_GREEN = color(2, 134, 48);
   private final color DESPERADOS_RED = color(184, 32, 11);
   private final int NUM_FIXED_COLORS = 7;
-  
+
   // Coordinates of top-left corner of ColorPalette
   private int posX, posY, paletteWidth, paletteHeight;
-  private int currentColor = WHITE;
-  
+
   // Size of the fixed color boxes
   private float fixedColorWidth;
-  private final int fixedColorHeight = 30;
-  
+  private final int currentColorBarHeight = 5;
+
   private ColorPicker colorPicker;
   private color[] colorArray = { WHITE, LIGHT_BEER, DARK_BEER, DESPERADOS_GREEN, DESPERADOS_RED, GREY, BLACK };
+  private int currentColor = WHITE;
   
   // To determine if ColorPalette is minimized
   private boolean paletteIsMinimized = true;
-    
+
   private ColorPalette(int posX, int posY, int paletteWidth, int paletteHeight)
   {
     this.posX = posX;
@@ -31,59 +31,62 @@ private class ColorPalette {
     this.paletteHeight = paletteHeight;
     init();
   }
-  
+
   private void init()
   {
-    colorPicker = new ColorPicker(posX, posY + fixedColorHeight, paletteWidth, paletteHeight - fixedColorHeight, 255);
-    fixedColorWidth = (float) paletteWidth/NUM_FIXED_COLORS;
+    colorPicker = new ColorPicker(posX + paletteWidth/2, posY + currentColorBarHeight, 
+      paletteWidth - (paletteWidth/2) , paletteHeight - currentColorBarHeight, 255); // temp fix for float - int issues
+      
+    fixedColorWidth = (float) (paletteWidth/2)/NUM_FIXED_COLORS;
   }
-  
+
   public void render()
   { 
     fill(0);
     noStroke();
     rect(posX, posY, paletteWidth, paletteHeight);
-    
+
     if (paletteIsMinimized)
     {
       // create marker for palette position
-      fill(WHITE);
+      fill(GREY);
       noStroke();
-      rect(paletteWidth-2, posY, 2, 4);
+      rect(posX + paletteWidth/2 - 20, posY + paletteHeight/2, 40, 2);
     } 
     else
     {
       colorPicker.render();
-      
+
       // To show current color selected
       fill(currentColor);
       noStroke();
-      rect(posX, posY, paletteWidth, 5);
-      
+      rect(posX, posY, paletteWidth, currentColorBarHeight);
+
+      // render fixed colors
       for (int i = 0; i < colorArray.length; i++)
       {
         fill(colorArray[i]);
         noStroke();
-        rect(i*fixedColorWidth, posY+5, fixedColorWidth,fixedColorHeight);
+        rect(i*fixedColorWidth, posY + currentColorBarHeight, fixedColorWidth, paletteHeight - currentColorBarHeight);
       }
-         
+
       if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight) {
         currentColor = get( mouseX, mouseY );
         println(getColor());
       }
     }
   }
-  
+
   public void minimize()
   {
     paletteIsMinimized = true;
   }
-  
+
   public void toggleMinimize()
   {
     paletteIsMinimized = !paletteIsMinimized;
   }
-  
+
   public int getColor() {
     return currentColor;
   }

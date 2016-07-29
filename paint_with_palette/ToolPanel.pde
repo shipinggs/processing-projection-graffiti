@@ -1,6 +1,7 @@
 private class ToolPanel {
   private int posX, posY, panelWidth, panelHeight, panelColor;
   private ColorPalette colorPalette;
+  private BrushPalette brushPalette;
     
   public ToolPanel(int posX, int posY, int panelWidth, int panelHeight, int panelColor)
   {
@@ -14,7 +15,8 @@ private class ToolPanel {
   
   private void init()
   {
-    colorPalette = new ColorPalette(0, panelHeight/4*3, panelWidth, panelHeight/4);
+    colorPalette = new ColorPalette(posX, posY, panelWidth/2, panelHeight);
+    brushPalette = new BrushPalette(panelWidth/2, posY, panelWidth/2, panelHeight);
     fill(panelColor);
     rect(posX, posY, panelWidth, panelHeight);
   }
@@ -26,11 +28,12 @@ private class ToolPanel {
     rect(posX, posY, panelWidth, panelHeight);
     
     colorPalette.render();
+    brushPalette.render();
   }
   
   public void mouseClicked()
   {
-    if ((mouseY>panelHeight/4*3)) {
+    if ((mouseX < panelWidth/2)) {
       colorPalette.toggleMinimize();
     }
   }
