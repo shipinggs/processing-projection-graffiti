@@ -42,7 +42,7 @@ void draw()
       line(mouseX, mouseY, mouseX, mouseY);
     } else {
       //brushFactory.solidBrush(20, currentColor);
-      brushFactory.rollerEraser();
+      brushFactory.rollerEraser(200, currentColor);
     }
   }
   toolPanel.render();

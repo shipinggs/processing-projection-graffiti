@@ -31,7 +31,7 @@ private class BrushFactory {
     }
   }
   
-  void grittyBrush(int brushRadius) {
+  void grittyBrush(int brushRadius, color col) {
     int maxIterations = 100; // how fast spraying happens
    
     float radx;   // Radius
@@ -39,7 +39,9 @@ private class BrushFactory {
     float angle1; // angle
     float x;      // result
     float y;
-   
+    
+    stroke(col);
+    
     for (int i=0; i < maxIterations; i++) {
       radx=min(random(brushRadius), random(brushRadius));
       rady=min(random(brushRadius),random(brushRadius));
@@ -50,16 +52,16 @@ private class BrushFactory {
       x=(radx*cos(radians(angle1)))+mouseX;
       y=(radx*sin(radians(angle1)))+mouseY;
       //
-      stroke(20, 178, 40);
+      stroke(col);
       point(x, y);
     }
   }
   
-  void rollerEraser()
+  void rollerEraser(int width, color col)
   {
-    fill(0);
+    fill(col);
     noStroke();
-    rect(mouseX, mouseY, 20, 5);
+    rect(mouseX-width/2, mouseY-10, width, 20);
   }
     
 }
