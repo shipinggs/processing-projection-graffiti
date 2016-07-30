@@ -11,17 +11,20 @@ final int LIGHT_GRAY = color(200);
 private final int TOOL_PANEL_HEIGHT = 40;
 
 private color currentColor;
-private String brushType;
+private String currentBrushType;
+private int currentBrushRadius;
 private ToolPanel toolPanel;
+private BrushFactory brushFactory;
 
 void setup()
 {
   //fullScreen();
   size(1366, 768);
   background(0,0,0,0);
-  frameRate(60);
+  frameRate(180);
   currentColor = color(255);
   toolPanel = new ToolPanel(0, height - TOOL_PANEL_HEIGHT, width, TOOL_PANEL_HEIGHT, 0);
+  brushFactory = new BrushFactory();
 }
 
 void draw()
@@ -34,11 +37,12 @@ void draw()
     noStroke();
     noFill();
     stroke(currentColor);
-    strokeWeight(20);
+    strokeWeight(1);
     if (pmouseX == 0 || pmouseY == 0) {
       line(mouseX, mouseY, mouseX, mouseY);
     } else {
-      line(mouseX, mouseY, pmouseX, pmouseY);
+      //brushFactory.solidBrush(20, currentColor);
+      brushFactory.rollerEraser();
     }
   }
   toolPanel.render();
