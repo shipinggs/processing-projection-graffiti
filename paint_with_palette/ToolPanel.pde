@@ -48,6 +48,16 @@ private class ToolPanel {
     return colorPalette.getColor();
   }
   
+  public String getBrushType()
+  {
+    return brushPalette.getBrushType();
+  }
+  
+  public int getBrushRadius()
+  {
+    return brushPalette.getBrushRadius();
+  }
+  
   public void minimizeAll()
   {
     colorPalette.minimize();

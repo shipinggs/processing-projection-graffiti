@@ -19,7 +19,7 @@ private BrushFactory brushFactory;
 void setup()
 {
   //fullScreen();
-  size(1366, 768);
+  size(1267, 800);
   background(0,0,0,0);
   frameRate(180);
   currentColor = color(255);
@@ -30,6 +30,9 @@ void setup()
 void draw()
 {
   currentColor = color(toolPanel.getColor());
+  currentBrushType = toolPanel.getBrushType();
+  currentBrushRadius = toolPanel.getBrushRadius();
+  
   stroke(5);
   smooth();
   // Now if the mouse is pressed, paint
@@ -41,8 +44,21 @@ void draw()
     if (pmouseX == 0 || pmouseY == 0) {
       line(mouseX, mouseY, mouseX, mouseY);
     } else {
-      //brushFactory.solidBrush(20, currentColor);
-      brushFactory.rollerEraser(200, currentColor);
+      switch (currentBrushType)
+      {
+        case "solid":
+          brushFactory.solidBrush(currentBrushRadius, currentColor);
+          break;
+        case "feathered":
+          brushFactory.featheredBrush(currentBrushRadius, currentColor);
+          break;
+        case "gritty":
+          brushFactory.grittyBrush(currentBrushRadius, currentColor);
+          break;
+        default:
+          brushFactory.solidBrush(currentBrushRadius, currentColor);
+          break;
+      }
     }
   }
   toolPanel.render();

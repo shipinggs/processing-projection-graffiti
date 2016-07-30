@@ -32,7 +32,7 @@ private class BrushFactory {
   }
   
   void grittyBrush(int brushRadius, color col) {
-    int maxIterations = 100; // how fast spraying happens
+    int maxIterations = 150; // how fast spraying happens
    
     float radx;   // Radius
     float rady;
@@ -45,8 +45,8 @@ private class BrushFactory {
     for (int i=0; i < maxIterations; i++) {
       radx=min(random(brushRadius), random(brushRadius));
       rady=min(random(brushRadius),random(brushRadius));
-      //radx=min(radx, random(brushRadius));
-      //rady=min(rady, random(brushRadius));
+      radx=min(radx, random(brushRadius));
+      rady=min(rady, random(brushRadius));
       angle1= random(360);
       //
       x=(radx*cos(radians(angle1)))+mouseX;
