@@ -5,11 +5,11 @@ private class BrushFactory {
     stroke(col);
     if (pmouseX == 0 || pmouseY == 0)
     {
-      line(mouseX, mouseY, mouseX, mouseY);
+      originalLayer.line(mouseX, mouseY, mouseX, mouseY);  //must draw on the originalLayer layer only
     }
     else
     {
-      line(mouseX, mouseY, pmouseX, pmouseY);
+      originalLayer.line(mouseX, mouseY, pmouseX, pmouseY);
     }
   }
   
