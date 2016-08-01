@@ -1,12 +1,8 @@
 import spout.*;
 
-// Setting up constant colour values
-final int YELLOW = color(255,255,0);
-final int RED = color(255,0,0);
-final int GREEN = color(0,255,0);
-final int BLUE = color(0,0,255);
-final int GRAY = color(102);
-final int LIGHT_GRAY = color(200);
+//window width and heights for easy changes
+final int W = 1280;
+final int H = 800;
 
 private final int TOOL_PANEL_HEIGHT = 50;
 
@@ -16,36 +12,57 @@ private int currentBrushRadius;
 private ToolPanel toolPanel;
 private BrushFactory brushFactory;
 
+// Spout objects
+Spout spoutOut;
+Spout spoutIn;
+// PGraphics objects for layers
+PGraphics originalLayer;
+PGraphics spoutInLayer;
+
 void setup()
 {
   //fullScreen();
-  size(1267, 800);
-  background(0,0,0,0);
+  size(1280, 800, P3D); //change accordingly to W and H above
+  textureMode(NORMAL);
+  //surface.setResizable(true);
+  
+  background(0);
   frameRate(180);
   currentColor = color(255);
   toolPanel = new ToolPanel(0, height - TOOL_PANEL_HEIGHT, width, TOOL_PANEL_HEIGHT, 0);
   brushFactory = new BrushFactory();
+  
+  //// spout objects
+  spoutOut = new Spout(this);
+  spoutIn = new Spout(this);
+  spoutIn.createReceiver("Composition - Resolume Arena");
+  
+  //the two layers
+  originalLayer = createGraphics(W,H,P2D);
+  spoutInLayer = createGraphics(W,H,PConstants.P2D);
 }
 
 void draw()
 {
+  background(0); //necessary for spout to work properly, else spout frames will accumulate on screen
+  spoutInLayer = spoutIn.receiveTexture(spoutInLayer); //puts the spout input onto the layer
+  
   currentColor = color(toolPanel.getColor());
   currentBrushType = toolPanel.getBrushType();
   currentBrushRadius = toolPanel.getBrushRadius();
   
-  stroke(5);
+  stroke(1);
   smooth();
+  originalLayer.beginDraw();  //draw on that particular layer only
   // Now if the mouse is pressed, paint
   if (mousePressed) {
-    noStroke();
-    noFill();
-    stroke(currentColor);
-    strokeWeight(1);
-    if (pmouseX == 0 || pmouseY == 0)
-    {
-      line(mouseX, mouseY, mouseX, mouseY);
-    } 
-    else {
+    originalLayer.noStroke();
+    originalLayer.noFill();
+    originalLayer.stroke(currentColor);
+    originalLayer.strokeWeight(5);
+    if (pmouseX == 0 || pmouseY == 0) {
+      originalLayer.line(mouseX, mouseY, mouseX, mouseY);
+    } else {
       switch (currentBrushType)
       {
         case "solid":
@@ -61,11 +78,28 @@ void draw()
           brushFactory.solidBrush(currentBrushRadius, currentColor);
           break;
       }
+      print(currentBrushType, currentBrushRadius, currentColor);
     }
+    //osc implementation here
   }
+  originalLayer.endDraw();  //end of things to draw on the particular layer
+  
   toolPanel.render();
   
-}
+  //for testing of layers
+  //spoutInLayer.beginDraw();
+  //spoutInLayer.fill(#220000);
+  //spoutInLayer.rect(random(W),random(H),20,20);
+  //spoutInLayer.endDraw();
+  
+  //layer arrangement 
+  image(spoutInLayer,0,0); //spout input at the bottom
+  image(originalLayer,0,0); //original line on top
+  
+  spoutOut.sendTexture(originalLayer); //send the paint out via spout
+  
+  
+}//end of draw
 
 void mouseClicked()
 {
@@ -84,5 +118,10 @@ void mousePressed()
   if (mouseY < (height - TOOL_PANEL_HEIGHT))
   {
     toolPanel.minimizeAll();
+  }
+  if (mouseButton == RIGHT) {  //right click to select spout source
+    // Bring up a dialog to select a sender.
+    // Spout installation required
+    spoutOut.selectSender();
   }
 }
