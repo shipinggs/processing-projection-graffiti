@@ -1,6 +1,8 @@
+import netP5.*;
+import oscP5.*;
+
 import spout.*;
 import controlP5.*;
-
 
 //window width and heights for easy changes
 final int W = 1280;
@@ -18,6 +20,9 @@ private ControlP5 cp5;
 // Spout objects
 Spout spoutOut;
 Spout spoutIn;
+// OSC objects
+OscP5 oscP5;
+NetAddress myRemoteLocation;
 // PGraphics objects for layers
 PGraphics originalLayer;
 PGraphics spoutInLayer;
@@ -40,6 +45,10 @@ void setup()
   spoutOut = new Spout(this);
   spoutIn = new Spout(this);
   spoutIn.createReceiver("Composition - Resolume Arena");
+  
+  // OSC object
+  oscP5 = new OscP5(this,7000);
+  myRemoteLocation = new NetAddress("localhost",12000);
   
   //the two layers
   originalLayer = createGraphics(W,H,P2D);
@@ -85,9 +94,14 @@ void draw()
           brushFactory.solidBrush(currentBrushRadius, currentColor);
           break;
       }
-      print(currentBrushType, currentBrushRadius, currentColor);
+      //print(currentBrushType, currentBrushRadius, currentColor);
     }
     //osc implementation here
+    //println(mouseX);
+    OscMessage myMessage = new OscMessage("Click at: ");
+    myMessage.add(mouseX); 
+    myMessage.add(mouseY); 
+    oscP5.send(myMessage, myRemoteLocation); 
   }
   originalLayer.endDraw();  //end of things to draw on the particular layer
   
