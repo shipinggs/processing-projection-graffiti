@@ -8,7 +8,7 @@ final int BLUE = color(0,0,255);
 final int GRAY = color(102);
 final int LIGHT_GRAY = color(200);
 
-private final int TOOL_PANEL_HEIGHT = 40;
+private final int TOOL_PANEL_HEIGHT = 50;
 
 private color currentColor;
 private String currentBrushType;
@@ -41,9 +41,11 @@ void draw()
     noFill();
     stroke(currentColor);
     strokeWeight(1);
-    if (pmouseX == 0 || pmouseY == 0) {
+    if (pmouseX == 0 || pmouseY == 0)
+    {
       line(mouseX, mouseY, mouseX, mouseY);
-    } else {
+    } 
+    else {
       switch (currentBrushType)
       {
         case "solid":

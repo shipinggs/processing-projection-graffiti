@@ -1,4 +1,9 @@
 private class BrushFactory {
+  private PImage solidImg = loadImage("solid.png");
+  private PImage featheredImg = loadImage("feathered.png");
+  private PImage grittyImg = loadImage("gritty.png");
+  
+  
   void solidBrush(int brushRadius, color col)
   {
     strokeWeight(brushRadius*2);
@@ -36,21 +41,22 @@ private class BrushFactory {
    
     float radx;   // Radius
     float rady;
-    float angle1; // angle
+    float angle; // angle
     float x;      // result
     float y;
     
     stroke(col);
     
-    for (int i=0; i < maxIterations; i++) {
+    for (int i=0; i < maxIterations; i++)
+    {
       radx=min(random(brushRadius), random(brushRadius));
       rady=min(random(brushRadius),random(brushRadius));
       radx=min(radx, random(brushRadius));
       rady=min(rady, random(brushRadius));
-      angle1= random(360);
+      angle= random(360);
       //
-      x=(radx*cos(radians(angle1)))+mouseX;
-      y=(radx*sin(radians(angle1)))+mouseY;
+      x=(radx*cos(radians(angle)))+mouseX;
+      y=(radx*sin(radians(angle)))+mouseY;
       //
       stroke(col);
       point(x, y);
@@ -64,4 +70,18 @@ private class BrushFactory {
     rect(mouseX-width/2, mouseY-10, width, 20);
   }
     
+  void drawSolidBrushPrint(int brushRadius, float posX, float posY)
+  {
+    image(solidImg, posX, posY, brushRadius, brushRadius);
+  }
+  
+  void drawFeatheredBrushPrint(int brushRadius, float posX, float posY)
+  {
+    image(featheredImg, posX, posY, brushRadius, brushRadius);
+  }
+  
+  void drawGrittyBrushPrint(int brushRadius, float posX, float posY)
+  {
+    image(grittyImg, posX, posY, brushRadius, brushRadius);
+  }
 }
