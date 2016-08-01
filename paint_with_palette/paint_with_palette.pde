@@ -1,4 +1,6 @@
 import spout.*;
+import controlP5.*;
+
 
 // Setting up constant colour values
 final int YELLOW = color(255,255,0);
@@ -15,6 +17,7 @@ private String currentBrushType;
 private int currentBrushRadius;
 private ToolPanel toolPanel;
 private BrushFactory brushFactory;
+private ControlP5 cp5;
 
 void setup()
 {
@@ -23,7 +26,8 @@ void setup()
   background(0,0,0,0);
   frameRate(180);
   currentColor = color(255);
-  toolPanel = new ToolPanel(0, height - TOOL_PANEL_HEIGHT, width, TOOL_PANEL_HEIGHT, 0);
+  cp5 = new ControlP5(this);
+  toolPanel = new ToolPanel(0, height - TOOL_PANEL_HEIGHT, width, TOOL_PANEL_HEIGHT, 0, cp5);
   brushFactory = new BrushFactory();
 }
 
@@ -36,7 +40,7 @@ void draw()
   stroke(5);
   smooth();
   // Now if the mouse is pressed, paint
-  if (mousePressed) {
+  if (mousePressed && mouseY<height-TOOL_PANEL_HEIGHT) {
     noStroke();
     noFill();
     stroke(currentColor);
