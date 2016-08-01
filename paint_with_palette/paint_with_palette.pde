@@ -74,6 +74,9 @@ void draw()
         case "gritty":
           brushFactory.grittyBrush(currentBrushRadius, currentColor);
           break;
+        case "eraser":
+          brushFactory.rollerEraser(200, currentColor);
+          break;
         default:
           brushFactory.solidBrush(currentBrushRadius, currentColor);
           break;
