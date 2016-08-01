@@ -1,22 +1,24 @@
 private class ToolPanel {
   private int posX, posY, panelWidth, panelHeight, panelColor;
+  private ControlP5 cp5;
   private ColorPalette colorPalette;
   private BrushPalette brushPalette;
     
-  public ToolPanel(int posX, int posY, int panelWidth, int panelHeight, int panelColor)
+  public ToolPanel(int posX, int posY, int panelWidth, int panelHeight, int panelColor, ControlP5 cp5)
   {
       this.posX = posX;
       this.posY = posY;
       this.panelWidth = panelWidth;
       this.panelHeight = panelHeight;
       this.panelColor = panelColor;
+      this.cp5 = cp5;
       init();
   }
   
   private void init()
   {
     colorPalette = new ColorPalette(posX, posY, panelWidth/2, panelHeight);
-    brushPalette = new BrushPalette(panelWidth/2, posY, panelWidth/2, panelHeight);
+    brushPalette = new BrushPalette(panelWidth/2, posY, panelWidth/2, panelHeight, cp5);
     fill(panelColor);
     rect(posX, posY, panelWidth, panelHeight);
   }
