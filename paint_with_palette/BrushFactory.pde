@@ -6,8 +6,8 @@ private class BrushFactory {
   
   void solidBrush(int brushRadius, color col)
   {
-    strokeWeight(brushRadius*2);
-    stroke(col);
+    originalLayer.strokeWeight(brushRadius*2);
+    originalLayer.stroke(col);
     if (pmouseX == 0 || pmouseY == 0)
     {
       originalLayer.line(mouseX, mouseY, mouseX, mouseY);  //must draw on the originalLayer layer only
@@ -23,15 +23,15 @@ private class BrushFactory {
     int thickness = brushRadius * 2;
     for(int i = 0; i < thickness; i+=5)
     {
-      strokeWeight(i);
-      stroke(col, 5);
+      originalLayer.strokeWeight(i);
+      originalLayer.stroke(col, 5);
       if (pmouseX == 0 || pmouseY == 0)
       {
-        line(mouseX, mouseY, mouseX, mouseY);
+        originalLayer.line(mouseX, mouseY, mouseX, mouseY);
       }
       else
       {
-        line(mouseX, mouseY, pmouseX, pmouseY);
+        originalLayer.line(mouseX, mouseY, pmouseX, pmouseY);
       }
     }
   }
@@ -45,7 +45,7 @@ private class BrushFactory {
     float x;      // result
     float y;
     
-    stroke(col);
+    originalLayer.stroke(col);
     
     for (int i=0; i < maxIterations; i++)
     {
@@ -58,16 +58,16 @@ private class BrushFactory {
       x=(radx*cos(radians(angle)))+mouseX;
       y=(radx*sin(radians(angle)))+mouseY;
       //
-      stroke(col);
-      point(x, y);
+      originalLayer.stroke(col);
+      originalLayer.point(x, y);
     }
   }
   
   void rollerEraser(int width, color col)
   {
-    fill(col);
-    noStroke();
-    rect(mouseX-width/2, mouseY-10, width, 20);
+    originalLayer.fill(col);
+    originalLayer.noStroke();
+    originalLayer.rect(mouseX-width/2, mouseY-10, width, 20);
   }
     
   void drawSolidBrushPrint(int brushRadius, float posX, float posY)
