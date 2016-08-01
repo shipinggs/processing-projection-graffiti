@@ -6,7 +6,7 @@ import controlP5.*;
 final int W = 1280;
 final int H = 800;
 
-private final int TOOL_PANEL_HEIGHT = 50;
+private final int TOOL_PANEL_HEIGHT = 60;
 
 private color currentColor;
 private String currentBrushType;

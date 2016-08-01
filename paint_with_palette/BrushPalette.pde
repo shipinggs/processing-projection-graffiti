@@ -38,7 +38,7 @@ private class BrushPalette {
     brushFactory = new BrushFactory();
     // add a vertical slider
     slider = cp5.addSlider("brushradius")
-       .setPosition(posX+displayBrushPaddingX,posY+paletteHeight/3)
+       .setPosition(posX+displayBrushPaddingX,posY+paletteHeight/2-5)
        .setSize(paletteWidth/2-(2*displayBrushPaddingX),10)
        .setRange(0,60)
        .setValue(20)
@@ -77,6 +77,12 @@ private class BrushPalette {
       // draw slider
       slider.show();
       
+      //// draw brush size guide
+      //noFill();
+      //stroke(255);
+      //strokeWeight(1);
+      //ellipse(width-100, height-100, 2*slider.getValue(), 2*slider.getValue());
+      
       // draw the different display brushes
       int brushTypeStartPosX = posX + paletteWidth/2 + displayBrushPaddingX/2;
       for (int x = 0; x < brushTypes.length; x++)
@@ -84,18 +90,18 @@ private class BrushPalette {
         switch(brushTypes[x])
         {
           case "solid":
-            brushFactory.drawSolidBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY);
+            brushFactory.drawSolidBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY+paletteHeight/2-displayBrushRadius/2);
             break;
           case "feathered":
-            brushFactory.drawFeatheredBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY);
+            brushFactory.drawFeatheredBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY+paletteHeight/2-displayBrushRadius/2);
             break;
           case "gritty":
-            brushFactory.drawGrittyBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY);
+            brushFactory.drawGrittyBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY+paletteHeight/2-displayBrushRadius/2);
             break;
           case "eraser":
             fill(122);
             noStroke();
-            rect(brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY-displayEraserHeight/2+displayBrushRadius/2, displayEraserWidth, displayEraserHeight);
+            rect(brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY+paletteHeight/2-displayEraserHeight/2, displayEraserWidth, displayEraserHeight);
         }        
       }
     }
