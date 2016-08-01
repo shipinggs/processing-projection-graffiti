@@ -4,12 +4,18 @@ private class BrushPalette {
   private final color GREY = color(127);
   
   // Brush attributes
-  private String currentBrushType = "solid";
+  private String currentBrushType = "eraser";
   private int currentBrushRadius = 20;
   
   // To determine if BrushPalette is minimized
   private boolean paletteIsMinimized = true;
   
+  // define the display size of brushes
+  int displayBrushRadius = 40;
+  int displayBrushPaddingX = 20;
+  int displayEraserWidth = 100;
+  int displayEraserHeight = 15;
+      
   private BrushFactory brushFactory;
   private String[] brushTypes = { "solid", "feathered", "gritty", "eraser" };
   
@@ -46,32 +52,50 @@ private class BrushPalette {
       noStroke();
       rect(posX, posY, paletteWidth, paletteHeight);
       
-      // define the display size of brushes
-      int displayBrushRadius = 40;
-      int paddingX = 20;
-      int displayEraserWidth = 100;
-      int displayEraserHeight = 15;
-      
       // draw the different display brushes
-      int brushTypeStartPosX = posX + paletteWidth/2 + paddingX;
+      int brushTypeStartPosX = posX + paletteWidth/2 + displayBrushPaddingX/2;
       for (int x = 0; x < brushTypes.length; x++)
       {
         switch(brushTypes[x])
         {
           case "solid":
-            brushFactory.drawSolidBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+paddingX)), posY);
+            brushFactory.drawSolidBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY);
             break;
           case "feathered":
-            brushFactory.drawFeatheredBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+paddingX)), posY);
+            brushFactory.drawFeatheredBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY);
             break;
           case "gritty":
-            brushFactory.drawGrittyBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+paddingX)), posY);
+            brushFactory.drawGrittyBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY);
             break;
           case "eraser":
             fill(122);
             noStroke();
-            rect(brushTypeStartPosX+(x*(displayBrushRadius+paddingX)), posY-displayEraserHeight/2+displayBrushRadius/2, displayEraserWidth, displayEraserHeight);
+            rect(brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY-displayEraserHeight/2+displayBrushRadius/2, displayEraserWidth, displayEraserHeight);
         }        
+      }
+    }
+  }
+  
+  public void mouseClicked()
+  {
+    if (!paletteIsMinimized && mouseX>paletteWidth/2)
+    {
+      int startPosX = posX + paletteWidth/2;
+      if (mouseX>startPosX && mouseX<startPosX+displayBrushRadius+displayBrushPaddingX)
+      {
+        currentBrushType = "solid";
+      }
+      else if (mouseX>startPosX+displayBrushRadius+displayBrushPaddingX && mouseX<startPosX+2*(displayBrushRadius+displayBrushPaddingX))
+      {
+        currentBrushType = "feathered";
+      }
+      else if (mouseX>startPosX+2*(displayBrushRadius+displayBrushPaddingX) && mouseX<startPosX+3*(displayBrushRadius+displayBrushPaddingX))
+      {
+        currentBrushType = "gritty";
+      }
+      else
+      {
+        currentBrushType = "eraser";
       }
     }
   }

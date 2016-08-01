@@ -6,7 +6,7 @@ private class BrushFactory {
   
   void solidBrush(int brushRadius, color col)
   {
-    strokeWeight(brushRadius*2);
+    strokeWeight(brushRadius*1.8);
     stroke(col);
     if (pmouseX == 0 || pmouseY == 0)
     {

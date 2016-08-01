@@ -39,6 +39,7 @@ private class ToolPanel {
     }
     else if (mouseX > panelWidth/2)
     {
+      brushPalette.mouseClicked();
       brushPalette.toggleMinimize();
     }
   }
