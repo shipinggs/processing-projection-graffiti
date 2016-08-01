@@ -10,7 +10,7 @@ final int BLUE = color(0,0,255);
 final int GRAY = color(102);
 final int LIGHT_GRAY = color(200);
 
-private final int TOOL_PANEL_HEIGHT = 50;
+private final int TOOL_PANEL_HEIGHT = 60;
 
 private color currentColor;
 private String currentBrushType;
