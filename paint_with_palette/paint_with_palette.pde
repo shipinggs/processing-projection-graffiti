@@ -98,10 +98,12 @@ void draw()
     }
     //osc implementation here
     //println(mouseX);
-    OscMessage myMessage = new OscMessage("/Click");
-    myMessage.add(mouseX); 
-    myMessage.add(mouseY); 
-    oscP5.send(myMessage, myRemoteLocation); 
+    OscMessage myMessageX = new OscMessage("/ClickX");
+    myMessageX.add(mouseX); 
+    OscMessage myMessageY = new OscMessage("/ClickY");
+    myMessageY.add(mouseY); 
+    oscP5.send(myMessageX, myRemoteLocation); 
+     oscP5.send(myMessageY, myRemoteLocation); 
   }
   originalLayer.endDraw();  //end of things to draw on the particular layer
   
