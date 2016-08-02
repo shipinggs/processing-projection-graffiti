@@ -1,3 +1,4 @@
+
 import netP5.*;
 import oscP5.*;
 
@@ -5,8 +6,8 @@ import spout.*;
 import controlP5.*;
 
 //window width and heights for easy changes
-final int W = 1280;
-final int H = 800;
+final int W = 1920;
+final int H = 1200;
 
 private final int TOOL_PANEL_HEIGHT = 60;
 
@@ -30,7 +31,7 @@ PGraphics spoutInLayer;
 void setup()
 {
   //fullScreen();
-  size(1280, 800, P3D); //change accordingly to W and H above
+  size(1920, 1200, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
   //surface.setResizable(true);
   
@@ -44,7 +45,7 @@ void setup()
   //// spout objects
   spoutOut = new Spout(this);
   spoutIn = new Spout(this);
-  spoutIn.createReceiver("Composition - Resolume Arena");
+  //spoutIn.createReceiver("Screen 2 - Resolume Arena");
   
   // OSC object
   oscP5 = new OscP5(this,7000);
