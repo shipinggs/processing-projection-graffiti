@@ -5,7 +5,10 @@ Getting started
 -----
 1. Clone this repository.
 2. Navigate to any `.pde` file and open it.
-3. Run the code and make your own graffiti!
+3. Go to 'Sketch' --> 'Import Library' --> 'Add Library'
+4. Search 'Spout for Processing' and install.
+5. Search 'ControlP5' and install.
+6. Run the code and make your own graffiti!
 
 Prerequisites
 ------
