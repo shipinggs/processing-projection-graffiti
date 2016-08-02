@@ -48,7 +48,7 @@ void setup()
   
   // OSC object
   oscP5 = new OscP5(this,7000);
-  myRemoteLocation = new NetAddress("localhost",12000);
+  myRemoteLocation = new NetAddress("localhost",12001);
   
   //the two layers
   originalLayer = createGraphics(W,H,P2D);
@@ -98,7 +98,7 @@ void draw()
     }
     //osc implementation here
     //println(mouseX);
-    OscMessage myMessage = new OscMessage("Click at: ");
+    OscMessage myMessage = new OscMessage("/Click");
     myMessage.add(mouseX); 
     myMessage.add(mouseY); 
     oscP5.send(myMessage, myRemoteLocation); 
