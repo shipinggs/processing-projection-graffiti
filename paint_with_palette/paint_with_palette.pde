@@ -19,12 +19,15 @@ private ToolPanel toolPanel;
 private BrushFactory brushFactory;
 private ControlP5 cp5;
 
+// to store drips created
+private static ArrayList<Drip> drips = new ArrayList<Drip>();
+
 void setup()
 {
   //fullScreen();
   size(1267, 800);
   background(0,0,0,0);
-  frameRate(180);
+  frameRate(60);
   currentColor = color(255);
   cp5 = new ControlP5(this);
   toolPanel = new ToolPanel(0, height - TOOL_PANEL_HEIGHT, width, TOOL_PANEL_HEIGHT, 0, cp5);
@@ -61,6 +64,9 @@ void draw()
         case "gritty":
           brushFactory.grittyBrush(currentBrushRadius, currentColor);
           break;
+        case "drip":
+          brushFactory.dripBrush(currentBrushRadius, currentColor);
+          break;
         case "eraser":
           brushFactory.rollerEraser(200, currentColor);
           break;
@@ -70,6 +76,13 @@ void draw()
       }
     }
   }
+  
+  // animate drips dropping if there are any
+  for (Drip drip: drips)
+  {
+    drip.render();
+  }
+   
   toolPanel.render();
   
 }
@@ -92,4 +105,9 @@ void mousePressed()
   {
     toolPanel.minimizeAll();
   }
+}
+
+public static void addDrip(Drip drip)
+{
+  drips.add(drip);
 }

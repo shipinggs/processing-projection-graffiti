@@ -14,14 +14,14 @@ class Drip {
   private void init()
   {
     dripRan = random(0, 120);
-    dripRan = min(dripRan, random(0, 200));
+    dripRan = min(dripRan, random(0, 120));
     dripWidth = random(2, 5);
   }
   
   public void render()
   {
 
-    if (posY < initialPosY + dripRan + height)
+    if (posY < initialPosY + dripRan)
     {
       stroke(col, 255);
       strokeWeight(dripWidth);
