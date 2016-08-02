@@ -22,6 +22,9 @@ Spout spoutIn;
 PGraphics originalLayer;
 PGraphics spoutInLayer;
 
+// to store drips created
+private static ArrayList<Drip> drips = new ArrayList<Drip>();
+
 void setup()
 {
   //fullScreen();
@@ -30,7 +33,8 @@ void setup()
   //surface.setResizable(true);
   
   background(0);
-  frameRate(180);
+  frameRate(60);
+
   currentColor = color(255);
   cp5 = new ControlP5(this);
   toolPanel = new ToolPanel(0, height - TOOL_PANEL_HEIGHT, width, TOOL_PANEL_HEIGHT, 0, cp5);
@@ -78,6 +82,9 @@ void draw()
         case "gritty":
           brushFactory.grittyBrush(currentBrushRadius, currentColor);
           break;
+        case "drip":
+          brushFactory.dripBrush(currentBrushRadius, currentColor);
+          break;
         case "eraser":
           brushFactory.rollerEraser(200, currentColor);
           break;
@@ -90,7 +97,13 @@ void draw()
     //osc implementation here
   }
   originalLayer.endDraw();  //end of things to draw on the particular layer
-  
+
+  // animate drips dropping if there are any
+  for (Drip drip: drips)
+  {
+    drip.render();
+  }
+   
   toolPanel.render();
   
   //for testing of layers
@@ -131,4 +144,9 @@ void mousePressed()
     // Spout installation required
     spoutOut.selectSender();
   }
+}
+
+public static void addDrip(Drip drip)
+{
+  drips.add(drip);
 }

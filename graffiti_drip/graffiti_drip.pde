@@ -1,7 +1,3 @@
-float diam; // width of ellipse and weight of line
-float dripRan = random(1); //random size of drips
-float dripWidth = random(1); //drip width
- 
 int col = color(57,255,29);
 private ArrayList<Drip> drips = new ArrayList<Drip>();
 
@@ -27,12 +23,12 @@ void mouseDragged(){
    
   // draw a line to smooth spaces between dots
   stroke(col); // kill the stroke
-  strokeWeight(10); // make the line the same width as the dot
+  strokeWeight(30); // make the line the same width as the dot
   line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
   
   //Draw the drips
-  float chance = random(1,5)*random(1,5)*random(1,5);
-  if (chance < 50)
+  float chance = random(1,8)*random(1,8)*random(1,8);
+  if (chance < 20)
   {
     drips.add(new Drip(mouseX, mouseY));
   }

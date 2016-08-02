@@ -5,8 +5,8 @@ private class BrushPalette {
   private final color GREY = color(127);
   
   // Brush attributes
-  private String currentBrushType = "solid";
-  private int currentBrushRadius = 20;
+  private String currentBrushType = "drip";
+  private int currentBrushRadius;
   
   // To determine if BrushPalette is minimized
   private boolean paletteIsMinimized = true;
@@ -20,7 +20,7 @@ private class BrushPalette {
   private BrushFactory brushFactory;
   private String[] brushTypes = { "solid", "feathered", "gritty", "eraser" };
   
-  private int myColor = color(10,10,10);
+  // brush radius slider
   Slider slider;
   
   public BrushPalette(int posX, int posY, int paletteWidth, int paletteHeight, ControlP5 cp5)
@@ -41,7 +41,7 @@ private class BrushPalette {
        .setPosition(posX+displayBrushPaddingX,posY+paletteHeight/2-5)
        .setSize(paletteWidth/2-(2*displayBrushPaddingX),10)
        .setRange(0,60)
-       .setValue(20)
+       .setValue(10)
        .setColor(new CColor(-1,-16110286,-1,-1,-1));
        ;
     
@@ -150,11 +150,6 @@ private class BrushPalette {
   public int getBrushRadius()
   {
     return currentBrushRadius;
-  }
-  
-  void brushradius(float theColor) {
-    myColor = color(theColor);
-    println("a slider event. setting background to "+theColor);
   }
   
 }
