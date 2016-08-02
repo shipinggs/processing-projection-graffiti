@@ -85,6 +85,14 @@ void draw()
    
   toolPanel.render();
   
+  if (keyPressed)
+  {
+    if (key == ' ')
+    {
+      clear();
+    }
+  }
+  
 }
 
 void mouseClicked()
