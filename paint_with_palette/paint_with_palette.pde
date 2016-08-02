@@ -135,6 +135,16 @@ void draw()
   
 }//end of draw
 
+  if (keyPressed)
+  {
+    if (key == ' ')
+    {
+      clear();
+    }
+  }
+  
+}
+
 void mouseClicked()
 {
   if ((mouseY < height) && (mouseY > (height - TOOL_PANEL_HEIGHT)))
