@@ -142,13 +142,11 @@ class Drip {
       strokeWeight(0);
       fill(col, transparency);
       ellipse(posX, posY, dripWidth*n, dripWidth*n);
-      println(dripRun, dripWidth*n);
       ++posY;
     }
     if ((initialPosY + dripRun - posY) < 0.5*dripRun)
     {
       transparency -= 5;
-      println("hi");
     }
     
   }
