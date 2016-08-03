@@ -83,27 +83,28 @@ private class BrushFactory {
   
   void rollerEraser(int width, color col)
   {
+    smooth();
     originalLayer.fill(col);
     originalLayer.noStroke();
     originalLayer.rect(mouseX-width/2, mouseY-10, width, 20);
   }
     
-  void drawSolidBrushPrint(int brushDiam, float posX, float posY)
+  void drawSolidBrushPrint(float brushDiam, float posX, float posY)
   {
     image(solidImg, posX, posY, brushDiam, brushDiam);
   }
   
-  void drawDripBrushPrint(int brushDiam, float posX, float posY)
+  void drawDripBrushPrint(float brushDiam, float posX, float posY)
   {
     image(dripImg, posX, posY, brushDiam, brushDiam);
   }
   
-  void drawFeatheredBrushPrint(int brushDiam, float posX, float posY)
+  void drawFeatheredBrushPrint(float brushDiam, float posX, float posY)
   {
     image(featheredImg, posX, posY, brushDiam, brushDiam);
   }
   
-  void drawGrittyBrushPrint(int brushDiam, float posX, float posY)
+  void drawGrittyBrushPrint(float brushDiam, float posX, float posY)
   {
     image(grittyImg, posX, posY, brushDiam, brushDiam);
   }
