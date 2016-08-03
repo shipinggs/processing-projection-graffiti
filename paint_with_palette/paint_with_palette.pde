@@ -134,9 +134,6 @@ void draw()
   image(originalLayer,0,0); //original line on top
   
   spoutOut.sendTexture(originalLayer); //send the paint out via spout
-  
-  
-}//end of draw
 
   if (keyPressed)
   {
@@ -146,7 +143,7 @@ void draw()
     }
   }
   
-}
+} //end of draw
 
 void mouseClicked()
 {
