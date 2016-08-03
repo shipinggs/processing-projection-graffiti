@@ -22,10 +22,10 @@ private class BrushFactory {
   void featheredBrush(int brushRadius, color col)
   {
     float thickness = brushRadius * 2;
-    for(int i = 0; i < thickness; i+=2)
+    for(int i = 0; i < thickness; i+=3)
     {
       strokeWeight(i);
-      stroke(col, 18);
+      stroke(col, 6);
       if (pmouseX == 0 || pmouseY == 0)
       {
         line(mouseX, mouseY, mouseX, mouseY);
