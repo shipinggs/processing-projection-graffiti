@@ -8,7 +8,7 @@ import controlP5.*;
 final int W = 1280;
 final int H = 800;
 
-private final int TOOL_PANEL_HEIGHT = 60;
+private final int TOOL_PANEL_WIDTH = 80;
 
 private color currentColor;
 private String currentBrushType;
@@ -39,10 +39,10 @@ void setup()
   
   background(0);
   frameRate(60);
-
+  cursor(CROSS);
   currentColor = color(255);
   cp5 = new ControlP5(this);
-  toolPanel = new ToolPanel(0, height - TOOL_PANEL_HEIGHT, width, TOOL_PANEL_HEIGHT, 0, cp5);
+  toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
   
   //// spout objects
@@ -72,7 +72,7 @@ void draw()
   smooth();
   originalLayer.beginDraw();  //draw on that particular layer only
   // Now if the mouse is pressed, paint
-  if (mousePressed && mouseY<height-TOOL_PANEL_HEIGHT) {
+  if (mousePressed && mouseX>TOOL_PANEL_WIDTH) {
     originalLayer.noStroke();
     originalLayer.noFill();
     originalLayer.stroke(currentColor);
@@ -147,7 +147,7 @@ void draw()
 
 void mouseClicked()
 {
-  if ((mouseY < height) && (mouseY > (height - TOOL_PANEL_HEIGHT)))
+  if ((mouseX < width) && (mouseX < TOOL_PANEL_WIDTH))
   {
    toolPanel.mouseClicked();
   }
@@ -159,7 +159,7 @@ void mouseClicked()
 
 void mousePressed()
 {
-  if (mouseY < (height - TOOL_PANEL_HEIGHT))
+  if (mouseX > TOOL_PANEL_WIDTH)
   {
     toolPanel.minimizeAll();
   }

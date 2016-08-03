@@ -14,12 +14,12 @@ private class ColorPalette {
   private int posX, posY, paletteWidth, paletteHeight;
 
   // Size of the fixed color boxes
-  private float fixedColorWidth;
-  private final int currentColorBarHeight = 5;
+  private float fixedColorHeight;
+  private final int currentColorBarHeight = 20;
 
   private ColorPicker colorPicker;
   private color[] colorArray = { WHITE, LIGHT_BEER, DARK_BEER, DESPERADOS_GREEN, DESPERADOS_RED, DESPERADOS_BLUE, GREY, BLACK };
-  private int currentColor = WHITE;
+  private int currentColor = LIGHT_BEER;
   
   // To determine if ColorPalette is minimized
   private boolean paletteIsMinimized = true;
@@ -34,11 +34,15 @@ private class ColorPalette {
   }
 
   private void init()
-  {
-    colorPicker = new ColorPicker(posX + paletteWidth/2, posY + currentColorBarHeight, 
-      paletteWidth - (paletteWidth/2) , paletteHeight - currentColorBarHeight, 255); // temp fix for float - int issues
+  {   
+    colorPicker = new ColorPicker(posX, posY+currentColorBarHeight, paletteWidth, (paletteHeight/2)-currentColorBarHeight, LIGHT_BEER);
       
-    fixedColorWidth = (float) (paletteWidth/2)/NUM_FIXED_COLORS;
+    // To show current color selected
+    fill(currentColor);
+    noStroke();
+    rect(posX, posY, paletteWidth, currentColorBarHeight);
+    
+    fixedColorHeight = (float) (paletteHeight/2)/NUM_FIXED_COLORS;
   }
 
   public void render()
@@ -68,7 +72,7 @@ private class ColorPalette {
       {
         fill(colorArray[i]);
         noStroke();
-        rect(i*fixedColorWidth, posY + currentColorBarHeight, fixedColorWidth, paletteHeight - currentColorBarHeight);
+        rect(posX, posY+(paletteHeight/2)+(i*fixedColorHeight), paletteWidth, fixedColorHeight);
       }
 
       if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight) {
