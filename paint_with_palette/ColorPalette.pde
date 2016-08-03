@@ -56,7 +56,7 @@ private class ColorPalette {
       // create marker for palette position
       fill(GREY);
       noStroke();
-      rect(posX + paletteWidth/2 - 20, posY + paletteHeight/2, 40, 2);
+      rect(posX+(paletteWidth/2)-20, posY+(paletteHeight/2), 40, 3);
     } 
     else
     {
