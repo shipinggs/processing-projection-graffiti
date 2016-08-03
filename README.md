@@ -1,5 +1,6 @@
 # processing-projection-graffiti
-Interactive and animated projection graffiti for marketing campaign.
+Interactive and animated projection graffiti.
+Inspired by http://johnnylee.net/projects/wii/
 
 Getting started
 -----
