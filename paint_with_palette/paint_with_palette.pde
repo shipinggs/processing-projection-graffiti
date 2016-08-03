@@ -1,3 +1,4 @@
+
 import netP5.*;
 import oscP5.*;
 
@@ -5,8 +6,8 @@ import spout.*;
 import controlP5.*;
 
 //window width and heights for easy changes
-final int W = 1280;
-final int H = 800;
+final int W = 1920;
+final int H = 1200;
 
 private final int TOOL_PANEL_WIDTH = 80;
 
@@ -33,7 +34,7 @@ private static ArrayList<Drip> drips = new ArrayList<Drip>();
 void setup()
 {
   //fullScreen();
-  size(1280, 800, P3D); //change accordingly to W and H above
+  size(1920, 1200, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
   //surface.setResizable(true);
   
@@ -48,7 +49,7 @@ void setup()
   //// spout objects
   spoutOut = new Spout(this);
   spoutIn = new Spout(this);
-  spoutIn.createReceiver("Composition - Resolume Arena");
+  //spoutIn.createReceiver("Screen 2 - Resolume Arena");
   
   // OSC object
   oscP5 = new OscP5(this,7000);
@@ -105,10 +106,12 @@ void draw()
     }
     //osc implementation here
     //println(mouseX);
-    OscMessage myMessage = new OscMessage("/Click");
-    myMessage.add(mouseX); 
-    myMessage.add(mouseY); 
-    oscP5.send(myMessage, myRemoteLocation); 
+    OscMessage myMessageX = new OscMessage("/ClickX");
+    myMessageX.add(mouseX); 
+    OscMessage myMessageY = new OscMessage("/ClickY");
+    myMessageY.add(mouseY); 
+    oscP5.send(myMessageX, myRemoteLocation); 
+     oscP5.send(myMessageY, myRemoteLocation); 
   }
   originalLayer.endDraw();  //end of things to draw on the particular layer
 
