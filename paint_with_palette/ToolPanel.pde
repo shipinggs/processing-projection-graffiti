@@ -17,8 +17,8 @@ private class ToolPanel {
   
   private void init()
   {
-    colorPalette = new ColorPalette(posX, posY, panelWidth/2, panelHeight);
-    brushPalette = new BrushPalette(panelWidth/2, posY, panelWidth/2, panelHeight, cp5);
+    brushPalette = new BrushPalette(posX, posY, panelWidth, panelHeight/2, cp5);
+    colorPalette = new ColorPalette(posX, panelHeight/2, panelWidth, panelHeight/2);
     fill(panelColor);
     rect(posX, posY, panelWidth, panelHeight);
   }
@@ -29,20 +29,20 @@ private class ToolPanel {
     noStroke();
     rect(posX, posY, panelWidth, panelHeight);
     
-    colorPalette.render();
     brushPalette.render();
+    colorPalette.render();
   }
   
   public void mouseClicked()
   {
-    if (mouseX < panelWidth/2)
-    {
-      colorPalette.toggleMinimize();
-    }
-    else if (mouseX > panelWidth/2)
+    if (mouseY < panelHeight/2)
     {
       brushPalette.mouseClicked();
       brushPalette.toggleMinimize();
+    }
+    else if (mouseY > panelHeight/2)
+    {
+      colorPalette.toggleMinimize();
     }
   }
   

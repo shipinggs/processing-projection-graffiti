@@ -24,30 +24,30 @@ public class ColorPicker
   private void init ()
   {
     // draw color.
-    int cw = w;
-    for( int i=0; i<cw; i++ ) {
-      float nColorPercent = i / (float)cw;
+    int ch = h;
+    for( int i=0; i<ch; i++ ) {
+      float nColorPercent = i / (float)ch;
       float rad = (-360 * nColorPercent) * (PI / 180);
       int nR = (int)(cos(rad) * 127 + 128) << 16;
       int nG = (int)(cos(rad + 2 * PI / 3) * 127 + 128) << 8;
       int nB = (int)(Math.cos(rad + 4 * PI / 3) * 127 + 128);
       int nColor = nR | nG | nB;
       
-      setGradient( i, 0, h/2, 0xFFFFFF, nColor );
-      setGradient( i, (h/2), h/2, nColor, 0x000000 );
+      setGradient( 0, i, w/2, 0xFFFFFF, nColor );
+      setGradient( w/2, i, w/2, nColor, 0x000000 );
     }
   }
 
-  private void setGradient(int x, int y, float h, int c1, int c2 )
+  private void setGradient(int x, int y, float w, int c1, int c2 )
   {
     float deltaR = red(c2) - red(c1);
     float deltaG = green(c2) - green(c1);
     float deltaB = blue(c2) - blue(c1);
 
-    for (int j = y; j<(y+h); j++)
+    for (int i = x; i<(x+w); i++)
     {
-      int c = color( red(c1)+(j-y)*(deltaR/h), green(c1)+(j-y)*(deltaG/h), blue(c1)+(j-y)*(deltaB/h) );
-      colorPickerImage.set( x, j, c );
+      int c = color( red(c1)+(i-x)*(deltaR/w), green(c1)+(i-x)*(deltaG/w), blue(c1)+(i-x)*(deltaB/w) );
+      colorPickerImage.set( i, y, c );
     }
   }
   

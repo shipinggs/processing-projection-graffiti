@@ -12,13 +12,11 @@ private class BrushPalette {
   private boolean paletteIsMinimized = true;
   
   // define the display size of brushes
-  int displayBrushRadius = 40;
-  int displayBrushPaddingX = 20;
-  int displayEraserWidth = 100;
-  int displayEraserHeight = 15;
+  int displayBrushDiam = 30;
+  int displayBrushPaddingY = 10;
       
   private BrushFactory brushFactory;
-  private String[] brushTypes = { "solid", "feathered", "gritty", "eraser" };
+  private String[] brushTypes = { "eraser", "solid", "drip", "feathered", "gritty" };
   
   // brush radius slider
   Slider slider;
@@ -38,16 +36,17 @@ private class BrushPalette {
     brushFactory = new BrushFactory();
     // add a vertical slider
     slider = cp5.addSlider("brushradius")
-       .setPosition(posX+displayBrushPaddingX,posY+paletteHeight/2-5)
-       .setSize(paletteWidth/2-(2*displayBrushPaddingX),10)
+       //.setPosition(posX+(0.1*paletteWidth),posY+(paletteHeight/2)+(0.1*paletteHeight))
+       .setPosition(posX,posY+paletteHeight/2)
+       .setSize((int) paletteWidth, (int) paletteHeight/2)
        .setRange(0,60)
        .setValue(10)
        .setColor(new CColor(-1,-16110286,-1,-1,-1));
        ;
     
     // reposition the Label for controller 'brushradius'
-    cp5.getController("brushradius").getValueLabel().align(ControlP5.LEFT, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
-    cp5.getController("brushradius").getCaptionLabel().align(ControlP5.RIGHT, ControlP5.BOTTOM_OUTSIDE).setPaddingX(0);
+    cp5.getController("brushradius").getValueLabel().hide();
+    cp5.getController("brushradius").getCaptionLabel().hide();
   }
   
   public void render()
@@ -73,61 +72,62 @@ private class BrushPalette {
       fill(0);
       noStroke();
       rect(posX, posY, paletteWidth, paletteHeight);
+
+      // draw the different display brushes
+      int brushTypeStartPosY = posY + displayBrushPaddingY/2;
+      int brushTypePosX = posX + paletteWidth/2 - displayBrushDiam/2;
+      for (int i = 0; i < brushTypes.length; i++)
+      {
+        switch(brushTypes[i])
+        {
+          case "solid":
+            brushFactory.drawSolidBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*(displayBrushDiam+displayBrushPaddingY)));
+            break;
+          case "drip":
+            brushFactory.drawDripBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*(displayBrushDiam+displayBrushPaddingY)));
+            break;
+          case "feathered":
+            brushFactory.drawFeatheredBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*(displayBrushDiam+displayBrushPaddingY)));
+            break;
+          case "gritty":
+            brushFactory.drawGrittyBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*(displayBrushDiam+displayBrushPaddingY)));
+            break;
+          case "eraser":
+            fill(255);
+            noStroke();
+            rect(brushTypePosX, brushTypeStartPosY, displayBrushDiam, displayBrushDiam);
+        }        
+      }
       
       // draw slider
       slider.show();
-      
-      //// draw brush size guide
-      //noFill();
-      //stroke(255);
-      //strokeWeight(1);
-      //ellipse(width-100, height-100, 2*slider.getValue(), 2*slider.getValue());
-      
-      // draw the different display brushes
-      int brushTypeStartPosX = posX + paletteWidth/2 + displayBrushPaddingX/2;
-      for (int x = 0; x < brushTypes.length; x++)
-      {
-        switch(brushTypes[x])
-        {
-          case "solid":
-            brushFactory.drawSolidBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY+paletteHeight/2-displayBrushRadius/2);
-            break;
-          case "feathered":
-            brushFactory.drawFeatheredBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY+paletteHeight/2-displayBrushRadius/2);
-            break;
-          case "gritty":
-            brushFactory.drawGrittyBrushPrint(displayBrushRadius, brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY+paletteHeight/2-displayBrushRadius/2);
-            break;
-          case "eraser":
-            fill(122);
-            noStroke();
-            rect(brushTypeStartPosX+(x*(displayBrushRadius+displayBrushPaddingX)), posY+paletteHeight/2-displayEraserHeight/2, displayEraserWidth, displayEraserHeight);
-        }        
-      }
     }
   }
   
   public void mouseClicked()
   {
-    if (!paletteIsMinimized && mouseX>paletteWidth/2)
+    if (!paletteIsMinimized && mouseY<paletteHeight/2)
     {
-      int startPosX = posX + paletteWidth/2;
-      int singleBrushButtonWidth = displayBrushRadius + displayBrushPaddingX;
-      if (mouseX>startPosX && mouseX<startPosX+displayBrushRadius+displayBrushPaddingX)
+      int singleBrushButtonHeight = displayBrushDiam + displayBrushPaddingY;
+      if (mouseY>posY && mouseY<posY+displayBrushDiam+displayBrushPaddingY)
+      {
+        currentBrushType = "eraser";
+      }
+      else if (mouseY>posY+singleBrushButtonHeight && mouseY<posY+(2*singleBrushButtonHeight))
       {
         currentBrushType = "solid";
       }
-      else if (mouseX>startPosX+singleBrushButtonWidth && mouseX<startPosX+(2*singleBrushButtonWidth))
+      else if (mouseY>posY+(2*singleBrushButtonHeight) && mouseY<posY+(3*singleBrushButtonHeight))
+      {
+        currentBrushType = "drip";
+      }
+      else if (mouseY>posY+(3*singleBrushButtonHeight) && mouseY<posY+(4*singleBrushButtonHeight))
       {
         currentBrushType = "feathered";
       }
-      else if (mouseX>startPosX+(2*singleBrushButtonWidth) && mouseX<startPosX+(3*singleBrushButtonWidth))
+      else if (mouseY>posY+(4*singleBrushButtonHeight))
       {
         currentBrushType = "gritty";
-      }
-      else if (mouseX>startPosX+(3*singleBrushButtonWidth))
-      {
-        currentBrushType = "eraser";
       }
     }
   }

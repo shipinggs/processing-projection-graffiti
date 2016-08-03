@@ -1,5 +1,6 @@
 private class BrushFactory {
   private PImage solidImg = loadImage("solid.png");
+  private PImage dripImg = loadImage("drip.png");
   private PImage featheredImg = loadImage("feathered.png");
   private PImage grittyImg = loadImage("gritty.png");
 
@@ -20,11 +21,11 @@ private class BrushFactory {
   
   void featheredBrush(int brushRadius, color col)
   {
-    int thickness = brushRadius * 2;
-    for(int i = 0; i < thickness; i+=5)
+    float thickness = brushRadius * 2;
+    for(int i = 0; i < thickness; i+=2)
     {
       strokeWeight(i);
-      stroke(col, 10);
+      stroke(col, 18);
       if (pmouseX == 0 || pmouseY == 0)
       {
         line(mouseX, mouseY, mouseX, mouseY);
@@ -38,7 +39,8 @@ private class BrushFactory {
   
   void grittyBrush(int brushRadius, color col)
   {
-    int maxIterations = 150; // how fast spraying happens
+    brushRadius *= 1.5;
+    int maxIterations = 200; // how fast spraying happens
    
     float radx;   // Radius
     float rady;
@@ -66,18 +68,13 @@ private class BrushFactory {
   
   void dripBrush(int brushRadius, color col)
   {
-    //draw the dot at our cursor
-    noStroke(); // no stroke on ellipses
-    ellipse(mouseX, mouseY, 50, 50); // draw a dot at the mouse position with the diameter calculated above
-     
-    // draw a line to smooth spaces between dots
-    stroke(col); // kill the stroke
-    strokeWeight(brushRadius*2); // make the line the same width as the dot
+    stroke(col);
+    strokeWeight(brushRadius*2);
     line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
     
     //Draw the drips
     float chance = random(1,8)*random(1,8)*random(1,8);
-    if (chance < 20)
+    if (chance < 15)
     {
       paint_with_palette.addDrip(new Drip(mouseX, mouseY, brushRadius, col));
     }
@@ -90,19 +87,24 @@ private class BrushFactory {
     rect(mouseX-width/2, mouseY-10, width, 20);
   }
     
-  void drawSolidBrushPrint(int brushRadius, float posX, float posY)
+  void drawSolidBrushPrint(int brushDiam, float posX, float posY)
   {
-    image(solidImg, posX, posY, brushRadius, brushRadius);
+    image(solidImg, posX, posY, brushDiam, brushDiam);
   }
   
-  void drawFeatheredBrushPrint(int brushRadius, float posX, float posY)
+  void drawDripBrushPrint(int brushDiam, float posX, float posY)
   {
-    image(featheredImg, posX, posY, brushRadius, brushRadius);
+    image(dripImg, posX, posY, brushDiam, brushDiam);
   }
   
-  void drawGrittyBrushPrint(int brushRadius, float posX, float posY)
+  void drawFeatheredBrushPrint(int brushDiam, float posX, float posY)
   {
-    image(grittyImg, posX, posY, brushRadius, brushRadius);
+    image(featheredImg, posX, posY, brushDiam, brushDiam);
+  }
+  
+  void drawGrittyBrushPrint(int brushDiam, float posX, float posY)
+  {
+    image(grittyImg, posX, posY, brushDiam, brushDiam);
   }
 }
 
