@@ -104,14 +104,30 @@ void draw()
       }
       //print(currentBrushType, currentBrushRadius, currentColor);
     }
-    //osc implementation here
+    //OSC implementation here
     //println(mouseX);
     OscMessage myMessageX = new OscMessage("/ClickX");
     myMessageX.add(mouseX); 
     OscMessage myMessageY = new OscMessage("/ClickY");
     myMessageY.add(mouseY); 
+    
+    float redValue = red(currentColor);
+    float greenValue = green(currentColor);
+    float blueValue = blue(currentColor);
+    OscMessage myMessageRed = new OscMessage("/Red");
+    myMessageRed.add(redValue); 
+    OscMessage myMessageGreen = new OscMessage("/Green");
+    myMessageRed.add(greenValue); 
+    OscMessage myMessageBlue = new OscMessage("/Blue");
+    myMessageRed.add(blueValue); 
     oscP5.send(myMessageX, myRemoteLocation); 
-     oscP5.send(myMessageY, myRemoteLocation); 
+    oscP5.send(myMessageY, myRemoteLocation); 
+    oscP5.send(myMessageRed, myRemoteLocation); 
+    oscP5.send(myMessageGreen, myRemoteLocation); 
+    oscP5.send(myMessageBlue, myRemoteLocation); 
+    println("red: " + redValue + " green: " + greenValue + " blue: " + blueValue);
+    
+    //end of OSC implementation
   }
   originalLayer.endDraw();  //end of things to draw on the particular layer
 
@@ -139,11 +155,15 @@ void draw()
   {
     if (key == ' ')
     {
-      clear();
+      originalLayer.beginDraw();
+      originalLayer.clear();
+      //spoutInLayer.clear();
+      originalLayer.endDraw();
     }
   }
   
 } //end of draw
+
 
 void mouseClicked()
 {
