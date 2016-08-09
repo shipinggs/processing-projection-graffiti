@@ -9,6 +9,17 @@ private class ColorPalette {
   private final color DESPERADOS_RED = color(229, 42, 19);
   private final color DESPERADOS_BLUE = color(40, 50, 120);
   private final int NUM_FIXED_COLORS = 8;
+  
+  private color[] greenShades = { color(27,94,32),color(56,142,60),color(76,175,80),color(129,199,132),color(200,230,201) };
+  private color[] tealShades = { color(0,77,64),color(0,121,107),color(0,150,136),color(77,182,172),color(178,223,219) };
+  private color[] blueShades = { color(13,71,161),color(25,118,210),color(33,150,243),color(100,181,246),color(187,222,251) };
+  private color[] indigoShades = { color(26,35,126),color(48,63,159),color(63,81,181),color(121,134,203),color(197,202,233) };
+  private color[] purpleShades = { color(74,20,140),color(123,31,162),color(156,39,176),color(186,104,200),color(225,190,231) };
+  private color[] pinkShades = { color(136,14,79),color(194,24,91),color(233,30,99),color(240,98,146),color(248,187,208) };
+  private color[] redShades = { color(183,28,28),color(211,47,47),color(244,67,54),color(229,115,115),color(255,205,210) };
+  private color[] orangeShades = { color(230,81,0),color(245,124,0),color(255,152,0),color(255,183,77),color(255,224,178) };
+  private color[] amberShades = { color(255,111,0),color(255,160,0),color(255,193,7),color(255,213,79),color(255,236,179) };
+  private color[] greyShades = { color(0),color(71),color(133),color(194),color(255) };
 
   // Coordinates of top-left corner of ColorPalette
   private int posX, posY, paletteWidth, paletteHeight;
