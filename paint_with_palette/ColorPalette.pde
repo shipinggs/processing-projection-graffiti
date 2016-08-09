@@ -1,15 +1,6 @@
 private class ColorPalette {
-  // Set up fixed colors (Desperados palette)
-  private final color WHITE = color(255);
-  private final color GREY = color(127);
-  private final color BLACK = color(0);
-  private final color LIGHT_BEER = color(255, 207, 0);
-  private final color DARK_BEER = color(248, 174, 1);
-  private final color DESPERADOS_GREEN = color(0, 143, 52);
-  private final color DESPERADOS_RED = color(229, 42, 19);
-  private final color DESPERADOS_BLUE = color(40, 50, 120);
-  private final int NUM_FIXED_COLORS = 8;
   
+  // Set up color values of palette
   private color[] greenShades = { color(27,94,32),color(56,142,60),color(76,175,80),color(129,199,132),color(200,230,201) };
   private color[] tealShades = { color(0,77,64),color(0,121,107),color(0,150,136),color(77,182,172),color(178,223,219) };
   private color[] blueShades = { color(13,71,161),color(25,118,210),color(33,150,243),color(100,181,246),color(187,222,251) };
@@ -20,22 +11,19 @@ private class ColorPalette {
   private color[] orangeShades = { color(230,81,0),color(245,124,0),color(255,152,0),color(255,183,77),color(255,224,178) };
   private color[] amberShades = { color(255,111,0),color(255,160,0),color(255,193,7),color(255,213,79),color(255,236,179) };
   private color[] greyShades = { color(0),color(71),color(133),color(194),color(255) };
+  private color[][] colorMatrix = { greenShades, tealShades, blueShades, indigoShades, purpleShades,
+                                    pinkShades, redShades, orangeShades, amberShades, greyShades };
 
   // Coordinates of top-left corner of ColorPalette
-  private int posX, posY, paletteWidth, paletteHeight;
-
-  // Size of the fixed color boxes
-  private float fixedColorHeight;
-  private final int currentColorBarHeight = 20;
-
-  private ColorPicker colorPicker;
-  private color[] colorArray = { WHITE, LIGHT_BEER, DARK_BEER, DESPERADOS_GREEN, DESPERADOS_RED, DESPERADOS_BLUE, GREY, BLACK };
-  private int currentColor = LIGHT_BEER;
+  private float posX, posY, paletteWidth, paletteHeight;
   
-  // To determine if ColorPalette is minimized
+  // Size of each color rectangle
+  private float singleColorHeight, singleColorWidth;
+  
+  private int currentColor;
   private boolean paletteIsMinimized = true;
 
-  private ColorPalette(int posX, int posY, int paletteWidth, int paletteHeight)
+  private ColorPalette(float posX, float posY, float paletteWidth, float paletteHeight)
   {
     this.posX = posX;
     this.posY = posY;
@@ -46,14 +34,9 @@ private class ColorPalette {
 
   private void init()
   {   
-    colorPicker = new ColorPicker(posX, posY+currentColorBarHeight, paletteWidth, (paletteHeight/2)-currentColorBarHeight, LIGHT_BEER);
-      
-    // To show current color selected
-    fill(currentColor);
-    noStroke();
-    rect(posX, posY, paletteWidth, currentColorBarHeight);
-    
-    fixedColorHeight = (float) (paletteHeight/2)/NUM_FIXED_COLORS;
+    currentColor = colorMatrix[0][0];    
+    singleColorWidth = paletteWidth / colorMatrix[0].length;
+    singleColorHeight = paletteHeight / colorMatrix.length;
   }
 
   public void render()
@@ -65,27 +48,23 @@ private class ColorPalette {
     if (paletteIsMinimized)
     {
       // create marker for palette position
-      fill(GREY);
+      fill(122);
       noStroke();
       rect(posX+(paletteWidth/2)-20, posY+(paletteHeight/2), 40, 3);
     } 
     else
     {
-      colorPicker.render();
-
-      // To show current color selected
-      fill(currentColor);
-      noStroke();
-      rect(posX, posY, paletteWidth, currentColorBarHeight);
-
-      // render fixed colors
-      for (int i = 0; i < colorArray.length; i++)
+      // render color palette from pre-set color matrix
+      for (int j = 0; j < colorMatrix.length; j++)
       {
-        fill(colorArray[i]);
-        noStroke();
-        rect(posX, posY+(paletteHeight/2)+(i*fixedColorHeight), paletteWidth, fixedColorHeight);
+        for (int i = 0; i < colorMatrix[j].length; i++)
+        {
+          fill(colorMatrix[j][i]);
+          noStroke();
+          rect(posX+(i*singleColorWidth), posY+(j*singleColorHeight), singleColorWidth, singleColorHeight); 
+        }
       }
-
+      
       if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight) {
         currentColor = get( mouseX, mouseY );
         println(getColor());
