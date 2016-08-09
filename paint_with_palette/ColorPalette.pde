@@ -14,6 +14,9 @@ private class ColorPalette {
   private color[][] colorMatrix = { greenShades, tealShades, blueShades, indigoShades, purpleShades,
                                     pinkShades, redShades, orangeShades, amberShades, greyShades };
 
+  // ArrayList to hold all the single-color blocks
+  private ArrayList<SingleColorBlock> singleColorBlocks = new ArrayList<SingleColorBlock>();
+  
   // Coordinates of top-left corner of ColorPalette
   private float posX, posY, paletteWidth, paletteHeight;
   
@@ -37,10 +40,22 @@ private class ColorPalette {
     currentColor = colorMatrix[0][0];    
     singleColorWidth = paletteWidth / colorMatrix[0].length;
     singleColorHeight = paletteHeight / colorMatrix.length;
+    
+    // initialize color palette single blocks from pre-set color matrix
+    for (int j = 0; j < colorMatrix.length; j++)
+    {
+      for (int i = 0; i < colorMatrix[j].length; i++)
+      {
+        singleColorBlocks.add(new SingleColorBlock(
+          posX+(i*singleColorWidth), posY+(j*singleColorHeight),
+          singleColorWidth, singleColorHeight, colorMatrix[j][i]));
+      }
+    }
   }
 
   public void render()
   { 
+    // erase everything in the palette
     fill(0);
     noStroke();
     rect(posX, posY, paletteWidth, paletteHeight);
@@ -48,21 +63,15 @@ private class ColorPalette {
     if (paletteIsMinimized)
     {
       // create marker for palette position
-      fill(122);
+      fill(133);
       noStroke();
       rect(posX+(paletteWidth/2)-20, posY+(paletteHeight/2), 40, 3);
     } 
     else
     {
-      // render color palette from pre-set color matrix
-      for (int j = 0; j < colorMatrix.length; j++)
+      for (SingleColorBlock singleBlock: singleColorBlocks)
       {
-        for (int i = 0; i < colorMatrix[j].length; i++)
-        {
-          fill(colorMatrix[j][i]);
-          noStroke();
-          rect(posX+(i*singleColorWidth), posY+(j*singleColorHeight), singleColorWidth, singleColorHeight); 
-        }
+        singleBlock.render();
       }
       
       if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight) {
@@ -84,5 +93,44 @@ private class ColorPalette {
 
   public int getColor() {
     return currentColor;
+  }
+}
+
+
+class SingleColorBlock {
+  private color blockColor;
+  private float posX, posY, blockWidth, blockHeight;
+  
+  private boolean blockIsPressed = false;
+  
+  public SingleColorBlock(float posX, float posY, float blockWidth, float blockHeight, color blockColor)
+  {
+    this.posX = posX;
+    this.posY = posY;
+    this.blockWidth = blockWidth;
+    this.blockHeight = blockHeight;
+    this.blockColor = blockColor;
+    init();
+  }
+  
+  private void init()
+  {
+    fill(blockColor);
+    noStroke();
+    rect(posX, posY, blockWidth, blockHeight);
+  }
+  
+  public void render()
+  {
+    fill(blockColor);
+    noStroke();
+    rect(posX, posY, blockWidth, blockHeight);
+    
+    if (blockColor == paint_with_palette.currentColor)
+    {
+      fill(255);
+      noStroke();
+      ellipse(posX+(blockWidth/5*3),posY+(blockHeight/4),blockWidth/5*2,blockWidth/5*2);
+    }
   }
 }
