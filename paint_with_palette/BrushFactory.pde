@@ -22,7 +22,7 @@ private class BrushFactory {
   void featheredBrush(int brushRadius, color col)
   {
     float thickness = brushRadius * 2;
-    for(int i = 0; i < thickness; i+=2)
+    for(int i = 0; i < thickness; i+=3)
     {
       originalLayer.strokeWeight(i);
       originalLayer.stroke(col, 5);
