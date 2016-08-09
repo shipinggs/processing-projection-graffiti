@@ -69,9 +69,9 @@ private class BrushFactory {
   
   void dripBrush(int brushRadius, color col)
   {
-    stroke(col);
-    strokeWeight(brushRadius*2);
-    line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
+    originalLayer.stroke(col);
+    originalLayer.strokeWeight(brushRadius*2);
+    originalLayer.line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
     
     //Draw the drips
     float chance = random(1,8)*random(1,8)*random(1,8);
