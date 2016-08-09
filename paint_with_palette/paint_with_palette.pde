@@ -11,7 +11,7 @@ final int H = 1200;
 
 private final int TOOL_PANEL_WIDTH = 80;
 
-private color currentColor;
+private static color currentColor;
 private String currentBrushType;
 private int currentBrushRadius;
 private ToolPanel toolPanel;

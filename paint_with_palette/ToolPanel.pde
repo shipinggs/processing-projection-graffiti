@@ -17,8 +17,8 @@ private class ToolPanel {
   
   private void init()
   {
-    brushPalette = new BrushPalette(posX, posY, panelWidth, panelHeight/2, cp5);
-    colorPalette = new ColorPalette(posX, panelHeight/2, panelWidth, panelHeight/2);
+    brushPalette = new BrushPalette(posX, posY, panelWidth, panelHeight/5*3, cp5);
+    colorPalette = new ColorPalette(posX, panelHeight/5*3, panelWidth, panelHeight/5*2);
     fill(panelColor);
     rect(posX, posY, panelWidth, panelHeight);
   }
