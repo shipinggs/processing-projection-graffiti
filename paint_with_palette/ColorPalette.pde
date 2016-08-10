@@ -76,7 +76,6 @@ private class ColorPalette {
       
       if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight) {
         currentColor = get( mouseX, mouseY );
-        println(getColor());
       }
     }
   }
@@ -100,9 +99,7 @@ private class ColorPalette {
 class SingleColorBlock {
   private color blockColor;
   private float posX, posY, blockWidth, blockHeight;
-  
-  private boolean blockIsPressed = false;
-  
+    
   public SingleColorBlock(float posX, float posY, float blockWidth, float blockHeight, color blockColor)
   {
     this.posX = posX;
@@ -131,6 +128,13 @@ class SingleColorBlock {
       fill(255);
       noStroke();
       ellipse(posX+(blockWidth/5*3),posY+(blockHeight/4),blockWidth/5*2,blockWidth/5*2);
+    }
+    
+    else if (paint_with_palette.savedColors.contains(blockColor))
+    {
+      fill(255);
+      noStroke();
+      rect(posX+(blockWidth/5*3),posY+(blockHeight/5),blockWidth/5,blockWidth/5*3);
     }
   }
 }

@@ -1,7 +1,6 @@
 import spout.*;
 import controlP5.*;
 
-
 // Setting up constant colour values
 final int YELLOW = color(255,255,0);
 final int RED = color(255,0,0);
@@ -21,6 +20,9 @@ private ControlP5 cp5;
 
 // to store drips created
 private static ArrayList<Drip> drips = new ArrayList<Drip>();
+
+// to store last 5 colours used
+private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
 void setup()
 {
@@ -99,13 +101,14 @@ void draw()
 
 void mouseClicked()
 {
-  if ((mouseX < width) && (mouseX < TOOL_PANEL_WIDTH))
+  if (mouseX < TOOL_PANEL_WIDTH)
   {
    toolPanel.mouseClicked();
   }
   else
   {
     toolPanel.minimizeAll();
+    addUsedColorToMemory();
   }
 }
 
@@ -114,6 +117,15 @@ void mousePressed()
   if (mouseX > TOOL_PANEL_WIDTH)
   {
     toolPanel.minimizeAll();
+    addUsedColorToMemory();
+  }
+}
+
+private void addUsedColorToMemory()
+{
+  if (!savedColors.contains(currentColor))
+  {
+    savedColors.add(currentColor);
   }
 }
 

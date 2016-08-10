@@ -71,7 +71,6 @@ private class BrushFactory {
     stroke(col);
     strokeWeight(brushRadius*2);
     line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
-    
     //Draw the drips
     float chance = random(1,8)*random(1,8)*random(1,8);
     if (chance < 15)
