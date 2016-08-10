@@ -76,7 +76,7 @@ void draw()
   smooth();
   originalLayer.beginDraw();  //draw on that particular layer only
   // Now if the mouse is pressed, paint
-  if (mousePressed && mouseX>TOOL_PANEL_WIDTH) {
+  if (mousePressed && mouseX>TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized()) {
     originalLayer.noStroke();
     originalLayer.noFill();
     originalLayer.stroke(currentColor);
