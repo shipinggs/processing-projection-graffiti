@@ -1,7 +1,6 @@
 import spout.*;
 import controlP5.*;
 import java.util.*;
-import java.sql.Timestamp;
 
 private final int TOOL_PANEL_WIDTH = 80;
 
@@ -40,7 +39,7 @@ void draw()
   stroke(5);
   smooth();
   // Now if the mouse is pressed, paint
-  if (mousePressed && mouseX>TOOL_PANEL_WIDTH) {
+  if (mousePressed && mouseX>TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized()) {
     noStroke();
     noFill();
     stroke(currentColor);
