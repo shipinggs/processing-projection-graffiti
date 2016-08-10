@@ -1,4 +1,3 @@
-
 import netP5.*;
 import oscP5.*;
 
@@ -142,8 +141,7 @@ void draw()
   }
    
   toolPanel.render();
-  
-  //for testing of layers
+    //for testing of layers
   //spoutInLayer.beginDraw();
   //spoutInLayer.fill(#220000);
   //spoutInLayer.rect(random(W),random(H),20,20);
@@ -154,24 +152,31 @@ void draw()
   image(originalLayer,0,0); //original line on top
   
   spoutOut.sendTexture(originalLayer); //send the paint out via spout
-
-  if (keyPressed)
-  {
-    if (key == ' ')
-    {
-      originalLayer.beginDraw();
-      originalLayer.clear();
-      //spoutInLayer.clear();
-      originalLayer.endDraw();
-      
-      savedColors.clear();
-      drips.clear();
-      toolPanel.minimizeAll();
-    }
-  }
   
 } //end of draw
 
+
+void keyPressed()
+{
+  if (key == ' ')
+  {
+    originalLayer.beginDraw();
+    originalLayer.clear();
+    //spoutInLayer.clear();
+    originalLayer.endDraw();
+    
+    savedColors.clear();
+    drips.clear();
+    toolPanel.minimizeAll();
+  }
+  
+  if (key == 's')
+  {
+    Calendar cal = Calendar.getInstance();
+    long timestamp = cal.getTimeInMillis();
+    save(timestamp+".jpg");
+  }
+}
 
 void mouseClicked()
 {
@@ -187,7 +192,6 @@ void mousePressed()
   if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
   {
     toolPanel.maximizePanel();
-    println("pressed"); 
   }
   else if (mouseX > TOOL_PANEL_WIDTH)
   {

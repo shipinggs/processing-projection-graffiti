@@ -38,7 +38,7 @@ private class ToolPanel {
       // create marker for palette position
       fill(133);
       noStroke();
-      rect(posX+(panelWidth/2)-25, posY+(panelHeight/2), 50, 3);
+      rect(posX+(panelWidth/2)-panelWidth*0.3, posY+(panelHeight/2), panelWidth*0.6, 3);
     }
   }
   
