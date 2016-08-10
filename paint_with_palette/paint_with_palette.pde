@@ -1,14 +1,7 @@
 import spout.*;
 import controlP5.*;
 import java.util.*;
-
-// Setting up constant colour values
-final int YELLOW = color(255,255,0);
-final int RED = color(255,0,0);
-final int GREEN = color(0,255,0);
-final int BLUE = color(0,0,255);
-final int GRAY = color(102);
-final int LIGHT_GRAY = color(200);
+import java.sql.Timestamp;
 
 private final int TOOL_PANEL_WIDTH = 80;
 
@@ -90,17 +83,23 @@ void draw()
    
   toolPanel.render();
   
-  if (keyPressed)
+}
+
+void keyPressed()
+{
+  if (key == ' ')
   {
-    if (key == ' ')
-    {
-      savedColors.clear();
-      drips.clear();
-      toolPanel.minimizeAll();
-      clear();
-    }
+    savedColors.clear();
+    drips.clear();
+    toolPanel.minimizeAll();
+    clear();
   }
-  
+  if (key == 's')
+  {
+    Calendar cal = Calendar.getInstance();
+    long timestamp = cal.getTimeInMillis();
+    save(timestamp+".jpg");
+  }
 }
 
 void mouseClicked()
@@ -117,7 +116,6 @@ void mousePressed()
   if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
   {
     toolPanel.maximizePanel();
-    println("pressed"); 
   }
   else if (mouseX > TOOL_PANEL_WIDTH)
   {
