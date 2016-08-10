@@ -17,6 +17,11 @@ private static ArrayList<Drip> drips = new ArrayList<Drip>();
 // to store last 5 colours used
 private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
+// to store last 5 undo snapshots
+private int NUM_UNDO_ALLOWED = 5;
+private PImage[] images = new PImage[NUM_UNDO_ALLOWED];
+private int currentImagesIndex;
+
 void setup()
 {
   //fullScreen();
@@ -28,7 +33,7 @@ void setup()
   cp5 = new ControlP5(this);
   toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
-  Polygon poly = new Polygon(brushFactory.createBoltShape());
+  currentImagesIndex = 0;
 }
 
 void draw()
@@ -99,6 +104,15 @@ void keyPressed()
     long timestamp = cal.getTimeInMillis();
     save(timestamp+".jpg");
   }
+  if (key == '1')
+  {
+    image(images[currentImagesIndex-2], 0, 0);
+  }
+}
+
+void mouseReleased()
+{
+  images[currentImagesIndex++] = get();
 }
 
 void mouseClicked()

@@ -181,12 +181,17 @@ class Polygon {
   PShape s;
 
   void display()
-  {
+  {  
     shape(s);
   }
   
-  Polygon(PShape s_)
+  void translate()
   {
-    s = s_;
+    
+  }
+  
+  Polygon(PShape s)
+  {
+    this.s = s;
   }
 }
