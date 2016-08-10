@@ -3,6 +3,7 @@ private class ToolPanel {
   private ControlP5 cp5;
   private ColorPalette colorPalette;
   private BrushPalette brushPalette;
+  private float colorPaletteHeight, brushPaletteHeight;
     
   public ToolPanel(int posX, int posY, int panelWidth, int panelHeight, int panelColor, ControlP5 cp5)
   {
@@ -17,8 +18,10 @@ private class ToolPanel {
   
   private void init()
   {
-    brushPalette = new BrushPalette(posX, posY, panelWidth, panelHeight/5*3, cp5);
-    colorPalette = new ColorPalette(posX, panelHeight/5*3, panelWidth, panelHeight/5*2);
+    brushPaletteHeight = panelHeight/5*3;
+    colorPaletteHeight = height - brushPaletteHeight;
+    brushPalette = new BrushPalette(posX, posY, panelWidth, brushPaletteHeight, cp5);
+    colorPalette = new ColorPalette(posX, panelHeight/5*3, panelWidth, colorPaletteHeight);
     fill(panelColor);
     rect(posX, posY, panelWidth, panelHeight);
   }
@@ -28,22 +31,21 @@ private class ToolPanel {
     fill(panelColor);
     noStroke();
     rect(posX, posY, panelWidth, panelHeight);
-    
     brushPalette.render();
     colorPalette.render();
+    if (isPanelMinimized())
+    {
+      // create marker for palette position
+      fill(133);
+      noStroke();
+      rect(posX+(panelWidth/2)-25, posY+(panelHeight/2), 50, 3);
+    }
   }
   
-  public void mouseClicked()
+  public void maximizePanel()
   {
-    if (mouseY < panelHeight/2)
-    {
-      brushPalette.mouseClicked();
-      brushPalette.toggleMinimize();
-    }
-    else if (mouseY > panelHeight/2)
-    {
-      colorPalette.toggleMinimize();
-    }
+    brushPalette.toggleMinimize();
+    colorPalette.toggleMinimize();
   }
   
   public int getColor()
@@ -65,5 +67,14 @@ private class ToolPanel {
   {
     colorPalette.minimize();
     brushPalette.minimize();
+  }
+  
+  public boolean isPanelMinimized()
+  {
+    if (brushPalette.isPaletteMinimized() && colorPalette.isPaletteMinimized())
+    {
+      return true;
+    }
+    return false;
   }
 }

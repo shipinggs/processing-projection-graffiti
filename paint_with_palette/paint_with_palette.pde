@@ -1,5 +1,6 @@
 import spout.*;
 import controlP5.*;
+import java.util.*;
 
 // Setting up constant colour values
 final int YELLOW = color(255,255,0);
@@ -93,6 +94,9 @@ void draw()
   {
     if (key == ' ')
     {
+      savedColors.clear();
+      drips.clear();
+      toolPanel.minimizeAll();
       clear();
     }
   }
@@ -101,11 +105,7 @@ void draw()
 
 void mouseClicked()
 {
-  if (mouseX < TOOL_PANEL_WIDTH)
-  {
-   toolPanel.mouseClicked();
-  }
-  else
+  if (mouseX > TOOL_PANEL_WIDTH)
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
@@ -114,7 +114,12 @@ void mouseClicked()
 
 void mousePressed()
 {
-  if (mouseX > TOOL_PANEL_WIDTH)
+  if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
+  {
+    toolPanel.maximizePanel();
+    println("pressed"); 
+  }
+  else if (mouseX > TOOL_PANEL_WIDTH)
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
