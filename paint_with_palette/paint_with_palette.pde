@@ -28,6 +28,7 @@ void setup()
   cp5 = new ControlP5(this);
   toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
+  Polygon poly = new Polygon(brushFactory.createBoltShape());
 }
 
 void draw()
@@ -35,7 +36,6 @@ void draw()
   currentColor = color(toolPanel.getColor());
   currentBrushType = toolPanel.getBrushType();
   currentBrushRadius = toolPanel.getBrushRadius();
-  
   stroke(5);
   smooth();
   // Now if the mouse is pressed, paint
