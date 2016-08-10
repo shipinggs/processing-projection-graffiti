@@ -22,18 +22,24 @@ private class BrushFactory {
   void featheredBrush(int brushRadius, color col)
   {
     float thickness = brushRadius * 2;
-    for(int i = 0; i < thickness; i+=3)
+    int MAX_TIMES_DRAWN = 10;
+    int count = 0;
+    for(int i = (int) thickness; i > 0; i-=3)
     {
-      originalLayer.strokeWeight(i);
-      originalLayer.stroke(col, 5);
-
-      if (pmouseX == 0 || pmouseY == 0)
+      if (count < MAX_TIMES_DRAWN)
       {
-        originalLayer.line(mouseX, mouseY, mouseX, mouseY);
-      }
-      else
-      {
-        originalLayer.line(mouseX, mouseY, pmouseX, pmouseY);
+        originalLayer.strokeWeight(i);
+        originalLayer.stroke(col, 5);
+  
+        if (pmouseX == 0 || pmouseY == 0)
+        {
+          originalLayer.line(mouseX, mouseY, mouseX, mouseY);
+        }
+        else
+        {
+          originalLayer.line(mouseX, mouseY, pmouseX, pmouseY);
+        }
+        ++count;
       }
     }
   }
