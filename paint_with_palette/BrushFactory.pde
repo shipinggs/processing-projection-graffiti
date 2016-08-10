@@ -72,7 +72,7 @@ private class BrushFactory {
     originalLayer.stroke(col);
     originalLayer.strokeWeight(brushRadius*2);
     originalLayer.line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
-    
+
     //Draw the drips
     float chance = random(1,8)*random(1,8)*random(1,8);
     if (chance < 15)

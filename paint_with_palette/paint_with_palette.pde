@@ -4,6 +4,7 @@ import oscP5.*;
 
 import spout.*;
 import controlP5.*;
+import java.util.*;
 
 //window width and heights for easy changes
 final int W = 1920;
@@ -30,6 +31,9 @@ PGraphics spoutInLayer;
 
 // to store drips created
 private static ArrayList<Drip> drips = new ArrayList<Drip>();
+
+// to store last 5 colours used
+private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
 void setup()
 {
@@ -159,6 +163,10 @@ void draw()
       originalLayer.clear();
       //spoutInLayer.clear();
       originalLayer.endDraw();
+      
+      savedColors.clear();
+      drips.clear();
+      toolPanel.minimizeAll();
     }
   }
   
@@ -167,21 +175,32 @@ void draw()
 
 void mouseClicked()
 {
-  if ((mouseX < width) && (mouseX < TOOL_PANEL_WIDTH))
-  {
-   toolPanel.mouseClicked();
-  }
-  else
+  if (mouseX > TOOL_PANEL_WIDTH)
   {
     toolPanel.minimizeAll();
+    addUsedColorToMemory();
   }
 }
 
 void mousePressed()
 {
-  if (mouseX > TOOL_PANEL_WIDTH)
+  if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
+  {
+    toolPanel.maximizePanel();
+    println("pressed"); 
+  }
+  else if (mouseX > TOOL_PANEL_WIDTH)
   {
     toolPanel.minimizeAll();
+    addUsedColorToMemory();
+  }
+}
+
+private void addUsedColorToMemory()
+{
+  if (!savedColors.contains(currentColor))
+  {
+    savedColors.add(currentColor);
   }
   if (mouseButton == RIGHT) {  //right click to select spout source
     // Bring up a dialog to select a sender.
