@@ -76,6 +76,7 @@ private class BrushPalette {
       float brushTypePosX = posX + paletteWidth/2 - displayBrushDiam/2;
       float singleBrushButtonHeight = displayBrushDiam + displayBrushPaddingY;
       
+      paintLayer.tint(255);
       for (int i = 0; i < brushTypes.length; i++)
       {
         switch(brushTypes[i])

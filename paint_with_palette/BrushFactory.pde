@@ -16,7 +16,7 @@ private class BrushFactory {
     }
     else
     {
-      paintLayer.line(pmouseX, pmouseY, mouseX, mouseY);
+      paintLayer.line(mouseX, mouseY, pmouseX, pmouseY);
     }
   }
   
@@ -78,7 +78,7 @@ private class BrushFactory {
   {
     paintLayer.stroke(col);
     paintLayer.strokeWeight(brushRadius*2);
-    paintLayer.line(pmouseX, pmouseY, mouseX, mouseY); // connect the dots with a line
+    paintLayer.line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
 
     //Draw the drips
     float chance = random(1,8)*random(1,8)*random(1,8);
