@@ -1,4 +1,5 @@
 private class BrushFactory {
+  private PImage boltImg = loadImage("bolt.png");
   private PImage solidImg = loadImage("solid.png");
   private PImage dripImg = loadImage("drip.png");
   private PImage featheredImg = loadImage("feathered.png");
@@ -7,15 +8,15 @@ private class BrushFactory {
   
   void solidBrush(int brushRadius, color col)
   {
-    originalLayer.strokeWeight(brushRadius*2);
-    originalLayer.stroke(col);
+    paintLayer.strokeWeight(brushRadius*2);
+    paintLayer.stroke(col);
     if (pmouseX == 0 || pmouseY == 0)
     {
-      originalLayer.line(mouseX, mouseY, mouseX, mouseY);  //must draw on the originalLayer layer only
+      paintLayer.line(mouseX, mouseY, mouseX, mouseY);  //must draw on the paintLayer layer only
     }
     else
     {
-      originalLayer.line(mouseX, mouseY, pmouseX, pmouseY);
+      paintLayer.line(mouseX, mouseY, pmouseX, pmouseY);
     }
   }
   
@@ -28,16 +29,16 @@ private class BrushFactory {
     {
       if (count < MAX_TIMES_DRAWN)
       {
-        originalLayer.strokeWeight(i);
-        originalLayer.stroke(col, 5);
+        paintLayer.strokeWeight(i);
+        paintLayer.stroke(col, 5);
   
         if (pmouseX == 0 || pmouseY == 0)
         {
-          originalLayer.line(mouseX, mouseY, mouseX, mouseY);
+          paintLayer.line(mouseX, mouseY, mouseX, mouseY);
         }
         else
         {
-          originalLayer.line(mouseX, mouseY, pmouseX, pmouseY);
+          paintLayer.line(mouseX, mouseY, pmouseX, pmouseY);
         }
         ++count;
       }
@@ -55,7 +56,7 @@ private class BrushFactory {
     float x;      // result
     float y;
     
-    originalLayer.stroke(col);
+    paintLayer.stroke(col);
     
     for (int i=0; i < maxIterations; i++)
     {
@@ -68,16 +69,16 @@ private class BrushFactory {
       x=(radx*cos(radians(angle)))+mouseX;
       y=(radx*sin(radians(angle)))+mouseY;
       //
-      originalLayer.stroke(col);
-      originalLayer.point(x, y);
+      paintLayer.stroke(col);
+      paintLayer.point(x, y);
     }
   }
   
   void dripBrush(int brushRadius, color col)
   {
-    originalLayer.stroke(col);
-    originalLayer.strokeWeight(brushRadius*2);
-    originalLayer.line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
+    paintLayer.stroke(col);
+    paintLayer.strokeWeight(brushRadius*2);
+    paintLayer.line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
 
     //Draw the drips
     float chance = random(1,8)*random(1,8)*random(1,8);
@@ -90,29 +91,34 @@ private class BrushFactory {
   void rollerEraser(int width, color col)
   {
     smooth();
-    originalLayer.fill(col);
-    originalLayer.noStroke();
-    originalLayer.rect(mouseX-width/2, mouseY-10, width, 20);
+    paintLayer.fill(col);
+    paintLayer.noStroke();
+    paintLayer.rect(mouseX-width/2, mouseY-10, width, 20);
   }
     
   void drawSolidBrushPrint(float brushDiam, float posX, float posY)
   {
-    image(solidImg, posX, posY, brushDiam, brushDiam);
+    paintLayer.image(solidImg, posX, posY, brushDiam, brushDiam);
   }
   
   void drawDripBrushPrint(float brushDiam, float posX, float posY)
   {
-    image(dripImg, posX, posY, brushDiam, brushDiam);
+    paintLayer.image(dripImg, posX, posY, brushDiam, brushDiam);
   }
   
   void drawFeatheredBrushPrint(float brushDiam, float posX, float posY)
   {
-    image(featheredImg, posX, posY, brushDiam, brushDiam);
+    paintLayer.image(featheredImg, posX, posY, brushDiam, brushDiam);
   }
   
   void drawGrittyBrushPrint(float brushDiam, float posX, float posY)
   {
-    image(grittyImg, posX, posY, brushDiam, brushDiam);
+    paintLayer.image(grittyImg, posX, posY, brushDiam, brushDiam);
+  }
+  
+  void drawBoltBrushPrint(float brushDiam, float posX, float posY)
+  {
+    paintLayer.image(boltImg, posX, posY, brushDiam, brushDiam);
   }
   
   public PShape createBoltShape(int[] coordA, int[] coordB)
@@ -160,15 +166,14 @@ class Drip {
   
   public void render()
   {
-    seed += 0.07;
-    float n = noise(seed);
-    
     if (posY < initialPosY + dripRun)
     {
-      noStroke();
-      strokeWeight(0);
-      fill(col, transparency);
-      ellipse(posX, posY, dripWidth*n, dripWidth*n);
+      seed += 0.07;
+      float n = noise(seed);
+      paintLayer.noStroke();
+      paintLayer.strokeWeight(0);
+      paintLayer.fill(col, transparency);
+      paintLayer.ellipse(posX, posY, dripWidth*n, dripWidth*n);
       ++posY;
     }
     if ((initialPosY + dripRun - posY) < 0.5*dripRun)

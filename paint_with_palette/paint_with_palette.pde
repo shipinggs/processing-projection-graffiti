@@ -25,7 +25,7 @@ Spout spoutIn;
 //OscP5 oscP5;
 //NetAddress myRemoteLocation;
 // PGraphics objects for layers
-PGraphics originalLayer;
+PGraphics paintLayer;
 PGraphics spoutInLayer;
 
 // to store drips created
@@ -57,8 +57,7 @@ void setup()
   cursor(CROSS);
   currentColor = color(255);
   cp5 = new ControlP5(this);
-  TOOL_PANEL_WIDTH = width * 0.06;
-  println(width, height);
+  TOOL_PANEL_WIDTH = width * 0.07;
   toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
   
@@ -72,7 +71,7 @@ void setup()
   //myRemoteLocation = new NetAddress("localhost",12001);
   
   //the two layers
-  originalLayer = createGraphics(W,H,P2D);
+  paintLayer = createGraphics(W,H,P2D);
   //spoutInLayer = createGraphics(W,H,PConstants.P2D);
   
   polygons = new ArrayList<Polygon>();
@@ -87,17 +86,15 @@ void draw()
   currentColor = color(toolPanel.getColor());
   currentBrushType = toolPanel.getBrushType();
   currentBrushRadius = toolPanel.getBrushRadius();
-  stroke(1);
-  smooth();
-  originalLayer.beginDraw();  //draw on that particular layer only
+  paintLayer.beginDraw();  //draw on that particular layer only
   // Now if the mouse is pressed, paint
   if (mousePressed && mouseX>TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized()) {
-    originalLayer.noStroke();
-    originalLayer.noFill();
-    originalLayer.stroke(currentColor);
-    originalLayer.strokeWeight(1);
+    paintLayer.noStroke();
+    paintLayer.noFill();
+    paintLayer.stroke(currentColor);
+    paintLayer.strokeWeight(1);
     if (pmouseX == 0 || pmouseY == 0) {
-      originalLayer.line(mouseX, mouseY, mouseX, mouseY);
+      paintLayer.line(mouseX, mouseY, mouseX, mouseY);
     } else {
       switch (currentBrushType)
       {
@@ -144,7 +141,6 @@ void draw()
     
     //end of OSC implementation
   }
-  originalLayer.endDraw();  //end of things to draw on the particular layer
 
   // animate drips dropping if there are any
   for (Drip drip: drips)
@@ -156,8 +152,10 @@ void draw()
   {
     poly.display();
   }
-   
+  
   toolPanel.render();
+  paintLayer.endDraw();  //end of things to draw on the particular layer
+  
     //for testing of layers
   //spoutInLayer.beginDraw();
   //spoutInLayer.fill(#220000);
@@ -166,9 +164,10 @@ void draw()
   
   //layer arrangement 
   //image(spoutInLayer,0,0); //spout input at the bottom
-  image(originalLayer,0,0); //original line on top
+  image(paintLayer,0,0); //original line on top
   
-  //spoutOut.sendTexture(originalLayer); //send the paint out via spout
+  //spoutOut.sendTexture(paintLayer); //send the paint out via spout
+  
   
 } //end of draw
 
@@ -177,10 +176,10 @@ void keyPressed()
 {
   if (key == ' ')
   {
-    originalLayer.beginDraw();
-    originalLayer.clear();
+    paintLayer.beginDraw();
+    paintLayer.clear();
     //spoutInLayer.clear();
-    originalLayer.endDraw();
+    paintLayer.endDraw();
     
     savedColors.clear();
     drips.clear();

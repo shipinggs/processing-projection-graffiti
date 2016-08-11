@@ -56,9 +56,9 @@ private class ColorPalette {
   public void render()
   { 
     // erase everything in the palette
-    fill(0);
-    noStroke();
-    rect(posX, posY, paletteWidth, paletteHeight);
+    paintLayer.fill(0);
+    paintLayer.noStroke();
+    paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
 
     if (!paletteIsMinimized)
     {
@@ -67,8 +67,9 @@ private class ColorPalette {
         singleBlock.render();
       }
 
-      if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight) {
-        currentColor = get( mouseX, mouseY );
+      if (mousePressed && mouseX >= posX && mouseX < posX + paletteWidth && mouseY >= posY && mouseY < posY + paletteHeight)
+      {
+        currentColor = paintLayer.get().get( mouseX, mouseY );
       }
     }
   }
@@ -105,33 +106,25 @@ class SingleColorBlock {
     this.blockWidth = blockWidth;
     this.blockHeight = blockHeight;
     this.blockColor = blockColor;
-    init();
-  }
-
-  private void init()
-  {
-    fill(blockColor);
-    noStroke();
-    rect(posX, posY, blockWidth, blockHeight);
   }
 
   public void render()
   {
-    fill(blockColor);
-    noStroke();
-    rect(posX, posY, blockWidth, blockHeight);
+    paintLayer.fill(blockColor);
+    paintLayer.noStroke();
+    paintLayer.rect(posX, posY, blockWidth, blockHeight);
 
     if (blockColor == paint_with_palette.currentColor)
     {
-      fill(255);
-      noStroke();
-      ellipse(posX+(blockWidth/5*3), posY+(blockHeight/4), blockWidth/5*2, blockWidth/5*2);
+      paintLayer.fill(255);
+      paintLayer.noStroke();
+      paintLayer.ellipse(posX+(blockWidth/5*3), posY+(blockHeight/4), blockWidth/5*2, blockWidth/5*2);
     } 
     else if (paint_with_palette.savedColors.contains(blockColor))
     {
-      fill(255);
-      noStroke();
-      rect(posX+(blockWidth/5*3), posY+(blockHeight/6), blockWidth/6, blockWidth/5*3);
+      paintLayer.fill(255);
+      paintLayer.noStroke();
+      paintLayer.rect(posX+(blockWidth/5*3), posY+(blockHeight/6), blockWidth/6, blockWidth/5*3);
     }
   }
 }

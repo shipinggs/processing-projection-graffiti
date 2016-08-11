@@ -17,7 +17,7 @@ private class BrushPalette {
   float displayBrushPaletteHeight, sliderHeight;
   
   private BrushFactory brushFactory;
-  private String[] brushTypes = { "eraser", "drip", "solid", "feathered", "gritty", "bolt" };
+  private String[] brushTypes = { "bolt", "eraser", "drip", "solid", "feathered", "gritty" };
   private List<String> brushTypesList = Arrays.asList(brushTypes);
   
   // brush radius slider
@@ -59,18 +59,18 @@ private class BrushPalette {
   {
     currentBrushRadius = (int) slider.getValue();
     // clear palette
-    fill(0);
-    noStroke();
-    rect(posX, posY, paletteWidth, paletteHeight);
+    paintLayer.fill(0);
+    paintLayer.noStroke();
+    paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
     if (paletteIsMinimized)
     {
       slider.hide();
     }
     else if (!paletteIsMinimized)
     {
-      fill(0);
-      noStroke();
-      rect(posX, posY, paletteWidth, paletteHeight);
+      paintLayer.fill(0);
+      paintLayer.noStroke();
+      paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
 
       // draw the different display brushes
       float brushTypeStartPosY = posY + displayBrushPaddingY/2;
@@ -94,16 +94,20 @@ private class BrushPalette {
             brushFactory.drawGrittyBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
             break;
           case "eraser":
-            fill(255);
-            noStroke();
-            rect(brushTypePosX, brushTypeStartPosY, displayBrushDiam, displayBrushDiam);
+            paintLayer.fill(255);
+            paintLayer.noStroke();
+            paintLayer.rect(brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight), displayBrushDiam, displayBrushDiam);
+            break;
+          case "bolt":
+            brushFactory.drawBoltBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
+            break;
         }        
       }
       
       // draw marker to show current brush selected
       int currentBrushIndex = brushTypesList.indexOf(currentBrushType);
-      fill(255);
-      triangle(posX, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*2,
+      paintLayer.fill(255);
+      paintLayer.triangle(posX, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*2,
               posX, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*3,
               posX + paletteWidth*0.1, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/2);
       

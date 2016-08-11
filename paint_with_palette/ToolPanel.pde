@@ -29,17 +29,17 @@ private class ToolPanel {
   
   public void render()
   {
-    fill(panelColor);
-    noStroke();
-    rect(posX, posY, panelWidth, panelHeight);
+    paintLayer.fill(panelColor);
+    paintLayer.noStroke();
+    paintLayer.rect(posX, posY, panelWidth, panelHeight);
     brushPalette.render();
     colorPalette.render();
     if (isPanelMinimized())
     {
       // create marker for palette position
-      fill(133);
-      noStroke();
-      rect(posX+(panelWidth/2)-panelWidth*0.3, posY+(panelHeight/2), panelWidth*0.6, 3);
+      paintLayer.fill(133);
+      paintLayer.noStroke();
+      paintLayer.rect(posX+(panelWidth/2)-panelWidth*0.3, posY+(panelHeight/2), panelWidth*0.6, 3);
     }
   }
   
