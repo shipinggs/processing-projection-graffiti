@@ -38,7 +38,7 @@ private static ArrayList<Drip> drips = new ArrayList<Drip>();
 // to store last 5 colours used
 private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
-// to store last 5 undo snapshots
+// to store snapshots and implement undo redo logic
 private int NUM_UNDO_ALLOWED = 10;
 private PImage imageCarouselItems = new PImage(W,H,1);
 private PImage[] imageCarousel = new PImage[NUM_UNDO_ALLOWED+1];
