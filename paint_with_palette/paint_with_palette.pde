@@ -1,13 +1,13 @@
-import netP5.*;
-import oscP5.*;
+//import netP5.*;
+//import oscP5.*;
 
 import spout.*;
 import controlP5.*;
 import java.util.*;
 
 //window width and heights for easy changes
-final int W = 1920;
-final int H = 1200;
+final int W = 1280;
+final int H = 800;
 
 private final int TOOL_PANEL_WIDTH = 80;
 
@@ -22,8 +22,8 @@ private ControlP5 cp5;
 Spout spoutOut;
 Spout spoutIn;
 // OSC objects
-OscP5 oscP5;
-NetAddress myRemoteLocation;
+//OscP5 oscP5;
+//NetAddress myRemoteLocation;
 // PGraphics objects for layers
 PGraphics originalLayer;
 PGraphics spoutInLayer;
@@ -48,7 +48,7 @@ private ArrayList<Polygon> polygons;
 void setup()
 {
   //fullScreen();
-  size(1920, 1200, P3D); //change accordingly to W and H above
+  size(1280, 800, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
   //surface.setResizable(true);
   
@@ -61,17 +61,17 @@ void setup()
   brushFactory = new BrushFactory();
   
   //// spout objects
-  spoutOut = new Spout(this);
-  spoutIn = new Spout(this);
+  //spoutOut = new Spout(this);
+  //spoutIn = new Spout(this);
   //spoutIn.createReceiver("Screen 2 - Resolume Arena");
   
   // OSC object
-  oscP5 = new OscP5(this,7000);
-  myRemoteLocation = new NetAddress("localhost",12001);
+  //oscP5 = new OscP5(this,7000);
+  //myRemoteLocation = new NetAddress("localhost",12001);
   
   //the two layers
   originalLayer = createGraphics(W,H,P2D);
-  spoutInLayer = createGraphics(W,H,PConstants.P2D);
+  //spoutInLayer = createGraphics(W,H,PConstants.P2D);
   polygons = new ArrayList<Polygon>();
   currentImagesIndex = 0;
 }
@@ -79,7 +79,7 @@ void setup()
 void draw()
 {
   background(0); //necessary for spout to work properly, else spout frames will accumulate on screen
-  spoutInLayer = spoutIn.receiveTexture(spoutInLayer); //puts the spout input onto the layer
+  //spoutInLayer = spoutIn.receiveTexture(spoutInLayer); //puts the spout input onto the layer
   
   currentColor = color(toolPanel.getColor());
   currentBrushType = toolPanel.getBrushType();
@@ -118,26 +118,26 @@ void draw()
     }
     //OSC implementation here
     //println(mouseX);
-    OscMessage myMessageX = new OscMessage("/ClickX");
-    myMessageX.add(mouseX); 
-    OscMessage myMessageY = new OscMessage("/ClickY");
-    myMessageY.add(mouseY); 
+    //OscMessage myMessageX = new OscMessage("/ClickX");
+    //myMessageX.add(mouseX); 
+    //OscMessage myMessageY = new OscMessage("/ClickY");
+    //myMessageY.add(mouseY); 
     
-    float redValue = red(currentColor);
-    float greenValue = green(currentColor);
-    float blueValue = blue(currentColor);
-    OscMessage myMessageRed = new OscMessage("/Red");
-    myMessageRed.add(redValue); 
-    OscMessage myMessageGreen = new OscMessage("/Green");
-    myMessageRed.add(greenValue); 
-    OscMessage myMessageBlue = new OscMessage("/Blue");
-    myMessageRed.add(blueValue); 
-    oscP5.send(myMessageX, myRemoteLocation); 
-    oscP5.send(myMessageY, myRemoteLocation); 
-    oscP5.send(myMessageRed, myRemoteLocation); 
-    oscP5.send(myMessageGreen, myRemoteLocation); 
-    oscP5.send(myMessageBlue, myRemoteLocation); 
-    println("red: " + redValue + " green: " + greenValue + " blue: " + blueValue);
+    //float redValue = red(currentColor);
+    //float greenValue = green(currentColor);
+    //float blueValue = blue(currentColor);
+    //OscMessage myMessageRed = new OscMessage("/Red");
+    //myMessageRed.add(redValue); 
+    //OscMessage myMessageGreen = new OscMessage("/Green");
+    //myMessageRed.add(greenValue); 
+    //OscMessage myMessageBlue = new OscMessage("/Blue");
+    //myMessageRed.add(blueValue); 
+    //oscP5.send(myMessageX, myRemoteLocation); 
+    //oscP5.send(myMessageY, myRemoteLocation); 
+    //oscP5.send(myMessageRed, myRemoteLocation); 
+    //oscP5.send(myMessageGreen, myRemoteLocation); 
+    //oscP5.send(myMessageBlue, myRemoteLocation); 
+    //println("red: " + redValue + " green: " + greenValue + " blue: " + blueValue);
     
     //end of OSC implementation
   }
@@ -162,10 +162,10 @@ void draw()
   //spoutInLayer.endDraw();
   
   //layer arrangement 
-  image(spoutInLayer,0,0); //spout input at the bottom
+  //image(spoutInLayer,0,0); //spout input at the bottom
   image(originalLayer,0,0); //original line on top
   
-  spoutOut.sendTexture(originalLayer); //send the paint out via spout
+  //spoutOut.sendTexture(originalLayer); //send the paint out via spout
   
 } //end of draw
 
@@ -246,7 +246,7 @@ private void addUsedColorToMemory()
   if (mouseButton == RIGHT) {  //right click to select spout source
     // Bring up a dialog to select a sender.
     // Spout installation required
-    spoutOut.selectSender();
+    //spoutOut.selectSender();
   }
 }
 
