@@ -17,7 +17,7 @@ private class BrushPalette {
   float displayBrushPaletteHeight, sliderHeight;
   
   private BrushFactory brushFactory;
-  private String[] brushTypes = { "eraser", "drip", "solid", "feathered", "gritty" };
+  private String[] brushTypes = { "eraser", "drip", "solid", "feathered", "gritty", "bolt" };
   private List<String> brushTypesList = Arrays.asList(brushTypes);
   
   // brush radius slider

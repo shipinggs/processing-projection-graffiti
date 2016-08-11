@@ -22,6 +22,12 @@ private int NUM_UNDO_ALLOWED = 5;
 private PImage[] images = new PImage[NUM_UNDO_ALLOWED];
 private int currentImagesIndex;
 
+// to store bolt coordinates
+private int[][] boltCoordinates = new int[2][2];
+
+// to store all shapes created
+private ArrayList<Polygon> polygons;
+
 void setup()
 {
   //fullScreen();
@@ -33,6 +39,7 @@ void setup()
   cp5 = new ControlP5(this);
   toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
+  polygons = new ArrayList<Polygon>();
   currentImagesIndex = 0;
 }
 
@@ -71,9 +78,6 @@ void draw()
         case "eraser":
           brushFactory.rollerEraser(200, currentColor);
           break;
-        default:
-          brushFactory.solidBrush(currentBrushRadius, currentColor);
-          break;
       }
     }
   }
@@ -83,6 +87,11 @@ void draw()
   for (Drip drip: drips)
   {
     drip.render();
+  }
+  
+  for (Polygon poly: polygons)
+  {
+    poly.display();
   }
    
   toolPanel.render();
@@ -113,6 +122,14 @@ void keyPressed()
 void mouseReleased()
 {
   //images[currentImagesIndex++] = get();
+  
+  if (mouseX > TOOL_PANEL_WIDTH && currentBrushType == "bolt")
+  {
+    int[] temp = {mouseX,mouseY};
+    boltCoordinates[1] = temp;
+    println(Arrays.deepToString(boltCoordinates));
+    polygons.add(new Polygon(brushFactory.createBoltShape(boltCoordinates[0], boltCoordinates[1])));
+  }
 }
 
 void mouseClicked()
@@ -134,6 +151,12 @@ void mousePressed()
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
+    if (currentBrushType == "bolt")
+    {
+      int[] temp = {mouseX,mouseY};
+      boltCoordinates[0] = temp;
+      println(Arrays.deepToString(boltCoordinates));
+    }
   }
 }
 

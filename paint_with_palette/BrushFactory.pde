@@ -113,7 +113,7 @@ private class BrushFactory {
     image(grittyImg, posX, posY, brushDiam, brushDiam);
   }
   
-  public PShape createBoltShape()
+  public PShape createBoltShape(int[] coordA, int[] coordB)
   {
     PShape s = createShape();
     s.beginShape();
@@ -183,11 +183,6 @@ class Polygon {
   void display()
   {  
     shape(s);
-  }
-  
-  void translate()
-  {
-    
   }
   
   Polygon(PShape s)
