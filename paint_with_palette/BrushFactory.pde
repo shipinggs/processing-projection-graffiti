@@ -16,7 +16,7 @@ private class BrushFactory {
     }
     else
     {
-      paintLayer.line(mouseX, mouseY, pmouseX, pmouseY);
+      paintLayer.line(pmouseX, pmouseY, mouseX, mouseY);
     }
   }
   
@@ -78,7 +78,7 @@ private class BrushFactory {
   {
     paintLayer.stroke(col);
     paintLayer.strokeWeight(brushRadius*2);
-    paintLayer.line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
+    paintLayer.line(pmouseX, pmouseY, mouseX, mouseY); // connect the dots with a line
 
     //Draw the drips
     float chance = random(1,8)*random(1,8)*random(1,8);
@@ -86,6 +86,23 @@ private class BrushFactory {
     {
       paint_with_palette.addDrip(new Drip(mouseX, mouseY, brushRadius, col));
     }
+  }
+  
+  void drawBoltShape(color col, int[] coordA, int[] coordB)
+  {
+    int deltaX = coordB[0] - coordA[0];
+    int deltaY = coordB[1] - coordA[1];
+    float shapeHeight = (float) Math.sqrt((deltaX*deltaX + deltaY*deltaY));
+    float shapeScale = shapeHeight / boltImg.height;
+    float angleInDegrees = (float) Math.atan((float)deltaX/deltaY);
+    println(angleInDegrees);
+    paintLayer.beginDraw();
+    paintLayer.tint(col);  // Tint blue
+    paintLayer.translate(mouseX-deltaX/2.0, mouseY-deltaY/2.0);
+    paintLayer.rotate(-angleInDegrees);
+    paintLayer.scale(shapeScale);
+    paintLayer.image(boltImg, -boltImg.width/2, -boltImg.height/2);
+    paintLayer.endDraw();
   }
   
   void rollerEraser(int width, color col)
@@ -120,23 +137,7 @@ private class BrushFactory {
   {
     paintLayer.image(boltImg, posX, posY, brushDiam, brushDiam);
   }
-  
-  public PShape createBoltShape(int[] coordA, int[] coordB)
-  {
-    PShape s = createShape();
-    s.beginShape();
-    s.fill(255);
-    s.noStroke();
-    s.vertex(22,10);
-    s.vertex(96,2);
-    s.vertex(57,88);
-    s.vertex(128,65);
-    s.vertex(47,248);
-    s.vertex(76,135);
-    s.vertex(2,173);
-    s.endShape(CLOSE);
-    return s;
-  }
+
 }
 
 class Drip {
@@ -181,19 +182,5 @@ class Drip {
       transparency -= 5;
     }
     
-  }
-}
-
-class Polygon {
-  PShape s;
-
-  void display()
-  {  
-    shape(s);
-  }
-  
-  Polygon(PShape s)
-  {
-    this.s = s;
   }
 }
