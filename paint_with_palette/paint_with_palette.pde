@@ -39,17 +39,17 @@ private static ArrayList<Drip> drips = new ArrayList<Drip>();
 private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
 // to store last 5 undo snapshots
-private int NUM_UNDO_ALLOWED = 5;
-private PImage[] images = new PImage[NUM_UNDO_ALLOWED];
-private int currentImagesIndex;
+private int NUM_UNDO_ALLOWED = 10;
+private PImage[] imageCarousel = new PImage[NUM_UNDO_ALLOWED+1];
+private int currentImagesIndex, undoSteps, redoSteps;
 
 // to store bolt coordinates
 private int[][] boltCoordinates = new int[2][2];
 
 void setup()
 {
-  fullScreen(P3D);
-  //size(1280, 800, P3D); //change accordingly to W and H above
+  //fullScreen(P3D);
+  size(1280, 800, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
   //surface.setResizable(true);
   
@@ -80,6 +80,13 @@ void setup()
   spoutInLayer = createGraphics(W,H,PConstants.P2D);
   spoutInTopLayer = createGraphics(W,H,PConstants.P2D);
   
+  // initialize undo/redo array of images
+  for (int i = 0; i < imageCarousel.length; i++)
+  {
+    imageCarousel[i] = paintLayer.get();
+  }
+  
+  paintLayer.beginDraw();
 }
 
 void draw()
@@ -124,7 +131,6 @@ void draw()
           brushFactory.rollerEraser(200, currentColor);
           break;
       }
-      //print(currentBrushType, currentBrushRadius, currentColor);
     }
     
     //OSC implementation here
@@ -176,9 +182,6 @@ void draw()
   image(paintLayer,0,0); //middle: original drawings
   if(spoutOn){
   image(spoutInTopLayer,0,0); //top: top spout layer
-  }
-  
-  if(spoutOn){
   spoutOut.sendTexture(paintLayer); //send the paint out via spout
   }
   
@@ -206,16 +209,47 @@ void keyPressed()
     long timestamp = cal.getTimeInMillis();
     save(timestamp+".jpg");
   }
+  
+  if (key == CODED)
+  {
+    if (keyCode == LEFT && undoSteps > 0)
+    {
+      --undoSteps;
+      ++redoSteps;
+      currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
+      paintLayer.beginDraw();
+      paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
+      paintLayer.endDraw();
+    }
+    else if (keyCode == RIGHT && redoSteps > 0)
+    {
+      ++undoSteps;
+      --redoSteps;
+      currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
+      paintLayer.beginDraw();
+      paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
+      paintLayer.endDraw();
+    }
+  }
 }
 
 void mouseReleased()
 {  
-  if (mouseX > TOOL_PANEL_WIDTH && currentBrushType == "bolt")
+  if (mouseX > TOOL_PANEL_WIDTH)
   {
-    int[] temp = {mouseX,mouseY};
-    boltCoordinates[1] = temp;
-    println(Arrays.deepToString(boltCoordinates));
-    brushFactory.drawBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
+    // save current screen after a stroke is drawn
+    undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
+    redoSteps = 0;
+    currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
+    imageCarousel[currentImagesIndex] = paintLayer.get();
+    
+    if (currentBrushType == "bolt")
+    {
+      int[] temp = {mouseX,mouseY};
+      boltCoordinates[1] = temp;
+      println(Arrays.deepToString(boltCoordinates));
+      brushFactory.drawBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
+    }
   }
 }
 
