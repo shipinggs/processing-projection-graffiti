@@ -104,15 +104,15 @@ void keyPressed()
     long timestamp = cal.getTimeInMillis();
     save(timestamp+".jpg");
   }
-  if (key == '1')
-  {
-    image(images[currentImagesIndex-2], 0, 0);
-  }
+  //if (key == '1')
+  //{
+  //  image(images[currentImagesIndex-2], 0, 0);
+  //}
 }
 
 void mouseReleased()
 {
-  images[currentImagesIndex++] = get();
+  //images[currentImagesIndex++] = get();
 }
 
 void mouseClicked()
