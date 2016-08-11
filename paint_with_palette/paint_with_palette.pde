@@ -48,8 +48,8 @@ private int[][] boltCoordinates = new int[2][2];
 
 void setup()
 {
-  //fullScreen(P3D);
-  size(1280, 800, P3D); //change accordingly to W and H above
+  fullScreen(P3D);
+  //size(1280, 800, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
   //surface.setResizable(true);
   
