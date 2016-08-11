@@ -9,7 +9,7 @@ import java.util.*;
 final int W = 1280;
 final int H = 800;
 
-private final int TOOL_PANEL_WIDTH = 80;
+private float TOOL_PANEL_WIDTH;
 
 private static color currentColor;
 private String currentBrushType;
@@ -47,7 +47,7 @@ private ArrayList<Polygon> polygons;
 
 void setup()
 {
-  //fullScreen();
+  //fullScreen(P3D);
   size(1280, 800, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
   //surface.setResizable(true);
@@ -57,6 +57,8 @@ void setup()
   cursor(CROSS);
   currentColor = color(255);
   cp5 = new ControlP5(this);
+  TOOL_PANEL_WIDTH = width * 0.06;
+  println(width, height);
   toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
   
@@ -72,6 +74,7 @@ void setup()
   //the two layers
   originalLayer = createGraphics(W,H,P2D);
   //spoutInLayer = createGraphics(W,H,PConstants.P2D);
+  
   polygons = new ArrayList<Polygon>();
   currentImagesIndex = 0;
 }
@@ -92,7 +95,7 @@ void draw()
     originalLayer.noStroke();
     originalLayer.noFill();
     originalLayer.stroke(currentColor);
-    originalLayer.strokeWeight(5);
+    originalLayer.strokeWeight(1);
     if (pmouseX == 0 || pmouseY == 0) {
       originalLayer.line(mouseX, mouseY, mouseX, mouseY);
     } else {

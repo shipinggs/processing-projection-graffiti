@@ -1,11 +1,12 @@
 private class ToolPanel {
-  private int posX, posY, panelWidth, panelHeight, panelColor;
+  private float posX, posY, panelWidth, panelHeight;
+  private int panelColor;
   private ControlP5 cp5;
   private ColorPalette colorPalette;
   private BrushPalette brushPalette;
   private float colorPaletteHeight, brushPaletteHeight;
     
-  public ToolPanel(int posX, int posY, int panelWidth, int panelHeight, int panelColor, ControlP5 cp5)
+  public ToolPanel(float posX, float posY, float panelWidth, float panelHeight, int panelColor, ControlP5 cp5)
   {
       this.posX = posX;
       this.posY = posY;
