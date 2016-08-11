@@ -114,6 +114,23 @@ private class BrushFactory {
   {
     image(grittyImg, posX, posY, brushDiam, brushDiam);
   }
+  
+  public PShape createBoltShape(int[] coordA, int[] coordB)
+  {
+    PShape s = createShape();
+    s.beginShape();
+    s.fill(255);
+    s.noStroke();
+    s.vertex(22,10);
+    s.vertex(96,2);
+    s.vertex(57,88);
+    s.vertex(128,65);
+    s.vertex(47,248);
+    s.vertex(76,135);
+    s.vertex(2,173);
+    s.endShape(CLOSE);
+    return s;
+  }
 }
 
 class Drip {
@@ -159,5 +176,19 @@ class Drip {
       transparency -= 5;
     }
     
+  }
+}
+
+class Polygon {
+  PShape s;
+
+  void display()
+  {  
+    shape(s);
+  }
+  
+  Polygon(PShape s)
+  {
+    this.s = s;
   }
 }

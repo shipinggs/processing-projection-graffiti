@@ -34,6 +34,17 @@ private static ArrayList<Drip> drips = new ArrayList<Drip>();
 // to store last 5 colours used
 private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
+// to store last 5 undo snapshots
+private int NUM_UNDO_ALLOWED = 5;
+private PImage[] images = new PImage[NUM_UNDO_ALLOWED];
+private int currentImagesIndex;
+
+// to store bolt coordinates
+private int[][] boltCoordinates = new int[2][2];
+
+// to store all shapes created
+private ArrayList<Polygon> polygons;
+
 void setup()
 {
   //fullScreen();
@@ -61,6 +72,8 @@ void setup()
   //the two layers
   originalLayer = createGraphics(W,H,P2D);
   spoutInLayer = createGraphics(W,H,PConstants.P2D);
+  polygons = new ArrayList<Polygon>();
+  currentImagesIndex = 0;
 }
 
 void draw()
@@ -71,7 +84,6 @@ void draw()
   currentColor = color(toolPanel.getColor());
   currentBrushType = toolPanel.getBrushType();
   currentBrushRadius = toolPanel.getBrushRadius();
-  
   stroke(1);
   smooth();
   originalLayer.beginDraw();  //draw on that particular layer only
@@ -100,9 +112,6 @@ void draw()
           break;
         case "eraser":
           brushFactory.rollerEraser(200, currentColor);
-          break;
-        default:
-          brushFactory.solidBrush(currentBrushRadius, currentColor);
           break;
       }
       //print(currentBrushType, currentBrushRadius, currentColor);
@@ -138,6 +147,11 @@ void draw()
   for (Drip drip: drips)
   {
     drip.render();
+  }
+  
+  for (Polygon poly: polygons)
+  {
+    poly.display();
   }
    
   toolPanel.render();
@@ -176,6 +190,23 @@ void keyPressed()
     long timestamp = cal.getTimeInMillis();
     save(timestamp+".jpg");
   }
+  //if (key == '1')
+  //{
+  //  image(images[currentImagesIndex-2], 0, 0);
+  //}
+}
+
+void mouseReleased()
+{
+  //images[currentImagesIndex++] = get();
+  
+  if (mouseX > TOOL_PANEL_WIDTH && currentBrushType == "bolt")
+  {
+    int[] temp = {mouseX,mouseY};
+    boltCoordinates[1] = temp;
+    println(Arrays.deepToString(boltCoordinates));
+    polygons.add(new Polygon(brushFactory.createBoltShape(boltCoordinates[0], boltCoordinates[1])));
+  }
 }
 
 void mouseClicked()
@@ -197,6 +228,12 @@ void mousePressed()
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
+    if (currentBrushType == "bolt")
+    {
+      int[] temp = {mouseX,mouseY};
+      boltCoordinates[0] = temp;
+      println(Arrays.deepToString(boltCoordinates));
+    }
   }
 }
 
