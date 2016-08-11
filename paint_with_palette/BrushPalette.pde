@@ -2,7 +2,6 @@ private class BrushPalette {
   // Coordinates of top-left corner of ColorPalette
   private float posX, posY, paletteWidth, paletteHeight;
   private ControlP5 cp5;
-  private final color GREY = color(127);
   
   // Brush attributes
   private String currentBrushType = "drip";

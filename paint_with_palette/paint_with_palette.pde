@@ -4,6 +4,7 @@
 import spout.*;
 import controlP5.*;
 import java.util.*;
+import java.lang.Math;
 
 //window width and heights for easy changes
 final int W = 1280;
@@ -42,9 +43,6 @@ private int currentImagesIndex;
 // to store bolt coordinates
 private int[][] boltCoordinates = new int[2][2];
 
-// to store all shapes created
-private ArrayList<Polygon> polygons;
-
 void setup()
 {
   //fullScreen(P3D);
@@ -74,8 +72,6 @@ void setup()
   paintLayer = createGraphics(W,H,P2D);
   //spoutInLayer = createGraphics(W,H,PConstants.P2D);
   
-  polygons = new ArrayList<Polygon>();
-  currentImagesIndex = 0;
 }
 
 void draw()
@@ -87,6 +83,7 @@ void draw()
   currentBrushType = toolPanel.getBrushType();
   currentBrushRadius = toolPanel.getBrushRadius();
   paintLayer.beginDraw();  //draw on that particular layer only
+  
   // Now if the mouse is pressed, paint
   if (mousePressed && mouseX>TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized()) {
     paintLayer.noStroke();
@@ -148,11 +145,6 @@ void draw()
     drip.render();
   }
   
-  for (Polygon poly: polygons)
-  {
-    poly.display();
-  }
-  
   toolPanel.render();
   paintLayer.endDraw();  //end of things to draw on the particular layer
   
@@ -192,22 +184,16 @@ void keyPressed()
     long timestamp = cal.getTimeInMillis();
     save(timestamp+".jpg");
   }
-  //if (key == '1')
-  //{
-  //  image(images[currentImagesIndex-2], 0, 0);
-  //}
 }
 
 void mouseReleased()
-{
-  //images[currentImagesIndex++] = get();
-  
+{  
   if (mouseX > TOOL_PANEL_WIDTH && currentBrushType == "bolt")
   {
     int[] temp = {mouseX,mouseY};
     boltCoordinates[1] = temp;
     println(Arrays.deepToString(boltCoordinates));
-    polygons.add(new Polygon(brushFactory.createBoltShape(boltCoordinates[0], boltCoordinates[1])));
+    brushFactory.drawBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
   }
 }
 
@@ -234,7 +220,6 @@ void mousePressed()
     {
       int[] temp = {mouseX,mouseY};
       boltCoordinates[0] = temp;
-      println(Arrays.deepToString(boltCoordinates));
     }
   }
 }
