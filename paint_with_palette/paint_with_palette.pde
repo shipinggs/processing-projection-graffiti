@@ -7,9 +7,9 @@ import java.util.*;
 import java.lang.Math;
 
 //window width and heights for easy changes
-final int W = 1920;
-final int H = 1200;
-final boolean spoutOn = true;
+final int W = 1280;
+final int H = 800;
+final boolean spoutOn = false;
 
 private float TOOL_PANEL_WIDTH;
 
@@ -40,7 +40,6 @@ private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
 // to store snapshots and implement undo redo logic
 private int NUM_UNDO_ALLOWED = 10;
-private PImage imageCarouselItems = new PImage(W,H,1);
 private PImage[] imageCarousel = new PImage[NUM_UNDO_ALLOWED+1];
 private int currentImagesIndex, undoSteps, redoSteps;
 
@@ -53,7 +52,7 @@ void setup()
   size(1280, 800, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
   //surface.setResizable(true);
-  
+
   background(0);
   frameRate(60);
   cursor(CROSS);
@@ -62,85 +61,91 @@ void setup()
   TOOL_PANEL_WIDTH = width * 0.07;
   toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
-  
+
   //// spout objects
-  if(spoutOn){
-  spoutOut = new Spout(this);
-  spoutIn = new Spout(this);
-  spoutTopIn = new Spout(this);
-  spoutIn.createReceiver("Resolume Bottom - Resolume Arena"); // name of bottom layer in resolume: brandon
-  spoutTopIn.createReceiver("Resolume Top - Resolume Arena"); // name of top layer in resolume: brandon
+  if (spoutOn)
+  {
+    spoutOut = new Spout(this);
+    spoutIn = new Spout(this);
+    spoutTopIn = new Spout(this);
+    spoutIn.createReceiver("Resolume Bottom - Resolume Arena"); // name of bottom layer in resolume: brandon
+    spoutTopIn.createReceiver("Resolume Top - Resolume Arena"); // name of top layer in resolume: brandon
   }
-  
+
   // OSC object
-  oscP5 = new OscP5(this,7000);
-  myRemoteLocation = new NetAddress("localhost",12001);
-  
+  oscP5 = new OscP5(this, 7000);
+  myRemoteLocation = new NetAddress("localhost", 12001);
+
   //the two layers
-  paintLayer = createGraphics(W,H,P2D);
-  spoutInLayer = createGraphics(W,H,PConstants.P2D);
-  spoutInTopLayer = createGraphics(W,H,PConstants.P2D);
-  
+  paintLayer = createGraphics(W, H, P2D);
+  spoutInLayer = createGraphics(W, H, PConstants.P2D);
+  spoutInTopLayer = createGraphics(W, H, PConstants.P2D);
+
   // initialize undo/redo array of images
   for (int i = 0; i < imageCarousel.length; i++)
   {
     imageCarousel[i] = paintLayer.get();
   }
-  
+
   paintLayer.beginDraw();
 }
 
 void draw()
 {
   //background(0); //necessary for spout to work properly, else spout frames will accumulate on screen
-  
-  if(spoutOn){
-  spoutInLayer = spoutIn.receiveTexture(spoutInLayer); //puts the spout input onto the layer
-  spoutInTopLayer = spoutTopIn.receiveTexture(spoutInTopLayer); //puts the spout input onto the layer
+
+  if (spoutOn)
+  {
+    spoutInLayer = spoutIn.receiveTexture(spoutInLayer); //puts the spout input onto the layer
+    spoutInTopLayer = spoutTopIn.receiveTexture(spoutInTopLayer); //puts the spout input onto the layer
   }
-    
+
   currentColor = color(toolPanel.getColor());
   currentBrushType = toolPanel.getBrushType();
   currentBrushRadius = toolPanel.getBrushRadius();
-  
+
   paintLayer.beginDraw();  //draw on that particular layer only
-  
+
   // Now if the mouse is pressed, paint
-  if (mousePressed && mouseX>TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized()) {
+  if (mousePressed && mouseX>TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized()) 
+  {
     paintLayer.noStroke();
     paintLayer.noFill();
     paintLayer.stroke(currentColor);
     paintLayer.strokeWeight(1);
-    if (pmouseX == 0 || pmouseY == 0) {
+    if (pmouseX == 0 || pmouseY == 0) 
+    {
       paintLayer.line(mouseX, mouseY, mouseX, mouseY);
-    } else {
+    } 
+    else 
+    {
       switch (currentBrushType)
       {
-        case "solid":
-          brushFactory.solidBrush(currentBrushRadius, currentColor);
-          break;
-        case "feathered":
-          brushFactory.featheredBrush(currentBrushRadius, currentColor);
-          break;
-        case "gritty":
-          brushFactory.grittyBrush(currentBrushRadius, currentColor);
-          break;
-        case "drip":
-          brushFactory.dripBrush(currentBrushRadius, currentColor);
-          break;
-        case "eraser":
-          brushFactory.rollerEraser(200, currentColor);
-          break;
+      case "solid":
+        brushFactory.solidBrush(currentBrushRadius, currentColor);
+        break;
+      case "feathered":
+        brushFactory.featheredBrush(currentBrushRadius, currentColor);
+        break;
+      case "gritty":
+        brushFactory.grittyBrush(currentBrushRadius, currentColor);
+        break;
+      case "drip":
+        brushFactory.dripBrush(currentBrushRadius, currentColor);
+        break;
+      case "eraser":
+        brushFactory.rollerEraser(200, currentColor);
+        break;
       }
     }
-    
+
     //OSC implementation here
     println(mouseX);
     OscMessage myMessageX = new OscMessage("/ClickX");
     myMessageX.add(mouseX); 
     OscMessage myMessageY = new OscMessage("/ClickY");
     myMessageY.add(mouseY); 
-    
+
     float redValue = red(currentColor);
     float greenValue = green(currentColor);
     float blueValue = blue(currentColor);
@@ -160,33 +165,33 @@ void draw()
   }
 
   // animate drips dropping if there are any
-  for (Drip drip: drips)
+  for (Drip drip : drips)
   {
     drip.render();
   }
-  
+
   toolPanel.render();
   paintLayer.endDraw();  //end of things to draw on the particular layer
-  
+
   //for testing of layers
   /*
   spoutInLayer.beginDraw();
-  spoutInLayer.fill(#220000);
-  spoutInLayer.rect(random(W),random(H),20,20);
-  spoutInLayer.endDraw();
-  */
-  
+   spoutInLayer.fill(#220000);
+   spoutInLayer.rect(random(W),random(H),20,20);
+   spoutInLayer.endDraw();
+   */
+
   //layer arrangement 
-  if(spoutOn){
-  image(spoutInLayer,0,0); //bottom: bottom spout layer
+  if (spoutOn)
+  {
+    image(spoutInLayer, 0, 0); //bottom: bottom spout layer
   }
-  image(paintLayer,0,0); //middle: original drawings
-  if(spoutOn){
-  image(spoutInTopLayer,0,0); //top: top spout layer
-  spoutOut.sendTexture(paintLayer); //send the paint out via spout
+  image(paintLayer, 0, 0); //middle: original drawings
+  if (spoutOn)
+  {
+    image(spoutInTopLayer, 0, 0); //top: top spout layer
+    spoutOut.sendTexture(paintLayer); //send the paint out via spout
   }
-  
-  
 } //end of draw
 
 
@@ -198,12 +203,12 @@ void keyPressed()
     paintLayer.clear();
     //spoutInLayer.clear();
     paintLayer.endDraw();
-    
+
     savedColors.clear();
     drips.clear();
     toolPanel.minimizeAll();
   }
-  
+
   if (key == 's')
   {
     Calendar cal = Calendar.getInstance();
@@ -221,8 +226,7 @@ void keyPressed()
       paintLayer.beginDraw();
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
       paintLayer.endDraw();
-    }
-    else if (keyCode == RIGHT && redoSteps > 0)
+    } else if (keyCode == RIGHT && redoSteps > 0)
     {
       ++undoSteps;
       --redoSteps;
@@ -242,11 +246,11 @@ void mouseReleased()
     undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
     redoSteps = 0;
     currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
-    imageCarousel[currentImagesIndex] = paintLayer.get();
-    
+    imageCarousel[currentImagesIndex] = get();
+
     if (currentBrushType == "bolt")
     {
-      int[] temp = {mouseX,mouseY};
+      int[] temp = {mouseX, mouseY};
       boltCoordinates[1] = temp;
       println(Arrays.deepToString(boltCoordinates));
       brushFactory.drawBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
@@ -268,14 +272,13 @@ void mousePressed()
   if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
   {
     toolPanel.maximizePanel();
-  }
-  else if (mouseX > TOOL_PANEL_WIDTH)
+  } else if (mouseX > TOOL_PANEL_WIDTH)
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
     if (currentBrushType == "bolt")
     {
-      int[] temp = {mouseX,mouseY};
+      int[] temp = {mouseX, mouseY};
       boltCoordinates[0] = temp;
     }
   }
@@ -287,10 +290,12 @@ private void addUsedColorToMemory()
   {
     savedColors.add(currentColor);
   }
-  if (mouseButton == RIGHT) {  //right click to select spout source
+  if (mouseButton == RIGHT) //right click to select spout source
+  {
     // Bring up a dialog to select a sender.
-    if(spoutOn){
-    spoutOut.selectSender();
+    if (spoutOn)
+    {
+      spoutOut.selectSender();
     }
   }
 }
