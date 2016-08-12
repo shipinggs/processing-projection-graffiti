@@ -40,7 +40,7 @@ private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
 // to store last 5 undo snapshots
 private int NUM_UNDO_ALLOWED = 10;
-private PImage imageCarouselItems = new PImage(W,H,1);
+//private PImage imageCarouselItems = new PImage(W,H,1);
 private PImage[] imageCarousel = new PImage[NUM_UNDO_ALLOWED+1];
 private int currentImagesIndex, undoSteps, redoSteps;
 
@@ -185,6 +185,9 @@ void draw()
   image(spoutInTopLayer,0,0); //top: top spout layer
   spoutOut.sendTexture(paintLayer); //send the paint out via spout
   }
+  //spoutInLayer.background(0);
+  //paintLayer.background(0);
+  //spoutInTopLayer.background(0);
   
   
 } //end of draw
@@ -219,6 +222,7 @@ void keyPressed()
       ++redoSteps;
       currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
       paintLayer.beginDraw();
+      paintLayer.clear(); //the awesome change
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
       paintLayer.endDraw();
     }
@@ -228,6 +232,7 @@ void keyPressed()
       --redoSteps;
       currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
       paintLayer.beginDraw();
+      paintLayer.clear();
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
       paintLayer.endDraw();
     }
