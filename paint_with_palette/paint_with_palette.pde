@@ -7,9 +7,9 @@ import java.util.*;
 import java.lang.Math;
 
 //window width and heights for easy changes
-final int W = 1280;
-final int H = 800;
-final boolean spoutOn = false;
+final int W = 1920;
+final int H = 1200;
+final boolean spoutOn = true;
 
 private float TOOL_PANEL_WIDTH;
 
@@ -40,6 +40,7 @@ private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
 // to store last 5 undo snapshots
 private int NUM_UNDO_ALLOWED = 10;
+private PImage imageCarouselItems = new PImage(W,H,1);
 private PImage[] imageCarousel = new PImage[NUM_UNDO_ALLOWED+1];
 private int currentImagesIndex, undoSteps, redoSteps;
 
@@ -91,7 +92,7 @@ void setup()
 
 void draw()
 {
-  background(0); //necessary for spout to work properly, else spout frames will accumulate on screen
+  //background(0); //necessary for spout to work properly, else spout frames will accumulate on screen
   
   if(spoutOn){
   spoutInLayer = spoutIn.receiveTexture(spoutInLayer); //puts the spout input onto the layer
@@ -207,7 +208,7 @@ void keyPressed()
   {
     Calendar cal = Calendar.getInstance();
     long timestamp = cal.getTimeInMillis();
-    save(timestamp+".jpg");
+    save(timestamp+".png");
   }
 
   if (key == CODED)
