@@ -24,9 +24,11 @@ private ControlP5 cp5;
 Spout spoutOut;
 Spout spoutIn;
 Spout spoutTopIn;
+
 // OSC objects
 OscP5 oscP5;
 NetAddress myRemoteLocation;
+
 // PGraphics objects for layers
 PGraphics paintLayer;
 PGraphics spoutInLayer;
@@ -41,7 +43,7 @@ private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 // to store snapshots and implement undo redo logic
 private int NUM_UNDO_ALLOWED = 10;
 private PImage[] imageCarousel = new PImage[NUM_UNDO_ALLOWED+1];
-private int currentImagesIndex, undoSteps, redoSteps;
+private int currentImagesIndex = 0, undoSteps = 0, redoSteps = 0;
 
 // to store bolt coordinates
 private int[][] boltCoordinates = new int[2][2];
@@ -80,20 +82,20 @@ void setup()
   paintLayer = createGraphics(W, H, P2D);
   spoutInLayer = createGraphics(W, H, PConstants.P2D);
   spoutInTopLayer = createGraphics(W, H, PConstants.P2D);
-
+  
+  paintLayer.beginDraw();
+  paintLayer.clear();
+  
   // initialize undo/redo array of images
   for (int i = 0; i < imageCarousel.length; i++)
   {
     imageCarousel[i] = paintLayer.get();
   }
-
-  paintLayer.beginDraw();
+  
 }
 
 void draw()
 {
-  //background(0); //necessary for spout to work properly, else spout frames will accumulate on screen
-
   if (spoutOn)
   {
     spoutInLayer = spoutIn.receiveTexture(spoutInLayer); //puts the spout input onto the layer
@@ -109,38 +111,27 @@ void draw()
   // Now if the mouse is pressed, paint
   if (mousePressed && mouseX>TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized()) 
   {
-    paintLayer.noStroke();
-    paintLayer.noFill();
-    paintLayer.stroke(currentColor);
-    paintLayer.strokeWeight(1);
-    if (pmouseX == 0 || pmouseY == 0) 
+    switch (currentBrushType)
     {
-      paintLayer.line(mouseX, mouseY, mouseX, mouseY);
-    } 
-    else 
-    {
-      switch (currentBrushType)
-      {
-      case "solid":
-        brushFactory.solidBrush(currentBrushRadius, currentColor);
-        break;
-      case "feathered":
-        brushFactory.featheredBrush(currentBrushRadius, currentColor);
-        break;
-      case "gritty":
-        brushFactory.grittyBrush(currentBrushRadius, currentColor);
-        break;
-      case "drip":
-        brushFactory.dripBrush(currentBrushRadius, currentColor);
-        break;
-      case "eraser":
-        brushFactory.rollerEraser(200, currentColor);
-        break;
-      }
+    case "solid":
+      brushFactory.solidBrush(currentBrushRadius, currentColor);
+      break;
+    case "feathered":
+      brushFactory.featheredBrush(currentBrushRadius, currentColor);
+      break;
+    case "gritty":
+      brushFactory.grittyBrush(currentBrushRadius, currentColor);
+      break;
+    case "drip":
+      brushFactory.dripBrush(currentBrushRadius, currentColor);
+      break;
+    case "eraser":
+      brushFactory.rollerEraser(200, currentColor);
+      break;
     }
+    
 
     //OSC implementation here
-    println(mouseX);
     OscMessage myMessageX = new OscMessage("/ClickX");
     myMessageX.add(mouseX); 
     OscMessage myMessageY = new OscMessage("/ClickY");
@@ -160,7 +151,6 @@ void draw()
     oscP5.send(myMessageRed, myRemoteLocation); 
     oscP5.send(myMessageGreen, myRemoteLocation); 
     oscP5.send(myMessageBlue, myRemoteLocation); 
-    println("red: " + redValue + " green: " + greenValue + " blue: " + blueValue);
     //end of OSC implementation
   }
 
@@ -181,7 +171,7 @@ void draw()
    spoutInLayer.endDraw();
    */
 
-  //layer arrangement 
+  //layer arrangement
   if (spoutOn)
   {
     image(spoutInLayer, 0, 0); //bottom: bottom spout layer
@@ -197,26 +187,28 @@ void draw()
 
 void keyPressed()
 {
-  if (key == ' ')
+  if (key == ' ') // clear screen
   {
     paintLayer.beginDraw();
     paintLayer.clear();
-    //spoutInLayer.clear();
+    paintLayer.background(0);
     paintLayer.endDraw();
+    //spoutInLayer.clear();
 
     savedColors.clear();
     drips.clear();
+    resetImageCarousel();
     toolPanel.minimizeAll();
   }
 
-  if (key == 's')
+  else if (key == 's') // save screen
   {
     Calendar cal = Calendar.getInstance();
     long timestamp = cal.getTimeInMillis();
     save(timestamp+".png");
   }
 
-  if (key == CODED)
+  else if (key == CODED) // redo and undo
   {
     if (keyCode == LEFT && undoSteps > 0)
     {
@@ -224,14 +216,17 @@ void keyPressed()
       ++redoSteps;
       currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
       paintLayer.beginDraw();
+      paintLayer.background(0);
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
       paintLayer.endDraw();
-    } else if (keyCode == RIGHT && redoSteps > 0)
+    } 
+    else if (keyCode == RIGHT && redoSteps > 0)
     {
       ++undoSteps;
       --redoSteps;
       currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
       paintLayer.beginDraw();
+      paintLayer.background(0);
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
       paintLayer.endDraw();
     }
@@ -242,12 +237,6 @@ void mouseReleased()
 {  
   if (mouseX > TOOL_PANEL_WIDTH)
   {
-    // save current screen after a stroke is drawn
-    undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
-    redoSteps = 0;
-    currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
-    imageCarousel[currentImagesIndex] = get();
-
     if (currentBrushType == "bolt")
     {
       int[] temp = {mouseX, mouseY};
@@ -255,6 +244,13 @@ void mouseReleased()
       println(Arrays.deepToString(boltCoordinates));
       brushFactory.drawBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
     }
+    
+    // save current screen after a stroke is drawn
+    undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
+    redoSteps = 0;
+    currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
+    imageCarousel[currentImagesIndex] = get();
+    println(undoSteps, redoSteps, currentImagesIndex, Arrays.toString(imageCarousel));
   }
 }
 
@@ -272,7 +268,8 @@ void mousePressed()
   if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
   {
     toolPanel.maximizePanel();
-  } else if (mouseX > TOOL_PANEL_WIDTH)
+  } 
+  else if (mouseX > TOOL_PANEL_WIDTH)
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
@@ -298,6 +295,18 @@ private void addUsedColorToMemory()
       spoutOut.selectSender();
     }
   }
+}
+
+private void resetImageCarousel()
+{
+  println("RESET");
+  for (int i = 0; i < imageCarousel.length; i++)
+  {
+    imageCarousel[i] = paintLayer.get();
+  }
+  currentImagesIndex = 0;
+  undoSteps = 0;
+  redoSteps = 0;
 }
 
 public static void addDrip(Drip drip)

@@ -12,7 +12,7 @@ private class BrushFactory {
     paintLayer.stroke(col);
     if (pmouseX == 0 || pmouseY == 0)
     {
-      paintLayer.line(mouseX, mouseY, mouseX, mouseY);  //must draw on the paintLayer layer only
+      paintLayer.line(mouseX, mouseY, mouseX, mouseY);
     }
     else
     {
@@ -25,12 +25,15 @@ private class BrushFactory {
     float thickness = brushRadius * 2;
     int MAX_TIMES_DRAWN = 10;
     int count = 0;
+    
+    paintLayer.stroke(col, 5);
+    paintLayer.noFill();
+    
     for(int i = (int) thickness; i > 0; i-=3)
     {
       if (count < MAX_TIMES_DRAWN)
       {
         paintLayer.strokeWeight(i);
-        paintLayer.stroke(col, 5);
   
         if (pmouseX == 0 || pmouseY == 0)
         {
@@ -57,6 +60,8 @@ private class BrushFactory {
     float y;
     
     paintLayer.stroke(col);
+    paintLayer.strokeWeight(1);
+    paintLayer.noFill();
     
     for (int i=0; i < maxIterations; i++)
     {
@@ -78,7 +83,14 @@ private class BrushFactory {
   {
     paintLayer.stroke(col);
     paintLayer.strokeWeight(brushRadius*2);
-    paintLayer.line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
+    if (pmouseX == 0 || pmouseY == 0)
+    {
+      paintLayer.line(mouseX, mouseY, mouseX, mouseY);
+    }
+    else
+    {
+      paintLayer.line(mouseX, mouseY, pmouseX, pmouseY); // connect the dots with a line
+    }
 
     //Draw the drips
     float chance = random(1,8)*random(1,8)*random(1,8);
@@ -107,7 +119,7 @@ private class BrushFactory {
   
   void rollerEraser(int width, color col)
   {
-    smooth();
+    paintLayer.smooth();
     paintLayer.fill(col);
     paintLayer.noStroke();
     paintLayer.rect(mouseX-width/2, mouseY-10, width, 20);
@@ -179,7 +191,7 @@ class Drip {
     }
     if ((initialPosY + dripRun - posY) < 0.5*dripRun)
     {
-      transparency -= 5;
+      //transparency -= 5;
     }
     
   }
