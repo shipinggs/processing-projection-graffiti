@@ -215,6 +215,7 @@ void keyPressed()
       --undoSteps;
       ++redoSteps;
       currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
+      clear();
       paintLayer.beginDraw();
       paintLayer.clear();
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
@@ -249,8 +250,8 @@ void mouseReleased()
     undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
     redoSteps = 0;
     currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
-    imageCarousel[currentImagesIndex] = get();
-    println(undoSteps, redoSteps, currentImagesIndex, Arrays.toString(imageCarousel));
+    imageCarousel[currentImagesIndex] = paintLayer.get();
+    println(undoSteps, redoSteps, currentImagesIndex);
   }
 }
 
