@@ -189,9 +189,9 @@ void keyPressed()
 {
   if (key == ' ') // clear screen
   {
+    clear();
     paintLayer.beginDraw();
     paintLayer.clear();
-    paintLayer.background(0);
     paintLayer.endDraw();
     //spoutInLayer.clear();
 
@@ -216,7 +216,7 @@ void keyPressed()
       ++redoSteps;
       currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
       paintLayer.beginDraw();
-      paintLayer.background(0);
+      paintLayer.clear();
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
       paintLayer.endDraw();
     } 
@@ -226,7 +226,7 @@ void keyPressed()
       --redoSteps;
       currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
       paintLayer.beginDraw();
-      paintLayer.background(0);
+      paintLayer.clear();
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
       paintLayer.endDraw();
     }
