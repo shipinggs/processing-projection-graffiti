@@ -41,7 +41,7 @@ private static ArrayList<Drip> drips = new ArrayList<Drip>();
 private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 
 // to store snapshots and implement undo redo logic
-private int NUM_UNDO_ALLOWED = 10;
+private int NUM_UNDO_ALLOWED = 20;
 private PImage[] imageCarousel = new PImage[NUM_UNDO_ALLOWED+1];
 private int currentImagesIndex = 0, undoSteps = 0, redoSteps = 0;
 
@@ -204,7 +204,7 @@ void keyPressed()
   else if (key == 'l')
   {
     PImage img;
-    img = loadImage("1471253045455.png");
+    img = loadImage(".png");
     paintLayer.beginDraw();
     paintLayer.clear();
     paintLayer.image(img, 0, 0);
