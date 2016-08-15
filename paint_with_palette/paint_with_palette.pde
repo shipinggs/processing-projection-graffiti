@@ -200,6 +200,16 @@ void keyPressed()
     resetImageCarousel();
     toolPanel.minimizeAll();
   }
+  
+  else if (key == 'l')
+  {
+    PImage img;
+    img = loadImage("1471253045455.png");
+    paintLayer.beginDraw();
+    paintLayer.clear();
+    paintLayer.image(img, 0, 0);
+    paintLayer.endDraw();
+  }
 
   else if (key == 's') // save screen
   {
@@ -217,6 +227,7 @@ void keyPressed()
       currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
       clear();
       paintLayer.beginDraw();
+      paintLayer.tint(255, 255);
       paintLayer.clear();
       paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
       paintLayer.endDraw();
