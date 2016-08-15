@@ -238,14 +238,17 @@ void mouseReleased()
 {  
   if (mouseX > TOOL_PANEL_WIDTH)
   {
-    if (currentBrushType == "bolt")
+    int[] temp = {mouseX, mouseY};
+    boltCoordinates[1] = temp;
+    switch (currentBrushType)
     {
-      int[] temp = {mouseX, mouseY};
-      boltCoordinates[1] = temp;
-      println(Arrays.deepToString(boltCoordinates));
-      brushFactory.drawBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
+      case "bolt":
+        brushFactory.drawBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
+        break;
+      case "lightbolt":
+        brushFactory.drawLightBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
+        break;
     }
-    
     // save current screen after a stroke is drawn
     undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
     redoSteps = 0;
@@ -274,7 +277,7 @@ void mousePressed()
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
-    if (currentBrushType == "bolt")
+    if (currentBrushType == "bolt" || currentBrushType == "lightbolt")
     {
       int[] temp = {mouseX, mouseY};
       boltCoordinates[0] = temp;

@@ -4,7 +4,7 @@ private class BrushPalette {
   private ControlP5 cp5;
   
   // Brush attributes
-  private String currentBrushType = "drip";
+  private String currentBrushType = "feathered";
   private int currentBrushRadius;
   
   // To determine if BrushPalette is minimized
@@ -16,7 +16,7 @@ private class BrushPalette {
   float displayBrushPaletteHeight, sliderHeight;
   
   private BrushFactory brushFactory;
-  private String[] brushTypes = { "bolt", "eraser", "drip", "solid", "feathered", "gritty" };
+  private String[] brushTypes = { "bolt", "lightbolt", "eraser", "drip", "solid", "gritty", "feathered" };
   private List<String> brushTypesList = Arrays.asList(brushTypes);
   
   // brush radius slider
@@ -35,7 +35,7 @@ private class BrushPalette {
   private void init()
   {
     brushFactory = new BrushFactory();
-    displayBrushPaddingY = paletteWidth*0.4;
+    displayBrushPaddingY = paletteWidth*0.2;
     displayBrushPaletteHeight = paletteHeight/4*3;
     sliderHeight = paletteHeight - displayBrushPaletteHeight;
     displayBrushDiam = (displayBrushPaletteHeight/brushTypes.length) - displayBrushPaddingY;
@@ -45,7 +45,7 @@ private class BrushPalette {
        .setPosition(posX,posY+displayBrushPaletteHeight)
        .setSize((int) paletteWidth, (int) sliderHeight)
        .setRange(0,50)
-       .setValue(10)
+       .setValue(15)
        .setColor(new CColor(-1,-16110286,-1,-1,-1));
        ;
     
@@ -100,6 +100,9 @@ private class BrushPalette {
             break;
           case "bolt":
             brushFactory.drawBoltBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
+            break;
+          case "lightbolt":
+            brushFactory.drawLightBoltBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
             break;
         }        
       }

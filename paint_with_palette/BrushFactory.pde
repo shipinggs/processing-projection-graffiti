@@ -1,5 +1,6 @@
 private class BrushFactory {
   private PImage boltImg = loadImage("bolt.png");
+  private PImage lightBoltImg = loadImage("lightbolt.png");
   private PImage solidImg = loadImage("solid.png");
   private PImage dripImg = loadImage("drip.png");
   private PImage featheredImg = loadImage("feathered.png");
@@ -109,11 +110,28 @@ private class BrushFactory {
     float angleInDegrees = (float) Math.atan((float)deltaX/deltaY);
     println(angleInDegrees);
     paintLayer.beginDraw();
-    paintLayer.tint(col);  // Tint blue
+    paintLayer.tint(col);
     paintLayer.translate(mouseX-deltaX/2.0, mouseY-deltaY/2.0);
     paintLayer.rotate(-angleInDegrees);
     paintLayer.scale(shapeScale);
     paintLayer.image(boltImg, -boltImg.width/2, -boltImg.height/2);
+    paintLayer.endDraw();
+  }
+  
+  void drawLightBoltShape(color col, int[] coordA, int[] coordB)
+  {
+    int deltaX = coordB[0] - coordA[0];
+    int deltaY = coordB[1] - coordA[1];
+    float shapeHeight = (float) Math.sqrt((deltaX*deltaX + deltaY*deltaY));
+    float shapeScale = shapeHeight / lightBoltImg.height;
+    float angleInDegrees = (float) Math.atan((float)deltaX/deltaY);
+    println(angleInDegrees);
+    paintLayer.beginDraw();
+    paintLayer.tint(col);
+    paintLayer.translate(mouseX-deltaX/2.0, mouseY-deltaY/2.0);
+    paintLayer.rotate(-angleInDegrees);
+    paintLayer.scale(shapeScale);
+    paintLayer.image(lightBoltImg, -lightBoltImg.width/2, -lightBoltImg.height/2);
     paintLayer.endDraw();
   }
   
@@ -148,6 +166,11 @@ private class BrushFactory {
   void drawBoltBrushPrint(float brushDiam, float posX, float posY)
   {
     paintLayer.image(boltImg, posX, posY, brushDiam, brushDiam);
+  }
+  
+  void drawLightBoltBrushPrint(float brushDiam, float posX, float posY)
+  {
+    paintLayer.image(lightBoltImg, posX, posY, brushDiam, brushDiam);
   }
 
 }
