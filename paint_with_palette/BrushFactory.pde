@@ -108,7 +108,6 @@ private class BrushFactory {
     float shapeHeight = (float) Math.sqrt((deltaX*deltaX + deltaY*deltaY));
     float shapeScale = shapeHeight / boltImg.height;
     float angleInDegrees = (float) Math.atan((float)deltaX/deltaY);
-    println(angleInDegrees);
     paintLayer.beginDraw();
     paintLayer.tint(col);
     paintLayer.translate(mouseX-deltaX/2.0, mouseY-deltaY/2.0);
@@ -125,7 +124,6 @@ private class BrushFactory {
     float shapeHeight = (float) Math.sqrt((deltaX*deltaX + deltaY*deltaY));
     float shapeScale = shapeHeight / lightBoltImg.height;
     float angleInDegrees = (float) Math.atan((float)deltaX/deltaY);
-    println(angleInDegrees);
     paintLayer.beginDraw();
     paintLayer.tint(col);
     paintLayer.translate(mouseX-deltaX/2.0, mouseY-deltaY/2.0);

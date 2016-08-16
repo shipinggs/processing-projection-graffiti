@@ -27,7 +27,7 @@ Spout spoutTopIn;
 
 // OSC objects
 OscP5 oscP5;
-NetAddress myRemoteLocation;
+NetAddress myRemoteLocation;  
 
 // PGraphics objects for layers
 PGraphics paintLayer;
@@ -163,14 +163,6 @@ void draw()
   toolPanel.render();
   paintLayer.endDraw();  //end of things to draw on the particular layer
 
-  //for testing of layers
-  /*
-  spoutInLayer.beginDraw();
-   spoutInLayer.fill(#220000);
-   spoutInLayer.rect(random(W),random(H),20,20);
-   spoutInLayer.endDraw();
-   */
-
   //layer arrangement
   if (spoutOn)
   {
@@ -243,7 +235,7 @@ void keyPressed()
       paintLayer.endDraw();
     }
   }
-}
+}    
 
 void mouseReleased()
 {  
@@ -264,7 +256,7 @@ void mouseReleased()
     undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
     redoSteps = 0;
     currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
-    imageCarousel[currentImagesIndex] = paintLayer.get();
+    imageCarousel[currentImagesIndex] = spoutOn? paintLayer.get() : get();
     println(undoSteps, redoSteps, currentImagesIndex);
   }
 }
