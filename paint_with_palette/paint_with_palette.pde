@@ -1,4 +1,4 @@
- import netP5.*;
+import netP5.*;
 import oscP5.*;
 import spout.*;
 import controlP5.*;
@@ -25,14 +25,17 @@ PGraphics spoutInLayer;
 PGraphics spoutInTopLayer;
 
 // Panel attributes
+private String toolPanelPosition = "right";
+private color toolPanelColor = color(0);
 private static color currentColor;
 private String currentBrushType;
 private int currentBrushRadius;
 private ToolPanel toolPanel;
 private BrushFactory brushFactory;
 private ControlP5 cp5;
+private float toolPanelWidth, toolPanelHeight, panelPosX, panelPosY;
 
-private float TOOL_PANEL_WIDTH;
+// for generating timestamp when saving screen. see saveScreen()
 private Calendar cal;
 
 // to store drips created
@@ -61,8 +64,23 @@ void setup()
   cursor(CROSS);
   currentColor = color(255);
   cp5 = new ControlP5(this);
-  TOOL_PANEL_WIDTH = width * 0.07;
-  toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
+  
+  switch (toolPanelPosition)
+  {
+    case "left":
+    case "right":
+      toolPanelWidth = width * 0.07;
+      toolPanelHeight = height;
+      panelPosY = 0;
+      panelPosX = toolPanelPosition == "left" ? 0 : width - toolPanelWidth;
+      break;
+    case "top":
+    case "bottom":
+      toolPanelWidth = width;
+      toolPanelHeight = height * 0.1;
+      break;
+  }
+  toolPanel = new ToolPanel("left", panelPosX, panelPosY, toolPanelWidth, toolPanelHeight, toolPanelColor, cp5);
   brushFactory = new BrushFactory();
   cal = Calendar.getInstance();
   totalStrokeCount = 0;
@@ -112,7 +130,7 @@ void draw()
   paintLayer.beginDraw();  //draw on that particular layer only
 
   // Now if the mouse is pressed, paint
-  if (mousePressed && mouseX>TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized()) 
+  if (mousePressed && mouseX>toolPanelWidth && toolPanel.isPanelMinimized()) 
   {
     switch (currentBrushType)
     {
@@ -224,7 +242,7 @@ void keyPressed()
 
 void mouseClicked()
 {
-  if (mouseX > TOOL_PANEL_WIDTH)
+  if (mouseX > toolPanelWidth)
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
@@ -236,11 +254,11 @@ void mousePressed()
   pressCoords[0] = mouseX;
   pressCoords[1] = mouseY;
   
-  if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
+  if (mouseX < toolPanelWidth && toolPanel.isPanelMinimized())
   {
     //toolPanel.maximizePanel();
   } 
-  else if (mouseX > TOOL_PANEL_WIDTH)
+  else if (mouseX > toolPanelWidth)
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
@@ -253,11 +271,11 @@ void mouseReleased()
   {
     saveScreen();
   }
-  if (mouseX < TOOL_PANEL_WIDTH)
+  if (mouseX < toolPanelWidth)
   {
     toolPanel.maximizePanel();
   }
-  else if (mouseX > TOOL_PANEL_WIDTH)
+  else if (mouseX > toolPanelWidth)
   {
     ++totalStrokeCount;
     // save coordinates of mouse release

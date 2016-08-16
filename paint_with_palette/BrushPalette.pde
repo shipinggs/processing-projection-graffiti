@@ -1,6 +1,8 @@
 private class BrushPalette {
-  // Coordinates of top-left corner of ColorPalette
+  // BrushPalette attributes
   private float posX, posY, paletteWidth, paletteHeight;
+  private color paletteColor;
+  
   private ControlP5 cp5;
   
   // Brush attributes
@@ -22,13 +24,14 @@ private class BrushPalette {
   // brush radius slider
   Slider slider;
   
-  public BrushPalette(float posX, float posY, float paletteWidth, float paletteHeight, ControlP5 cp5)
+  public BrushPalette(float posX, float posY, float paletteWidth, float paletteHeight, ControlP5 cp5, color paletteColor)
   {
     this.posX = posX;
     this.posY = posY;
     this.paletteWidth = paletteWidth;
     this.paletteHeight = paletteHeight;
     this.cp5 = cp5;
+    this.paletteColor = paletteColor;
     init();
   }
 
@@ -58,7 +61,7 @@ private class BrushPalette {
   {
     currentBrushRadius = (int) slider.getValue();
     // clear palette
-    paintLayer.fill(0);
+    paintLayer.fill(paletteColor);
     paintLayer.noStroke();
     paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
     if (paletteIsMinimized)
@@ -67,7 +70,7 @@ private class BrushPalette {
     }
     else if (!paletteIsMinimized)
     {
-      paintLayer.fill(0);
+      paintLayer.fill(paletteColor);
       paintLayer.noStroke();
       paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
 

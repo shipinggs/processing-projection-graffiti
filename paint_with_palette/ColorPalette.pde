@@ -17,8 +17,9 @@ private class ColorPalette {
   // ArrayList to hold all the single-color blocks
   private ArrayList<SingleColorBlock> singleColorBlocks = new ArrayList<SingleColorBlock>();
 
-  // Coordinates of top-left corner of ColorPalette
+  // ColorPalette attributes
   private float posX, posY, paletteWidth, paletteHeight;
+  private color paletteColor;
 
   // Size of each color rectangle
   private float singleColorHeight, singleColorWidth;
@@ -26,12 +27,13 @@ private class ColorPalette {
   private int currentColor;
   private boolean paletteIsMinimized = true;
 
-  private ColorPalette(float posX, float posY, float paletteWidth, float paletteHeight)
+  private ColorPalette(float posX, float posY, float paletteWidth, float paletteHeight, color paletteColor)
   {
     this.posX = posX;
     this.posY = posY;
     this.paletteWidth = paletteWidth;
     this.paletteHeight = paletteHeight;
+    this.paletteColor = paletteColor;
     init();
   }
 
@@ -56,7 +58,7 @@ private class ColorPalette {
   public void render()
   { 
     // erase everything in the palette
-    paintLayer.fill(0);
+    paintLayer.fill(paletteColor);
     paintLayer.noStroke();
     paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
 
