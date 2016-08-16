@@ -47,7 +47,7 @@ private int currentImagesIndex = 0, undoSteps = 0, redoSteps = 0;
 private int totalStrokeCount;
 
 // to store coordinates of mouse press and release
-private int[][] strokeStartEndCoords = new int[2][2];
+int[] pressCoords = new int[2], releaseCoords = new int[2];
 
 void setup()
 {
@@ -186,7 +186,7 @@ void keyPressed()
   }
   else if (key == 'l') // load screen
   {
-    String fileName = "1471332245368.png";
+    String fileName = ".png";
     loadScreen(fileName);
   }
   else if (key == 's') // save screen
@@ -220,36 +220,6 @@ void keyPressed()
   }
 }    
 
-void mouseReleased()
-{  
-  ++totalStrokeCount;
-  if (totalStrokeCount % 20 == 0)
-  {
-    saveScreen();
-  }
-  
-  if (mouseX > TOOL_PANEL_WIDTH)
-  {
-    int[] temp = {mouseX, mouseY};
-    strokeStartEndCoords[1] = temp;
-    switch (currentBrushType)
-    {
-      case "bolt":
-        brushFactory.drawBoltShape(currentColor, strokeStartEndCoords[0], strokeStartEndCoords[1]);
-        break;
-      case "lightbolt":
-        brushFactory.drawLightBoltShape(currentColor, strokeStartEndCoords[0], strokeStartEndCoords[1]);
-        break;
-    }
-    // save current screen after a stroke is drawn
-    undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
-    redoSteps = 0;
-    currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
-    imageCarousel[currentImagesIndex] = spoutOn? paintLayer.get() : get();
-    println(undoSteps, redoSteps, currentImagesIndex);
-  }
-}
-
 void mouseClicked()
 {
   if (mouseX > TOOL_PANEL_WIDTH)
@@ -261,6 +231,9 @@ void mouseClicked()
 
 void mousePressed()
 {
+  pressCoords[0] = mouseX;
+  pressCoords[1] = mouseY;
+  
   if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
   {
     toolPanel.maximizePanel();
@@ -269,11 +242,35 @@ void mousePressed()
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
-    if (currentBrushType == "bolt" || currentBrushType == "lightbolt")
+  }
+}
+
+void mouseReleased()
+{  
+  ++totalStrokeCount;
+  if (totalStrokeCount % 20 == 0)
+  {
+    saveScreen();
+  }
+  
+  if (mouseX > TOOL_PANEL_WIDTH)
+  {
+    // save coordinates of mouse release
+    releaseCoords[0] = mouseX;
+    releaseCoords[1] = mouseY;
+    
+    // if current brush type is a stencil
+    if (brushFactory.stencilsList.contains(currentBrushType))
     {
-      int[] temp = {mouseX, mouseY};
-      strokeStartEndCoords[0] = temp;
+      brushFactory.drawStencil(currentBrushType, currentColor, pressCoords, releaseCoords);
     }
+   
+    // save current screen after a stroke is drawn
+    undoSteps = min(undoSteps+1, NUM_UNDO_ALLOWED);
+    redoSteps = 0;
+    currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
+    imageCarousel[currentImagesIndex] = spoutOn? paintLayer.get() : get();
+    println(undoSteps, redoSteps, currentImagesIndex);
   }
 }
 
@@ -306,7 +303,7 @@ private void saveScreen()
 {
   Calendar cal = Calendar.getInstance();
   long timestamp = cal.getTimeInMillis();
-  save(timestamp+".png");
+  save("timestamps/" +timestamp+".png");
 }
 
 private void addUsedColorToMemory()

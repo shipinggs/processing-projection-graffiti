@@ -1,11 +1,28 @@
 private class BrushFactory {
   private PImage boltImg = loadImage("bolt.png");
-  private PImage lightBoltImg = loadImage("lightbolt.png");
+  private PImage lightBoltImg = loadImage("lightBolt.png");
+  private PImage explosionImg = loadImage("explosion.png");
   private PImage solidImg = loadImage("solid.png");
   private PImage dripImg = loadImage("drip.png");
   private PImage featheredImg = loadImage("feathered.png");
   private PImage grittyImg = loadImage("gritty.png");
-
+  private PImage eraserImg = loadImage("eraser.png");
+  private HashMap<String, PImage> brushImages;
+  private String[] stencils = { "bolt", "lightBolt", "explosion" };
+  private List<String> stencilsList = Arrays.asList(stencils); 
+  
+  public BrushFactory()
+  {
+    brushImages = new HashMap<String, PImage>();
+    brushImages.put("bolt", boltImg);
+    brushImages.put("lightBolt", lightBoltImg);
+    brushImages.put("explosion", explosionImg);
+    brushImages.put("solid", solidImg);
+    brushImages.put("drip", dripImg);
+    brushImages.put("feathered", featheredImg);
+    brushImages.put("gritty", grittyImg);
+    brushImages.put("eraser", eraserImg);
+  }
   
   void solidBrush(int brushRadius, color col)
   {
@@ -101,8 +118,10 @@ private class BrushFactory {
     }
   }
   
-  void drawBoltShape(color col, int[] coordA, int[] coordB)
+  
+  void drawStencil(String stencilType, color col, int[] coordA, int[] coordB)
   {
+    PImage stencilImg = brushImages.get(stencilType);
     int deltaX = coordB[0] - coordA[0];
     int deltaY = coordB[1] - coordA[1];
     float shapeHeight = (float) Math.sqrt((deltaX*deltaX + deltaY*deltaY));
@@ -113,23 +132,7 @@ private class BrushFactory {
     paintLayer.translate(mouseX-deltaX/2.0, mouseY-deltaY/2.0);
     paintLayer.rotate(-angleInDegrees);
     paintLayer.scale(shapeScale);
-    paintLayer.image(boltImg, -boltImg.width/2, -boltImg.height/2);
-    paintLayer.endDraw();
-  }
-  
-  void drawLightBoltShape(color col, int[] coordA, int[] coordB)
-  {
-    int deltaX = coordB[0] - coordA[0];
-    int deltaY = coordB[1] - coordA[1];
-    float shapeHeight = (float) Math.sqrt((deltaX*deltaX + deltaY*deltaY));
-    float shapeScale = shapeHeight / lightBoltImg.height;
-    float angleInDegrees = (float) Math.atan((float)deltaX/deltaY);
-    paintLayer.beginDraw();
-    paintLayer.tint(col);
-    paintLayer.translate(mouseX-deltaX/2.0, mouseY-deltaY/2.0);
-    paintLayer.rotate(-angleInDegrees);
-    paintLayer.scale(shapeScale);
-    paintLayer.image(lightBoltImg, -lightBoltImg.width/2, -lightBoltImg.height/2);
+    paintLayer.image(stencilImg, -stencilImg.width/2, -stencilImg.height/2);
     paintLayer.endDraw();
   }
   
@@ -140,35 +143,10 @@ private class BrushFactory {
     paintLayer.noStroke();
     paintLayer.rect(mouseX-width/2, mouseY-10, width, 20);
   }
-    
-  void drawSolidBrushPrint(float brushDiam, float posX, float posY)
-  {
-    paintLayer.image(solidImg, posX, posY, brushDiam, brushDiam);
-  }
   
-  void drawDripBrushPrint(float brushDiam, float posX, float posY)
+  void drawDisplayBrushPrint(String brushType, float brushDiam, float posX, float posY)
   {
-    paintLayer.image(dripImg, posX, posY, brushDiam, brushDiam);
-  }
-  
-  void drawFeatheredBrushPrint(float brushDiam, float posX, float posY)
-  {
-    paintLayer.image(featheredImg, posX, posY, brushDiam, brushDiam);
-  }
-  
-  void drawGrittyBrushPrint(float brushDiam, float posX, float posY)
-  {
-    paintLayer.image(grittyImg, posX, posY, brushDiam, brushDiam);
-  }
-  
-  void drawBoltBrushPrint(float brushDiam, float posX, float posY)
-  {
-    paintLayer.image(boltImg, posX, posY, brushDiam, brushDiam);
-  }
-  
-  void drawLightBoltBrushPrint(float brushDiam, float posX, float posY)
-  {
-    paintLayer.image(lightBoltImg, posX, posY, brushDiam, brushDiam);
+    paintLayer.image(brushImages.get(brushType), posX, posY, brushDiam, brushDiam);
   }
 
 }
@@ -212,7 +190,7 @@ class Drip {
     }
     if ((initialPosY + dripRun - posY) < 0.5*dripRun)
     {
-      //transparency -= 5;
+      transparency -= 5;
     }
     
   }

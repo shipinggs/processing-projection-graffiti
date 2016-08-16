@@ -16,7 +16,7 @@ private class BrushPalette {
   float displayBrushPaletteHeight, sliderHeight;
   
   private BrushFactory brushFactory;
-  private String[] brushTypes = { "bolt", "lightbolt", "eraser", "drip", "solid", "gritty", "feathered" };
+  private String[] brushTypes = { "bolt", "lightBolt", "explosion", "eraser", "drip", "solid", "gritty", "feathered" };
   private List<String> brushTypesList = Arrays.asList(brushTypes);
   
   // brush radius slider
@@ -76,35 +76,11 @@ private class BrushPalette {
       float brushTypePosX = posX + paletteWidth/2 - displayBrushDiam/2;
       float singleBrushButtonHeight = displayBrushDiam + displayBrushPaddingY;
       
-      paintLayer.tint(255);
+      // draw display brushes
+      paintLayer.tint(255, 255);
       for (int i = 0; i < brushTypes.length; i++)
       {
-        switch(brushTypes[i])
-        {
-          case "solid":
-            brushFactory.drawSolidBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
-            break;
-          case "drip":
-            brushFactory.drawDripBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
-            break;
-          case "feathered":
-            brushFactory.drawFeatheredBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
-            break;
-          case "gritty":
-            brushFactory.drawGrittyBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
-            break;
-          case "eraser":
-            paintLayer.fill(255);
-            paintLayer.noStroke();
-            paintLayer.rect(brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight), displayBrushDiam, displayBrushDiam);
-            break;
-          case "bolt":
-            brushFactory.drawBoltBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
-            break;
-          case "lightbolt":
-            brushFactory.drawLightBoltBrushPrint(displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));
-            break;
-        }        
+        brushFactory.drawDisplayBrushPrint(brushTypes[i], displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));    
       }
       
       // draw marker to show current brush selected
