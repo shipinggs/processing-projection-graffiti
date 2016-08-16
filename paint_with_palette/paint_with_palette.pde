@@ -1,4 +1,4 @@
-import netP5.*;
+ import netP5.*;
 import oscP5.*;
 import spout.*;
 import controlP5.*;
@@ -238,7 +238,7 @@ void mousePressed()
   
   if (mouseX < TOOL_PANEL_WIDTH && toolPanel.isPanelMinimized())
   {
-    toolPanel.maximizePanel();
+    //toolPanel.maximizePanel();
   } 
   else if (mouseX > TOOL_PANEL_WIDTH)
   {
@@ -253,8 +253,11 @@ void mouseReleased()
   {
     saveScreen();
   }
-  
-  if (mouseX > TOOL_PANEL_WIDTH)
+  if (mouseX < TOOL_PANEL_WIDTH)
+  {
+    toolPanel.maximizePanel();
+  }
+  else if (mouseX > TOOL_PANEL_WIDTH)
   {
     ++totalStrokeCount;
     // save coordinates of mouse release

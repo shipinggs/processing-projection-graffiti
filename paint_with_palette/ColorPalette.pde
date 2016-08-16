@@ -79,9 +79,9 @@ private class ColorPalette {
     paletteIsMinimized = true;
   }
 
-  public void toggleMinimize()
+  public void maximize()
   {
-    paletteIsMinimized = !paletteIsMinimized;
+    paletteIsMinimized = false;
   }
 
   public int getColor() {

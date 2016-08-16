@@ -42,7 +42,7 @@ private class BrushFactory {
   
   void featheredBrush(int brushRadius, color col)
   {
-    float thickness = brushRadius * 2;
+    float thickness = brushRadius * 2.4;
     int MAX_TIMES_DRAWN = 10;
     int count = 0;
     
@@ -124,11 +124,19 @@ private class BrushFactory {
   void drawStencil(String stencilType, color col, int[] coordA, int[] coordB)
   {
     PImage stencilImg = brushImages.get(stencilType);
-    int deltaX = coordB[0] - coordA[0];
-    int deltaY = coordB[1] - coordA[1];
+    float deltaX = coordB[0] - coordA[0];
+    float deltaY = coordB[1] - coordA[1];
     float shapeHeight = (float) Math.sqrt((deltaX*deltaX + deltaY*deltaY));
-    float shapeScale = shapeHeight / boltImg.height;
-    float angleInDegrees = (float) Math.atan((float)deltaX/deltaY);
+    float shapeScale = shapeHeight / stencilImg.height;
+    float angleInDegrees;
+    if (deltaY >= 0)
+    {
+      angleInDegrees = (float) Math.atan(deltaX/deltaY); 
+    }
+    else
+    {
+      angleInDegrees = deltaX >= 0 ? (float)-Math.atan(deltaY/deltaX) + PI/2 : (float)-Math.atan(deltaY/deltaX) - PI/2;
+    }
     paintLayer.beginDraw();
     paintLayer.tint(col);
     paintLayer.translate(mouseX-deltaX/2.0, mouseY-deltaY/2.0);

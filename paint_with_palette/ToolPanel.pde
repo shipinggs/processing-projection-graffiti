@@ -45,8 +45,8 @@ private class ToolPanel {
   
   public void maximizePanel()
   {
-    brushPalette.toggleMinimize();
-    colorPalette.toggleMinimize();
+    brushPalette.maximize();
+    colorPalette.maximize();
   }
   
   public int getColor()

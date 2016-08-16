@@ -116,9 +116,9 @@ private class BrushPalette {
     paletteIsMinimized = true;
   }
 
-  public void toggleMinimize()
+  public void maximize()
   {
-    paletteIsMinimized = !paletteIsMinimized;
+    paletteIsMinimized = false;
   }
   
   public String getBrushType()
