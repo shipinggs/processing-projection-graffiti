@@ -1,6 +1,5 @@
 import netP5.*;
 import oscP5.*;
-
 import spout.*;
 import controlP5.*;
 import java.util.*;
@@ -10,15 +9,6 @@ import java.lang.Math;
 final int W = 1280;
 final int H = 800;
 final boolean spoutOn = false;
-
-private float TOOL_PANEL_WIDTH;
-
-private static color currentColor;
-private String currentBrushType;
-private int currentBrushRadius;
-private ToolPanel toolPanel;
-private BrushFactory brushFactory;
-private ControlP5 cp5;
 
 // Spout objects
 Spout spoutOut;
@@ -34,6 +24,16 @@ PGraphics paintLayer;
 PGraphics spoutInLayer;
 PGraphics spoutInTopLayer;
 
+// Panel attributes
+private static color currentColor;
+private String currentBrushType;
+private int currentBrushRadius;
+private ToolPanel toolPanel;
+private BrushFactory brushFactory;
+private ControlP5 cp5;
+
+private float TOOL_PANEL_WIDTH;
+
 // to store drips created
 private static ArrayList<Drip> drips = new ArrayList<Drip>();
 
@@ -44,16 +44,16 @@ private static ArrayList<Integer> savedColors = new ArrayList<Integer>();
 private int NUM_UNDO_ALLOWED = 20;
 private PImage[] imageCarousel = new PImage[NUM_UNDO_ALLOWED+1];
 private int currentImagesIndex = 0, undoSteps = 0, redoSteps = 0;
+private int totalStrokeCount;
 
-// to store bolt coordinates
-private int[][] boltCoordinates = new int[2][2];
+// to store coordinates of mouse press and release
+private int[][] strokeStartEndCoords = new int[2][2];
 
 void setup()
 {
   //fullScreen(P3D);
   size(1280, 800, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
-  //surface.setResizable(true);
 
   background(0);
   frameRate(60);
@@ -63,6 +63,7 @@ void setup()
   TOOL_PANEL_WIDTH = width * 0.07;
   toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
+  totalStrokeCount = 0;
 
   //// spout objects
   if (spoutOn)
@@ -179,37 +180,19 @@ void draw()
 
 void keyPressed()
 {
-  if (key == ' ') // clear screen
+  if (key == ' ') // clear and reset screen
   {
-    clear();
-    paintLayer.beginDraw();
-    paintLayer.clear();
-    paintLayer.endDraw();
-    //spoutInLayer.clear();
-
-    savedColors.clear();
-    drips.clear();
-    resetImageCarousel();
-    toolPanel.minimizeAll();
+    resetScreen();
   }
-  
-  else if (key == 'l')
+  else if (key == 'l') // load screen
   {
-    PImage img;
-    img = loadImage(".png");
-    paintLayer.beginDraw();
-    paintLayer.clear();
-    paintLayer.image(img, 0, 0);
-    paintLayer.endDraw();
+    String fileName = "1471332245368.png";
+    loadScreen(fileName);
   }
-
   else if (key == 's') // save screen
   {
-    Calendar cal = Calendar.getInstance();
-    long timestamp = cal.getTimeInMillis();
-    save(timestamp+".png");
+    saveScreen();
   }
-
   else if (key == CODED) // redo and undo
   {
     if (keyCode == LEFT && undoSteps > 0)
@@ -239,17 +222,23 @@ void keyPressed()
 
 void mouseReleased()
 {  
+  ++totalStrokeCount;
+  if (totalStrokeCount % 20 == 0)
+  {
+    saveScreen();
+  }
+  
   if (mouseX > TOOL_PANEL_WIDTH)
   {
     int[] temp = {mouseX, mouseY};
-    boltCoordinates[1] = temp;
+    strokeStartEndCoords[1] = temp;
     switch (currentBrushType)
     {
       case "bolt":
-        brushFactory.drawBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
+        brushFactory.drawBoltShape(currentColor, strokeStartEndCoords[0], strokeStartEndCoords[1]);
         break;
       case "lightbolt":
-        brushFactory.drawLightBoltShape(currentColor, boltCoordinates[0], boltCoordinates[1]);
+        brushFactory.drawLightBoltShape(currentColor, strokeStartEndCoords[0], strokeStartEndCoords[1]);
         break;
     }
     // save current screen after a stroke is drawn
@@ -283,9 +272,41 @@ void mousePressed()
     if (currentBrushType == "bolt" || currentBrushType == "lightbolt")
     {
       int[] temp = {mouseX, mouseY};
-      boltCoordinates[0] = temp;
+      strokeStartEndCoords[0] = temp;
     }
   }
+}
+
+private void resetScreen()
+{
+  clear();
+  paintLayer.beginDraw();
+  paintLayer.clear();
+  paintLayer.endDraw();
+  if (spoutOn) spoutInLayer.clear();
+
+  savedColors.clear();
+  drips.clear();
+  resetImageCarousel();
+  toolPanel.minimizeAll();
+  totalStrokeCount = 0;  
+}
+
+private void loadScreen(String fileName)
+{
+  PImage img;
+  img = loadImage(fileName);
+  paintLayer.beginDraw();
+  paintLayer.clear();
+  paintLayer.image(img, 0, 0);
+  paintLayer.endDraw();
+}
+
+private void saveScreen()
+{
+  Calendar cal = Calendar.getInstance();
+  long timestamp = cal.getTimeInMillis();
+  save(timestamp+".png");
 }
 
 private void addUsedColorToMemory()
