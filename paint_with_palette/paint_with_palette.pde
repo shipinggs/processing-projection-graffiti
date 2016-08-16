@@ -33,6 +33,7 @@ private BrushFactory brushFactory;
 private ControlP5 cp5;
 
 private float TOOL_PANEL_WIDTH;
+private Calendar cal;
 
 // to store drips created
 private static ArrayList<Drip> drips = new ArrayList<Drip>();
@@ -63,6 +64,7 @@ void setup()
   TOOL_PANEL_WIDTH = width * 0.07;
   toolPanel = new ToolPanel(0, 0, TOOL_PANEL_WIDTH, height, color(0), cp5);
   brushFactory = new BrushFactory();
+  cal = Calendar.getInstance();
   totalStrokeCount = 0;
 
   //// spout objects
@@ -247,7 +249,6 @@ void mousePressed()
 
 void mouseReleased()
 {  
-  ++totalStrokeCount;
   if (totalStrokeCount % 20 == 0)
   {
     saveScreen();
@@ -255,6 +256,7 @@ void mouseReleased()
   
   if (mouseX > TOOL_PANEL_WIDTH)
   {
+    ++totalStrokeCount;
     // save coordinates of mouse release
     releaseCoords[0] = mouseX;
     releaseCoords[1] = mouseY;
@@ -301,7 +303,6 @@ private void loadScreen(String fileName)
 
 private void saveScreen()
 {
-  Calendar cal = Calendar.getInstance();
   long timestamp = cal.getTimeInMillis();
   save("timestamps/" +timestamp+".png");
 }
