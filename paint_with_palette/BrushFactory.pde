@@ -2,13 +2,14 @@ private class BrushFactory {
   private PImage boltImg = loadImage("bolt.png");
   private PImage lightBoltImg = loadImage("lightBolt.png");
   private PImage explosionImg = loadImage("explosion.png");
+  private PImage crownImg = loadImage("crown.png");
   private PImage solidImg = loadImage("solid.png");
   private PImage dripImg = loadImage("drip.png");
   private PImage featheredImg = loadImage("feathered.png");
   private PImage grittyImg = loadImage("gritty.png");
   private PImage eraserImg = loadImage("eraser.png");
   private HashMap<String, PImage> brushImages;
-  private String[] stencils = { "bolt", "lightBolt", "explosion" };
+  private String[] stencils = { "bolt", "lightBolt", "explosion", "crown" };
   private List<String> stencilsList = Arrays.asList(stencils); 
   
   public BrushFactory()
@@ -17,6 +18,7 @@ private class BrushFactory {
     brushImages.put("bolt", boltImg);
     brushImages.put("lightBolt", lightBoltImg);
     brushImages.put("explosion", explosionImg);
+    brushImages.put("crown", crownImg);
     brushImages.put("solid", solidImg);
     brushImages.put("drip", dripImg);
     brushImages.put("feathered", featheredImg);
