@@ -10,30 +10,23 @@ final int W = 1280;
 final int H = 800;
 final boolean spoutOn = false;
 
-// Spout objects
-Spout spoutOut;
-Spout spoutIn;
-Spout spoutTopIn;
-
-// OSC objects
-OscP5 oscP5;
-NetAddress myRemoteLocation;  
-
-// PGraphics objects for layers
-PGraphics paintLayer;
-PGraphics spoutInLayer;
-PGraphics spoutInTopLayer;
+// Keyboard configuration
+private char RESET_KEY = ' ';
+private char SAVE_KEY = 's';
+private char LOAD_KEY = 'l';
+private char UNDO_KEY = '[';
+private char REDO_KEY = ']';
 
 // Panel attributes
-private String toolPanelPosition = "right";
+private String toolPanelPosition = "left";
 private color toolPanelColor = color(0);
+private float toolPanelWidth, toolPanelHeight, panelPosX, panelPosY;
 private static color currentColor;
 private String currentBrushType;
 private int currentBrushRadius;
 private ToolPanel toolPanel;
 private BrushFactory brushFactory;
 private ControlP5 cp5;
-private float toolPanelWidth, toolPanelHeight, panelPosX, panelPosY;
 
 // for generating timestamp when saving screen. see saveScreen()
 private Calendar cal;
@@ -52,6 +45,20 @@ private int totalStrokeCount;
 
 // to store coordinates of mouse press and release
 int[] pressCoords = new int[2], releaseCoords = new int[2];
+
+// Spout objects
+Spout spoutOut;
+Spout spoutIn;
+Spout spoutTopIn;
+
+// OSC objects
+OscP5 oscP5;
+NetAddress myRemoteLocation;  
+
+// PGraphics objects for layers
+PGraphics paintLayer;
+PGraphics spoutInLayer;
+PGraphics spoutInTopLayer;
 
 void setup()
 {
@@ -200,43 +207,40 @@ void draw()
 
 void keyPressed()
 {
-  if (key == ' ') // clear and reset screen
+  if (key == RESET_KEY) // clear and reset screen
   {
     resetScreen();
   }
-  else if (key == 'l') // load screen
+  else if (key == LOAD_KEY) // load screen
   {
     String fileName = ".png";
     loadScreen(fileName);
   }
-  else if (key == 's') // save screen
+  else if (key == SAVE_KEY) // save screen
   {
     saveScreen();
   }
-  else if (key == CODED) // redo and undo
+  if (keyCode == UNDO_KEY && undoSteps > 0) // undo
   {
-    if (keyCode == LEFT && undoSteps > 0)
-    {
-      --undoSteps;
-      ++redoSteps;
-      currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
-      clear();
-      paintLayer.beginDraw();
-      paintLayer.tint(255, 255);
-      paintLayer.clear();
-      paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
-      paintLayer.endDraw();
-    } 
-    else if (keyCode == RIGHT && redoSteps > 0)
-    {
-      ++undoSteps;
-      --redoSteps;
-      currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
-      paintLayer.beginDraw();
-      paintLayer.clear();
-      paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
-      paintLayer.endDraw();
-    }
+    --undoSteps;
+    ++redoSteps;
+    currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
+    clear();
+    paintLayer.beginDraw();
+    paintLayer.tint(255, 255);
+    paintLayer.clear();
+    paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
+    paintLayer.endDraw();
+  } 
+  else if (keyCode == REDO_KEY && redoSteps > 0) //redo
+  {
+    ++undoSteps;
+    --redoSteps;
+    currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
+    paintLayer.beginDraw();
+    paintLayer.clear();
+    paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
+    paintLayer.endDraw();
   }
 }    
 

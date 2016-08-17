@@ -89,8 +89,8 @@ private class BrushPalette {
       // draw marker to show current brush selected
       int currentBrushIndex = brushTypesList.indexOf(currentBrushType);
       paintLayer.fill(255);
-      paintLayer.triangle(posX, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*2,
-              posX, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*3,
+      paintLayer.triangle(posX+2, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*2,
+              posX+2, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*3,
               posX + paletteWidth*0.1, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/2);
       
       // if mouse is pressed, choose brush selection
