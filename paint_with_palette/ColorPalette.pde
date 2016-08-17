@@ -64,7 +64,7 @@ private class ColorPalette {
             singleColorHeight = paletteHeight / colorMatrix[0].length;
             singleColorBlocks.add(new SingleColorBlock(
               posX+(i*singleColorWidth), posY+(j*singleColorHeight), 
-              singleColorWidth, singleColorHeight, colorMatrix[i][j], panelPosition));
+              singleColorWidth, singleColorHeight, colorMatrix[i][4-j], panelPosition));
             break;
         }
       }
@@ -151,7 +151,7 @@ class SingleColorBlock {
           break;
         case "top":
         case "bottom":
-          paintLayer.ellipse(posX+(blockWidth/3*2), posY+(blockHeight/2), blockHeight/5*2, blockHeight/5*2);
+          paintLayer.ellipse(posX+(blockWidth/6*5), posY+(blockHeight/2), blockHeight/3, blockHeight/3);
           break;
       }
     } 
@@ -167,7 +167,7 @@ class SingleColorBlock {
           break;
         case "top":
         case "bottom":
-          paintLayer.rect(posX+(blockWidth/5*3), posY+(blockHeight/5*2), blockHeight/5*3, blockHeight/6);
+          paintLayer.rect(posX+(blockWidth/4*3), posY+(blockHeight/5*2), blockHeight/5*3, blockHeight/6);
           break;
       }
     }
