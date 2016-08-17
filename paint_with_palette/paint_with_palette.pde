@@ -6,8 +6,8 @@ import java.util.*;
 import java.lang.Math;
 
 //window width and heights for easy changes
-final int W = 1280;
-final int H = 800;
+final int W = 1920;
+final int H = 1200;
 final boolean spoutOn = false;
 
 // Keyboard configuration

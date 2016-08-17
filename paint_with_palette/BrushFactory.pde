@@ -7,7 +7,7 @@
  
 private class BrushFactory {
   private PImage boltImg = loadImage("bolt.png");
-  private PImage lightBoltImg = loadImage("lightBolt.png");
+  private PImage lightBoltImg = loadImage("lightbolt.png");
   private PImage explosionImg = loadImage("explosion.png");
   private PImage crownImg = loadImage("crown.png");
   private PImage solidImg = loadImage("solid.png");
