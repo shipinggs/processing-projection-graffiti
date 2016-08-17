@@ -45,7 +45,7 @@ private class BrushPalette {
     
     // add a vertical slider
     slider = cp5.addSlider("brushradius")
-       .setPosition(posX,posY+displayBrushPaletteHeight)
+       .setPosition(posX+1,posY+displayBrushPaletteHeight)
        .setSize((int) paletteWidth, (int) sliderHeight)
        .setRange(0,50)
        .setValue(15)
@@ -61,9 +61,7 @@ private class BrushPalette {
   {
     currentBrushRadius = (int) slider.getValue();
     // clear palette
-    paintLayer.fill(paletteColor);
-    paintLayer.noStroke();
-    paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
+    clearPalette();
     if (paletteIsMinimized)
     {
       slider.hide();
@@ -137,5 +135,12 @@ private class BrushPalette {
   public boolean isPaletteMinimized()
   {
     return paletteIsMinimized;
+  }
+  
+  public void clearPalette()
+  {
+    paintLayer.fill(paletteColor);
+    paintLayer.noStroke();
+    paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
   }
 }

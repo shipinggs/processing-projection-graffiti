@@ -58,9 +58,7 @@ private class ColorPalette {
   public void render()
   { 
     // erase everything in the palette
-    paintLayer.fill(paletteColor);
-    paintLayer.noStroke();
-    paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
+    clearPalette();
 
     if (!paletteIsMinimized)
     {
@@ -93,6 +91,13 @@ private class ColorPalette {
   public boolean isPaletteMinimized()
   {
     return paletteIsMinimized;
+  }
+  
+  public void clearPalette()
+  {
+    paintLayer.fill(paletteColor);
+    paintLayer.noStroke();
+    paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
   }
 }
 

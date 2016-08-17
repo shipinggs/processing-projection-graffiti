@@ -18,9 +18,8 @@ private char UNDO_KEY = '[';
 private char REDO_KEY = ']';
 
 // Panel attributes
-private String toolPanelPosition = "left";
+private String toolPanelPosition = "right";
 private color toolPanelColor = color(0);
-private float toolPanelWidth, toolPanelHeight, panelPosX, panelPosY;
 private static color currentColor;
 private String currentBrushType;
 private int currentBrushRadius;
@@ -72,12 +71,6 @@ void setup()
   currentColor = color(255);
   cp5 = new ControlP5(this);
   
-  toolPanelWidth = width * 0.07;
-  toolPanel = new ToolPanel("left", toolPanelColor, cp5);
-  brushFactory = new BrushFactory();
-  cal = Calendar.getInstance();
-  totalStrokeCount = 0;
-
   //// spout objects
   if (spoutOn)
   {
@@ -96,6 +89,12 @@ void setup()
   paintLayer = createGraphics(W, H, P2D);
   spoutInLayer = createGraphics(W, H, PConstants.P2D);
   spoutInTopLayer = createGraphics(W, H, PConstants.P2D);
+  
+  //toolPanelWidth = width * 0.07;
+  toolPanel = new ToolPanel(toolPanelPosition, toolPanelColor, cp5);
+  brushFactory = new BrushFactory();
+  cal = Calendar.getInstance();
+  totalStrokeCount = 0;
   
   paintLayer.beginDraw();
   paintLayer.clear();

@@ -1,6 +1,6 @@
 private class ToolPanel {
   private String position;
-  private float posX, posY, panelWidth, panelHeight;
+  private float panelPosX, panelPosY, panelWidth, panelHeight;
   private int panelColor;
   private ControlP5 cp5;
   private ColorPalette colorPalette;
@@ -30,21 +30,21 @@ private class ToolPanel {
       case "bottom":
         panelWidth = width;
         panelHeight = height * 0.1;
+        panelPosX = 0;
+        panelPosY = position == "top" ? 0 : height - panelHeight;
         break;
     }
+    
     brushPaletteHeight = panelHeight/5*3;
     colorPaletteHeight = height - brushPaletteHeight;
-    brushPalette = new BrushPalette(posX, posY, panelWidth, brushPaletteHeight, cp5, panelColor);
-    colorPalette = new ColorPalette(posX, panelHeight/5*3, panelWidth, colorPaletteHeight, panelColor);
-    fill(panelColor);
-    rect(posX, posY, panelWidth, panelHeight);
+    brushPalette = new BrushPalette(panelPosX, panelPosY, panelWidth, brushPaletteHeight, cp5, panelColor);
+    colorPalette = new ColorPalette(panelPosX, panelHeight/5*3, panelWidth, colorPaletteHeight, panelColor);
+    clearPanel();
   }
   
   public void render()
   {
-    paintLayer.fill(panelColor);
-    paintLayer.noStroke();
-    paintLayer.rect(posX, posY, panelWidth, panelHeight);
+    clearPanel();
     brushPalette.render();
     colorPalette.render();
     if (isPanelMinimized())
@@ -52,7 +52,7 @@ private class ToolPanel {
       // create marker for palette position
       paintLayer.fill(133);
       paintLayer.noStroke();
-      paintLayer.rect(posX+(panelWidth/2)-panelWidth*0.3, posY+(panelHeight/2), panelWidth*0.6, 3);
+      paintLayer.rect(panelPosX+(panelWidth/2)-panelWidth*0.3, panelPosY+(panelHeight/2), panelWidth*0.6, 3);
     }
   }
   
@@ -99,7 +99,17 @@ private class ToolPanel {
       case "left":
         if (mouseX < panelWidth) return true;
         break;
+      case "right":
+        if (mouseX > width - panelWidth) return true;
+        break;
     }
     return false;
+  }
+  
+  public void clearPanel()
+  {
+    paintLayer.fill(panelColor);
+    paintLayer.noStroke();
+    paintLayer.rect(panelPosX, panelPosY, panelWidth, panelHeight);
   }
 }
