@@ -5,7 +5,8 @@ private class ToolPanel {
   private ControlP5 cp5;
   private ColorPalette colorPalette;
   private BrushPalette brushPalette;
-  private float colorPaletteHeight, brushPaletteHeight;
+  private float brushPalettePosX, brushPalettePosY, brushPaletteHeight, brushPaletteWidth;
+  private float colorPalettePosX, colorPalettePosY, colorPaletteHeight, colorPaletteWidth;
     
   public ToolPanel(String position, int panelColor, ControlP5 cp5)
   {
@@ -25,6 +26,14 @@ private class ToolPanel {
         panelHeight = height;
         panelPosY = 0;
         panelPosX = position == "left" ? 0 : width - panelWidth;
+        brushPaletteWidth = panelWidth;
+        brushPaletteHeight = panelHeight/5*3;
+        brushPalettePosX = panelPosX;
+        brushPalettePosY = panelPosY;
+        colorPaletteWidth = panelWidth;
+        colorPaletteHeight = height - brushPaletteHeight;
+        colorPalettePosX = panelPosX;
+        colorPalettePosY = brushPaletteHeight;
         break;
       case "top":
       case "bottom":
@@ -32,13 +41,19 @@ private class ToolPanel {
         panelHeight = height * 0.1;
         panelPosX = 0;
         panelPosY = position == "top" ? 0 : height - panelHeight;
+        brushPaletteWidth = panelWidth/5*3;
+        brushPaletteHeight = panelHeight;
+        brushPalettePosX = panelPosX;
+        brushPalettePosY = panelPosY;
+        colorPaletteWidth = width - brushPaletteWidth;
+        colorPaletteHeight = panelHeight;
+        colorPalettePosX = brushPaletteWidth;
+        colorPalettePosY = panelPosY;
         break;
     }
-    
-    brushPaletteHeight = panelHeight/5*3;
-    colorPaletteHeight = height - brushPaletteHeight;
-    brushPalette = new BrushPalette(panelPosX, panelPosY, panelWidth, brushPaletteHeight, cp5, panelColor);
-    colorPalette = new ColorPalette(panelPosX, panelHeight/5*3, panelWidth, colorPaletteHeight, panelColor);
+
+    brushPalette = new BrushPalette(brushPalettePosX, brushPalettePosY, brushPaletteWidth, brushPaletteHeight, cp5, panelColor, position);
+    colorPalette = new ColorPalette(colorPalettePosX, colorPalettePosY, colorPaletteWidth, colorPaletteHeight, panelColor, position);
     clearPanel();
   }
   
@@ -52,7 +67,22 @@ private class ToolPanel {
       // create marker for palette position
       paintLayer.fill(133);
       paintLayer.noStroke();
-      paintLayer.rect(panelPosX+(panelWidth/2)-panelWidth*0.3, panelPosY+(panelHeight/2), panelWidth*0.6, 3);
+      switch(position)
+      {
+        case "left":
+          paintLayer.rect(panelPosX+panelWidth-2, panelPosY+(panelHeight/2)-20, 2, 40);
+          break;
+        case "right":
+          paintLayer.rect(panelPosX, panelPosY+(panelHeight/2)-20, 3, 40);
+          break;
+        case "top":
+          paintLayer.rect(panelPosX+(panelWidth/2)-20, panelPosY+panelHeight-2, 40, 2);
+          break;
+        case "bottom":
+          paintLayer.rect(panelPosX+(panelWidth/2)-20, panelPosY, 40, 2);
+          break;
+        
+      }
     }
   }
   
@@ -96,6 +126,12 @@ private class ToolPanel {
   {
     switch(position)
     {
+      case "top":
+        if (mouseY < panelHeight) return true;
+        break;
+      case "bottom":
+        if (mouseY > height - panelHeight) return true;
+        break;
       case "left":
         if (mouseX < panelWidth) return true;
         break;

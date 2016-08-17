@@ -1,6 +1,7 @@
 private class BrushPalette {
   // BrushPalette attributes
   private float posX, posY, paletteWidth, paletteHeight;
+  private String panelPosition;
   private color paletteColor;
   
   private ControlP5 cp5;
@@ -8,14 +9,15 @@ private class BrushPalette {
   // Brush attributes
   private String currentBrushType = "feathered";
   private int currentBrushRadius;
+  private int currentBrushIndex;
   
   // To determine if BrushPalette is minimized
   private boolean paletteIsMinimized = true;
   
   // define the display size of brushes
-  float displayBrushDiam;
-  float displayBrushPaddingY;
-  float displayBrushPaletteHeight, sliderHeight;
+  private float displayBrushDiam, displayBrushPadding, displayBrushPaletteHeight, displayBrushPaletteWidth;
+  private float singleBrushButtonDiam, displayBrushStartPosX, displayBrushStartPosY;
+  private float sliderPosX, sliderPosY, sliderWidth, sliderHeight;
   
   private BrushFactory brushFactory;
   private String[] brushTypes = { "bolt", "lightBolt", "explosion", "crown", "eraser", "drip", "solid", "gritty", "feathered" };
@@ -24,7 +26,7 @@ private class BrushPalette {
   // brush radius slider
   Slider slider;
   
-  public BrushPalette(float posX, float posY, float paletteWidth, float paletteHeight, ControlP5 cp5, color paletteColor)
+  public BrushPalette(float posX, float posY, float paletteWidth, float paletteHeight, ControlP5 cp5, color paletteColor, String panelPosition)
   {
     this.posX = posX;
     this.posY = posY;
@@ -32,21 +34,49 @@ private class BrushPalette {
     this.paletteHeight = paletteHeight;
     this.cp5 = cp5;
     this.paletteColor = paletteColor;
+    this.panelPosition = panelPosition;
     init();
   }
 
   private void init()
   {
     brushFactory = new BrushFactory();
-    displayBrushPaddingY = paletteWidth*0.15;
-    displayBrushPaletteHeight = paletteHeight/4*3;
-    sliderHeight = paletteHeight - displayBrushPaletteHeight;
-    displayBrushDiam = (displayBrushPaletteHeight/brushTypes.length) - displayBrushPaddingY;
+    currentBrushIndex = brushTypesList.indexOf(currentBrushType);
+    switch(panelPosition)
+    {
+      case "left":
+      case "right":
+        displayBrushPaletteWidth = paletteWidth;
+        displayBrushPaletteHeight = paletteHeight/4*3;
+        displayBrushPadding = paletteWidth*0.15;
+        displayBrushDiam = (displayBrushPaletteHeight/brushTypes.length) - displayBrushPadding;
+        displayBrushStartPosX = posX + paletteWidth/2 - displayBrushDiam/2;
+        displayBrushStartPosY = posY + displayBrushPadding/2;
+        sliderPosX = posX + 1;
+        sliderPosY = posY + displayBrushPaletteHeight;
+        sliderWidth = paletteWidth;
+        sliderHeight = paletteHeight - displayBrushPaletteHeight;
+        break;
+      case "top":
+      case "bottom":
+        displayBrushPaletteWidth = paletteWidth/4*3;
+        displayBrushPaletteHeight = paletteHeight;
+        displayBrushPadding = paletteHeight*0.3;
+        displayBrushDiam = (displayBrushPaletteWidth/brushTypes.length) - displayBrushPadding;
+        displayBrushStartPosX = posX + displayBrushPadding/2;
+        displayBrushStartPosY = posY + paletteHeight/2 - displayBrushDiam/2;
+        sliderPosX = posX + displayBrushPaletteWidth;
+        sliderPosY = posY;
+        sliderWidth = paletteWidth - displayBrushPaletteWidth;
+        sliderHeight = paletteHeight;
+        break;
+    }
+    singleBrushButtonDiam = displayBrushDiam + displayBrushPadding;
     
     // add a vertical slider
     slider = cp5.addSlider("brushradius")
-       .setPosition(posX+1,posY+displayBrushPaletteHeight)
-       .setSize((int) paletteWidth, (int) sliderHeight)
+       .setPosition(sliderPosX, sliderPosY)
+       .setSize((int) sliderWidth, (int) sliderHeight)
        .setRange(0,50)
        .setValue(15)
        .setColor(new CColor(-1,-16110286,-1,-1,-1));
@@ -59,37 +89,51 @@ private class BrushPalette {
   
   public void render()
   {
-    currentBrushRadius = (int) slider.getValue();
     // clear palette
     clearPalette();
+    currentBrushRadius = (int) slider.getValue();
+    
     if (paletteIsMinimized)
     {
       slider.hide();
     }
     else if (!paletteIsMinimized)
     {
-      paintLayer.fill(paletteColor);
-      paintLayer.noStroke();
-      paintLayer.rect(posX, posY, paletteWidth, paletteHeight);
-
-      // draw the different display brushes
-      float brushTypeStartPosY = posY + displayBrushPaddingY/2;
-      float brushTypePosX = posX + paletteWidth/2 - displayBrushDiam/2;
-      float singleBrushButtonHeight = displayBrushDiam + displayBrushPaddingY;
-      
       // draw display brushes
       paintLayer.tint(255, 255);
       for (int i = 0; i < brushTypes.length; i++)
       {
-        brushFactory.drawDisplayBrushPrint(brushTypes[i], displayBrushDiam, brushTypePosX, brushTypeStartPosY+(i*singleBrushButtonHeight));    
+        switch(panelPosition)
+        {
+          case "left":
+          case "right":
+            brushFactory.drawDisplayBrushPrint(brushTypes[i], displayBrushDiam, displayBrushStartPosX, displayBrushStartPosY+(i*singleBrushButtonDiam));
+            break;
+          case "top":
+          case "bottom":
+            brushFactory.drawDisplayBrushPrint(brushTypes[i], displayBrushDiam, displayBrushStartPosX+(i*singleBrushButtonDiam), displayBrushStartPosY);
+            break;
+        }
       }
       
       // draw marker to show current brush selected
-      int currentBrushIndex = brushTypesList.indexOf(currentBrushType);
       paintLayer.fill(255);
-      paintLayer.triangle(posX+2, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*2,
-              posX+2, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/5*3,
-              posX + paletteWidth*0.1, currentBrushIndex*singleBrushButtonHeight+singleBrushButtonHeight/2);
+      paintLayer.noStroke();
+      switch(panelPosition)
+      {
+        case "left":
+        case "right":
+          paintLayer.triangle(posX+2, currentBrushIndex*singleBrushButtonDiam+singleBrushButtonDiam/5*2,
+              posX+2, currentBrushIndex*singleBrushButtonDiam+singleBrushButtonDiam/5*3,
+              posX + paletteWidth*0.1, currentBrushIndex*singleBrushButtonDiam+singleBrushButtonDiam/2);
+          break;
+        case "top":
+        case "bottom":
+          paintLayer.triangle(currentBrushIndex*singleBrushButtonDiam+singleBrushButtonDiam/5*2, posY+2,
+              currentBrushIndex*singleBrushButtonDiam+singleBrushButtonDiam/5*3, posY+2,
+              currentBrushIndex*singleBrushButtonDiam+singleBrushButtonDiam/2, posY + paletteHeight*0.1);
+          break;
+      }
       
       // if mouse is pressed, choose brush selection
       if (mousePressed)
@@ -104,11 +148,27 @@ private class BrushPalette {
   
   public void selectBrush()
   {
-    if (!paletteIsMinimized && mouseY<displayBrushPaletteHeight)
+    if (!paletteIsMinimized)
     {
-      float singleBrushButtonHeight = displayBrushDiam + displayBrushPaddingY;
-      int brushTypesIndex = (int) ((mouseY - posY) / singleBrushButtonHeight);
-      currentBrushType = brushTypes[brushTypesIndex];
+      switch(panelPosition)
+      {
+        case "left":
+        case "right":
+          if (mouseY < posY + displayBrushPaletteHeight)
+          {
+            currentBrushIndex = (int) ((mouseY - posY) / singleBrushButtonDiam);
+            currentBrushType = brushTypes[currentBrushIndex];
+          }
+          break;
+        case "top":
+        case "bottom":
+          if (mouseX < posX + displayBrushPaletteWidth)
+          {
+            currentBrushIndex = (int) ((mouseX - posX) / singleBrushButtonDiam);
+            currentBrushType = brushTypes[currentBrushIndex];
+          }
+          break;
+      }
     }
   }
   

@@ -18,7 +18,7 @@ private char UNDO_KEY = '[';
 private char REDO_KEY = ']';
 
 // Panel attributes
-private String toolPanelPosition = "right";
+private String toolPanelPosition = "bottom";
 private color toolPanelColor = color(0);
 private static color currentColor;
 private String currentBrushType;
@@ -243,7 +243,7 @@ void mousePressed()
 
 void mouseReleased()
 {  
-  if (totalStrokeCount % 20 == 0)
+  if (totalStrokeCount > 0 && totalStrokeCount%20 == 0)
   {
     saveScreen();
   }

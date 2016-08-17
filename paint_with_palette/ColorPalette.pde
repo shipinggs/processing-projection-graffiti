@@ -19,6 +19,7 @@ private class ColorPalette {
 
   // ColorPalette attributes
   private float posX, posY, paletteWidth, paletteHeight;
+  private String panelPosition;
   private color paletteColor;
 
   // Size of each color rectangle
@@ -27,30 +28,45 @@ private class ColorPalette {
   private int currentColor;
   private boolean paletteIsMinimized = true;
 
-  private ColorPalette(float posX, float posY, float paletteWidth, float paletteHeight, color paletteColor)
+  private ColorPalette(float posX, float posY, float paletteWidth, float paletteHeight, color paletteColor, String panelPosition)
   {
     this.posX = posX;
     this.posY = posY;
     this.paletteWidth = paletteWidth;
     this.paletteHeight = paletteHeight;
     this.paletteColor = paletteColor;
+    this.panelPosition = panelPosition;
     init();
   }
 
   private void init()
   {   
     currentColor = colorMatrix[0][0];    
-    singleColorWidth = paletteWidth / colorMatrix[0].length;
-    singleColorHeight = paletteHeight / colorMatrix.length;
 
     // initialize color palette single blocks from pre-set color matrix
-    for (int j = 0; j < colorMatrix.length; j++)
+    for (int i = 0; i < colorMatrix.length; i++)
     {
-      for (int i = 0; i < colorMatrix[j].length; i++)
+      for (int j = 0; j < colorMatrix[i].length; j++)
       {
-        singleColorBlocks.add(new SingleColorBlock(
-          posX+(i*singleColorWidth), posY+(j*singleColorHeight), 
-          singleColorWidth, singleColorHeight, colorMatrix[j][i]));
+        switch(panelPosition)
+        {
+          case "left":
+          case "right":
+            singleColorWidth = paletteWidth / colorMatrix[0].length;
+            singleColorHeight = paletteHeight / colorMatrix.length;
+            singleColorBlocks.add(new SingleColorBlock(
+              posX+(j*singleColorWidth), posY+(i*singleColorHeight), 
+              singleColorWidth, singleColorHeight, colorMatrix[i][j], panelPosition));
+            break;
+          case "top":
+          case "bottom":
+            singleColorWidth = paletteWidth / colorMatrix.length;
+            singleColorHeight = paletteHeight / colorMatrix[0].length;
+            singleColorBlocks.add(new SingleColorBlock(
+              posX+(i*singleColorWidth), posY+(j*singleColorHeight), 
+              singleColorWidth, singleColorHeight, colorMatrix[i][j], panelPosition));
+            break;
+        }
       }
     }
   }
@@ -105,14 +121,16 @@ private class ColorPalette {
 class SingleColorBlock {
   private color blockColor;
   private float posX, posY, blockWidth, blockHeight;
+  private String panelPosition;
 
-  public SingleColorBlock(float posX, float posY, float blockWidth, float blockHeight, color blockColor)
+  public SingleColorBlock(float posX, float posY, float blockWidth, float blockHeight, color blockColor, String panelPosition)
   {
     this.posX = posX;
     this.posY = posY;
     this.blockWidth = blockWidth;
     this.blockHeight = blockHeight;
     this.blockColor = blockColor;
+    this.panelPosition = panelPosition;
   }
 
   public void render()
@@ -125,13 +143,33 @@ class SingleColorBlock {
     {
       paintLayer.fill(255);
       paintLayer.noStroke();
-      paintLayer.ellipse(posX+(blockWidth/5*3), posY+(blockHeight/4), blockWidth/5*2, blockWidth/5*2);
+      switch(panelPosition)
+      {
+        case "left":
+        case "right":
+          paintLayer.ellipse(posX+(blockWidth/5*3), posY+(blockHeight/4), blockWidth/5*2, blockWidth/5*2);
+          break;
+        case "top":
+        case "bottom":
+          paintLayer.ellipse(posX+(blockWidth/3*2), posY+(blockHeight/2), blockHeight/5*2, blockHeight/5*2);
+          break;
+      }
     } 
     else if (paint_with_palette.savedColors.contains(blockColor))
     {
       paintLayer.fill(255);
       paintLayer.noStroke();
-      paintLayer.rect(posX+(blockWidth/5*3), posY+(blockHeight/6), blockWidth/6, blockWidth/5*3);
+      switch(panelPosition)
+      {
+        case "left":
+        case "right":
+          paintLayer.rect(posX+(blockWidth/5*3), posY+(blockHeight/6), blockWidth/6, blockWidth/5*3);
+          break;
+        case "top":
+        case "bottom":
+          paintLayer.rect(posX+(blockWidth/5*3), posY+(blockHeight/5*2), blockHeight/5*3, blockHeight/6);
+          break;
+      }
     }
   }
 }
