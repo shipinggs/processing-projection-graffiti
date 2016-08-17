@@ -1,3 +1,10 @@
+/*
+ * When adding a new brush image,
+ * 1. Load the image "private PImage testImg = loadImage("test.png");"
+ * 2. If the brush is a stencil, add it to the String array stencils;
+ * 3. Put the brush image into the brushImages Hashmap "brushImages.put("test", testImg);"
+ */
+ 
 private class BrushFactory {
   private PImage boltImg = loadImage("bolt.png");
   private PImage lightBoltImg = loadImage("lightBolt.png");

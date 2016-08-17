@@ -72,22 +72,8 @@ void setup()
   currentColor = color(255);
   cp5 = new ControlP5(this);
   
-  switch (toolPanelPosition)
-  {
-    case "left":
-    case "right":
-      toolPanelWidth = width * 0.07;
-      toolPanelHeight = height;
-      panelPosY = 0;
-      panelPosX = toolPanelPosition == "left" ? 0 : width - toolPanelWidth;
-      break;
-    case "top":
-    case "bottom":
-      toolPanelWidth = width;
-      toolPanelHeight = height * 0.1;
-      break;
-  }
-  toolPanel = new ToolPanel("left", panelPosX, panelPosY, toolPanelWidth, toolPanelHeight, toolPanelColor, cp5);
+  toolPanelWidth = width * 0.07;
+  toolPanel = new ToolPanel("left", toolPanelColor, cp5);
   brushFactory = new BrushFactory();
   cal = Calendar.getInstance();
   totalStrokeCount = 0;
@@ -137,7 +123,7 @@ void draw()
   paintLayer.beginDraw();  //draw on that particular layer only
 
   // Now if the mouse is pressed, paint
-  if (mousePressed && mouseX>toolPanelWidth && toolPanel.isPanelMinimized()) 
+  if (mousePressed && !toolPanel.withinPanelArea() && toolPanel.isPanelMinimized()) 
   {
     switch (currentBrushType)
     {
@@ -220,7 +206,7 @@ void keyPressed()
   {
     saveScreen();
   }
-  if (keyCode == UNDO_KEY && undoSteps > 0) // undo
+  else if (key == UNDO_KEY && undoSteps > 0) // undo
   {
     --undoSteps;
     ++redoSteps;
@@ -232,7 +218,7 @@ void keyPressed()
     paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
     paintLayer.endDraw();
   } 
-  else if (keyCode == REDO_KEY && redoSteps > 0) //redo
+  else if (key == REDO_KEY && redoSteps > 0) //redo
   {
     ++undoSteps;
     --redoSteps;
@@ -242,15 +228,6 @@ void keyPressed()
     paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
     paintLayer.endDraw();
   }
-}    
-
-void mouseClicked()
-{
-  if (mouseX > toolPanelWidth)
-  {
-    toolPanel.minimizeAll();
-    addUsedColorToMemory();
-  }
 }
 
 void mousePressed()
@@ -258,11 +235,7 @@ void mousePressed()
   pressCoords[0] = mouseX;
   pressCoords[1] = mouseY;
   
-  if (mouseX < toolPanelWidth && toolPanel.isPanelMinimized())
-  {
-    //toolPanel.maximizePanel();
-  } 
-  else if (mouseX > toolPanelWidth)
+  if (!toolPanel.withinPanelArea())
   {
     toolPanel.minimizeAll();
     addUsedColorToMemory();
@@ -275,11 +248,11 @@ void mouseReleased()
   {
     saveScreen();
   }
-  if (mouseX < toolPanelWidth)
+  if (toolPanel.withinPanelArea())
   {
     toolPanel.maximizePanel();
   }
-  else if (mouseX > toolPanelWidth)
+  else
   {
     ++totalStrokeCount;
     // save coordinates of mouse release

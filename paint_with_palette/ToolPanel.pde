@@ -1,5 +1,5 @@
 private class ToolPanel {
-  private String orientation;
+  private String position;
   private float posX, posY, panelWidth, panelHeight;
   private int panelColor;
   private ControlP5 cp5;
@@ -7,13 +7,9 @@ private class ToolPanel {
   private BrushPalette brushPalette;
   private float colorPaletteHeight, brushPaletteHeight;
     
-  public ToolPanel(String orientation, float posX, float posY, float panelWidth, float panelHeight, int panelColor, ControlP5 cp5)
+  public ToolPanel(String position, int panelColor, ControlP5 cp5)
   {
-    this.orientation = orientation;
-    this.posX = posX;
-    this.posY = posY;
-    this.panelWidth = panelWidth;
-    this.panelHeight = panelHeight;
+    this.position = position;
     this.panelColor = panelColor; 
     this.cp5 = cp5;
     init();
@@ -21,6 +17,21 @@ private class ToolPanel {
   
   private void init()
   {
+    switch (position)
+    {
+      case "left":
+      case "right":
+        panelWidth = width * 0.07;
+        panelHeight = height;
+        panelPosY = 0;
+        panelPosX = position == "left" ? 0 : width - panelWidth;
+        break;
+      case "top":
+      case "bottom":
+        panelWidth = width;
+        panelHeight = height * 0.1;
+        break;
+    }
     brushPaletteHeight = panelHeight/5*3;
     colorPaletteHeight = height - brushPaletteHeight;
     brushPalette = new BrushPalette(posX, posY, panelWidth, brushPaletteHeight, cp5, panelColor);
@@ -77,6 +88,17 @@ private class ToolPanel {
     if (brushPalette.isPaletteMinimized() && colorPalette.isPaletteMinimized())
     {
       return true;
+    }
+    return false;
+  }
+  
+  public boolean withinPanelArea()
+  {
+    switch(position)
+    {
+      case "left":
+        if (mouseX < panelWidth) return true;
+        break;
     }
     return false;
   }
