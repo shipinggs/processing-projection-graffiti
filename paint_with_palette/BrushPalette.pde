@@ -59,14 +59,14 @@ private class BrushPalette {
         break;
       case "top":
       case "bottom":
-        displayBrushPaletteWidth = paletteWidth/4*3;
+        displayBrushPaletteWidth = paletteWidth/6*5;
         displayBrushPaletteHeight = paletteHeight;
-        displayBrushPadding = paletteHeight*0.3;
+        displayBrushPadding = paletteHeight*0.65;
         displayBrushDiam = (displayBrushPaletteWidth/brushTypes.length) - displayBrushPadding;
         displayBrushStartPosX = posX + displayBrushPadding/2;
         displayBrushStartPosY = posY + paletteHeight/2 - displayBrushDiam/2;
         sliderPosX = posX + displayBrushPaletteWidth;
-        sliderPosY = posY;
+        sliderPosY = posY + 1;
         sliderWidth = paletteWidth - displayBrushPaletteWidth;
         sliderHeight = paletteHeight;
         break;

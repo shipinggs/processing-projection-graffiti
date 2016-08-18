@@ -18,7 +18,7 @@ private char UNDO_KEY = '[';
 private char REDO_KEY = ']';
 
 // Panel attributes
-private String toolPanelPosition = "bottom";
+private String toolPanelPosition = "left";
 private color toolPanelColor = color(0);
 private static color currentColor;
 private String currentBrushType;
@@ -52,7 +52,8 @@ Spout spoutTopIn;
 
 // OSC objects
 OscP5 oscP5;
-NetAddress myRemoteLocation;  
+NetAddress myRemoteLocation;
+float redValue, greenValue, blueValue;
 
 // PGraphics objects for layers
 PGraphics paintLayer;
@@ -61,8 +62,8 @@ PGraphics spoutInTopLayer;
 
 void setup()
 {
-  //fullScreen(P3D);
-  size(1280, 800, P3D); //change accordingly to W and H above
+  fullScreen(P3D);
+  //size(1280, 800, P3D); //change accordingly to W and H above
   textureMode(NORMAL);
 
   background(0);
@@ -90,7 +91,6 @@ void setup()
   spoutInLayer = createGraphics(W, H, PConstants.P2D);
   spoutInTopLayer = createGraphics(W, H, PConstants.P2D);
   
-  //toolPanelWidth = width * 0.07;
   toolPanel = new ToolPanel(toolPanelPosition, toolPanelColor, cp5);
   brushFactory = new BrushFactory();
   cal = Calendar.getInstance();
@@ -105,6 +105,7 @@ void setup()
     imageCarousel[i] = paintLayer.get();
   }
   
+  resetScreen();
 }
 
 void draw()
@@ -150,9 +151,9 @@ void draw()
     OscMessage myMessageY = new OscMessage("/ClickY");
     myMessageY.add(mouseY); 
 
-    float redValue = red(currentColor);
-    float greenValue = green(currentColor);
-    float blueValue = blue(currentColor);
+    redValue = red(currentColor);
+    greenValue = green(currentColor);
+    blueValue = blue(currentColor);
     OscMessage myMessageRed = new OscMessage("/Red");
     myMessageRed.add(redValue); 
     OscMessage myMessageGreen = new OscMessage("/Green");

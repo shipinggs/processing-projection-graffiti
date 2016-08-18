@@ -38,10 +38,10 @@ private class ToolPanel {
       case "top":
       case "bottom":
         panelWidth = width;
-        panelHeight = height * 0.1;
+        panelHeight = height * 0.09;
         panelPosX = 0;
         panelPosY = position == "top" ? 0 : height - panelHeight;
-        brushPaletteWidth = panelWidth/5*3;
+        brushPaletteWidth = panelWidth/3*2;
         brushPaletteHeight = panelHeight;
         brushPalettePosX = panelPosX;
         brushPalettePosY = panelPosY;
