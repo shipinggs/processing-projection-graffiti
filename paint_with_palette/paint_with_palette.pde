@@ -93,7 +93,6 @@ void setup()
   
   toolPanel = new ToolPanel(toolPanelPosition, toolPanelColor, cp5);
   brushFactory = new BrushFactory();
-  cal = Calendar.getInstance();
   totalStrokeCount = 0;
   
   paintLayer.beginDraw();
@@ -301,6 +300,7 @@ private void loadScreen(String fileName)
 
 private void saveScreen()
 {
+  cal = Calendar.getInstance();
   long timestamp = cal.getTimeInMillis();
   save("timestamps/" +timestamp+".png");
 }
