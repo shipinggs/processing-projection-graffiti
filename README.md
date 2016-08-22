@@ -1,5 +1,5 @@
 # processing-projection-graffiti
-Interactive and animated projection graffiti.
+Paint software on steroids built for light projection graffiti.
 Inspired by http://johnnylee.net/projects/wii/
 
 Getting started
