@@ -14,8 +14,8 @@ final boolean spoutOn = false;
 private char RESET_KEY = ' ';
 private char SAVE_KEY = 's';
 private char LOAD_KEY = 'l';
-private char UNDO_KEY = '[';
-private char REDO_KEY = ']';
+private char UNDO_KEY = LEFT;
+private char REDO_KEY = RIGHT;
 
 // Panel attributes
 private String toolPanelPosition = "left";
@@ -205,27 +205,30 @@ void keyPressed()
   {
     saveScreen();
   }
-  else if (key == UNDO_KEY && undoSteps > 0) // undo
+  else if (key == CODED)
   {
-    --undoSteps;
-    ++redoSteps;
-    currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
-    clear();
-    paintLayer.beginDraw();
-    paintLayer.tint(255, 255);
-    paintLayer.clear();
-    paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
-    paintLayer.endDraw();
-  } 
-  else if (key == REDO_KEY && redoSteps > 0) //redo
-  {
-    ++undoSteps;
-    --redoSteps;
-    currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
-    paintLayer.beginDraw();
-    paintLayer.clear();
-    paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
-    paintLayer.endDraw();
+    if (keyCode == UNDO_KEY && undoSteps > 0) // undo
+    {
+      --undoSteps;
+      ++redoSteps;
+      currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
+      clear();
+      paintLayer.beginDraw();
+      paintLayer.tint(255, 255);
+      paintLayer.clear();
+      paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
+      paintLayer.endDraw();
+    } 
+    else if (keyCode == REDO_KEY && redoSteps > 0) //redo
+    {
+      ++undoSteps;
+      --redoSteps;
+      currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
+      paintLayer.beginDraw();
+      paintLayer.clear();
+      paintLayer.image(imageCarousel[currentImagesIndex], 0, 0);
+      paintLayer.endDraw();
+    }
   }
 }
 
