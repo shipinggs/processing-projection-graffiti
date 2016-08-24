@@ -314,14 +314,6 @@ private void addUsedColorToMemory()
   {
     savedColors.add(currentColor);
   }
-  if (mouseButton == RIGHT) //right click to select spout source
-  {
-    // Bring up a dialog to select a sender.
-    if (spoutOn)
-    {
-      spoutOut.selectSender();
-    }
-  }
 }
 
 private void resetImageCarousel()
