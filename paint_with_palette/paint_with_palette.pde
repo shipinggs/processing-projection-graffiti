@@ -194,11 +194,11 @@ void keyPressed()
 {
   if (key == RESET_KEY) // clear and reset screen
   {
-    resetScreen();
+    //resetScreen();
   }
   else if (key == LOAD_KEY) // load screen
   {
-    String fileName = ".png";
+    String fileName = "timestamps/.png";
     loadScreen(fileName);
   }
   else if (key == SAVE_KEY) // save screen
