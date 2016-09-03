@@ -18,6 +18,7 @@ private char UNDO_KEY = LEFT;
 private char REDO_KEY = RIGHT;
 
 // Panel attributes
+// Set panel position here - left, right, top, or bottom
 private String toolPanelPosition = "left";
 private color toolPanelColor = color(0);
 private static color currentColor;
