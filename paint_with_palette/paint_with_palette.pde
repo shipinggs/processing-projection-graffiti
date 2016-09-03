@@ -139,7 +139,7 @@ void draw()
       brushFactory.dripBrush(currentBrushRadius, currentColor);
       break;
     case "eraser":
-      brushFactory.rollerEraser(200, currentColor);
+      brushFactory.rollerEraser(currentBrushRadius, currentColor);
       break;
     }
     
@@ -194,7 +194,7 @@ void keyPressed()
 {
   if (key == RESET_KEY) // clear and reset screen
   {
-    //resetScreen();
+    resetScreen();
   }
   else if (key == LOAD_KEY) // load screen
   {

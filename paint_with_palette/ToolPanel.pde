@@ -7,7 +7,8 @@ private class ToolPanel {
   private BrushPalette brushPalette;
   private float brushPalettePosX, brushPalettePosY, brushPaletteHeight, brushPaletteWidth;
   private float colorPalettePosX, colorPalettePosY, colorPaletteHeight, colorPaletteWidth;
-    
+  private int markerWidth, markerHeight;
+  
   public ToolPanel(String position, int panelColor, ControlP5 cp5)
   {
     this.position = position;
@@ -22,7 +23,7 @@ private class ToolPanel {
     {
       case "left":
       case "right":
-        panelWidth = width * 0.07;
+        panelWidth = width * 0.07; // change this to make panel thinner or wider
         panelHeight = height;
         panelPosY = 0;
         panelPosX = position == "left" ? 0 : width - panelWidth;
@@ -38,7 +39,7 @@ private class ToolPanel {
       case "top":
       case "bottom":
         panelWidth = width;
-        panelHeight = height * 0.09;
+        panelHeight = height * 0.09; // change this to make panel height taller or shorter
         panelPosX = 0;
         panelPosY = position == "top" ? 0 : height - panelHeight;
         brushPaletteWidth = panelWidth/3*2;
@@ -70,16 +71,24 @@ private class ToolPanel {
       switch(position)
       {
         case "left":
-          paintLayer.rect(panelPosX+panelWidth-2, panelPosY+(panelHeight/2)-20, 2, 40);
+          markerWidth = 2;
+          markerHeight = 40;
+          paintLayer.rect(panelPosX+panelWidth-2, panelPosY+(panelHeight/2)-markerHeight/2, markerWidth, markerHeight);
           break;
         case "right":
-          paintLayer.rect(panelPosX, panelPosY+(panelHeight/2)-20, 3, 40);
+          markerWidth = 2;
+          markerHeight = 40;
+          paintLayer.rect(panelPosX, panelPosY+(panelHeight/2)-markerHeight/2, markerWidth, markerHeight);
           break;
         case "top":
-          paintLayer.rect(panelPosX+(panelWidth/2)-20, panelPosY+panelHeight-2, 40, 2);
+          markerWidth = 40;
+          markerHeight = 2;
+          paintLayer.rect(panelPosX+(panelWidth/2)-markerWidth/2, panelPosY+panelHeight-markerHeight, markerWidth, markerHeight);
           break;
         case "bottom":
-          paintLayer.rect(panelPosX+(panelWidth/2)-20, panelPosY, 40, 2);
+          markerWidth = 40;
+          markerHeight = 2;
+          paintLayer.rect(panelPosX+(panelWidth/2)-markerWidth/2, panelPosY, markerWidth, markerHeight);
           break;
         
       }
