@@ -49,14 +49,14 @@ private class BrushFactory {
   
   void featheredBrush(int brushRadius, color col)
   {
-    float thickness = brushRadius * 2.4;
+    float thickness = brushRadius * 2.4; // this multiplier produces the best result, but feel free to vary
     int MAX_TIMES_DRAWN = 10;
     int count = 0;
     
     paintLayer.stroke(col, 5);
     paintLayer.noFill();
     
-    for(int i = (int) thickness; i > 0; i-=3)
+    for(int i = (int) thickness; i > 0; i-=3) 
     {
       if (count < MAX_TIMES_DRAWN)
       {
@@ -77,7 +77,7 @@ private class BrushFactory {
   
   void grittyBrush(int brushRadius, color col)
   {
-    brushRadius *= 1.5;
+    brushRadius *= 1.5;  // this multiplier produces the best result, but feel free to vary
     int maxIterations = 200; // how fast spraying happens
    
     float radx;   // Radius
@@ -153,12 +153,14 @@ private class BrushFactory {
     paintLayer.endDraw();
   }
   
-  void rollerEraser(int width, color col)
+  void rollerEraser(int brushSize, color col)
   {
+    int rollerWidth = brushSize * 5;
+    int rollerHeight = 20;
     paintLayer.smooth();
     paintLayer.fill(col);
     paintLayer.noStroke();
-    paintLayer.rect(mouseX-width/2, mouseY-10, width, 20);
+    paintLayer.rect(mouseX-rollerWidth/2, mouseY-rollerHeight/2, rollerWidth, rollerHeight);
   }
   
   void drawDisplayBrushPrint(String brushType, float brushDiam, float posX, float posY)

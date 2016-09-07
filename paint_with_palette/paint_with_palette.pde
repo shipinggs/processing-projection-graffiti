@@ -26,6 +26,7 @@ private int NUM_STROKES_AUTO_SAVE = 15;
 private Calendar cal;
 
 // Panel attributes
+// Set panel position here - left, right, top, or bottom
 private String toolPanelPosition = "left";
 private color toolPanelColor = color(0);
 private static color currentColor;
@@ -144,7 +145,7 @@ void draw()
       brushFactory.dripBrush(currentBrushRadius, currentColor);
       break;
     case "eraser":
-      brushFactory.rollerEraser(200, currentColor);
+      brushFactory.rollerEraser(currentBrushRadius, currentColor);
       break;
     }
     
@@ -199,7 +200,7 @@ void keyPressed()
 {
   if (key == RESET_KEY) // clear and reset screen
   {
-    //resetScreen();
+    resetScreen();
   }
   else if (key == LOAD_KEY) // load screen
   {

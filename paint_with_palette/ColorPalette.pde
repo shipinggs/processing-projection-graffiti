@@ -139,6 +139,7 @@ class SingleColorBlock {
     paintLayer.noStroke();
     paintLayer.rect(posX, posY, blockWidth, blockHeight);
 
+    // draw marker to indicate current color
     if (blockColor == paint_with_palette.currentColor)
     {
       paintLayer.fill(255);
@@ -154,7 +155,8 @@ class SingleColorBlock {
           paintLayer.ellipse(posX+(blockWidth/6*5), posY+(blockHeight/2), blockHeight/3, blockHeight/3);
           break;
       }
-    } 
+    }
+    // draw marker to indicate used colors
     else if (paint_with_palette.savedColors.contains(blockColor))
     {
       paintLayer.fill(255);

@@ -47,26 +47,26 @@ private class BrushPalette {
       case "left":
       case "right":
         displayBrushPaletteWidth = paletteWidth;
-        displayBrushPaletteHeight = paletteHeight/4*3;
-        displayBrushPadding = paletteWidth*0.15;
+        displayBrushPaletteHeight = paletteHeight/4*3; // occupies 3 quarters of brush palette height
+        displayBrushPadding = paletteWidth*0.15; // this number works best for left/right config, but feel free to vary
         displayBrushDiam = (displayBrushPaletteHeight/brushTypes.length) - displayBrushPadding;
         displayBrushStartPosX = posX + paletteWidth/2 - displayBrushDiam/2;
         displayBrushStartPosY = posY + displayBrushPadding/2;
-        sliderPosX = posX + 1;
+        sliderPosX = posX + 1; // plus 1 for better visuals
         sliderPosY = posY + displayBrushPaletteHeight;
         sliderWidth = paletteWidth;
         sliderHeight = paletteHeight - displayBrushPaletteHeight;
         break;
       case "top":
       case "bottom":
-        displayBrushPaletteWidth = paletteWidth/6*5;
+        displayBrushPaletteWidth = paletteWidth/6*5; // occupies 5/6 of brush palette width
         displayBrushPaletteHeight = paletteHeight;
-        displayBrushPadding = paletteHeight*0.65;
+        displayBrushPadding = paletteHeight*0.65; // this number works best for top/bottom config, but feel free to vary
         displayBrushDiam = (displayBrushPaletteWidth/brushTypes.length) - displayBrushPadding;
         displayBrushStartPosX = posX + displayBrushPadding/2;
         displayBrushStartPosY = posY + paletteHeight/2 - displayBrushDiam/2;
         sliderPosX = posX + displayBrushPaletteWidth;
-        sliderPosY = posY + 1;
+        sliderPosY = posY + 1; // plus 1 for better visuals
         sliderWidth = paletteWidth - displayBrushPaletteWidth;
         sliderHeight = paletteHeight;
         break;
@@ -79,7 +79,7 @@ private class BrushPalette {
        .setSize((int) sliderWidth, (int) sliderHeight)
        .setRange(0,50)
        .setValue(15)
-       .setColor(new CColor(-1,-16110286,-1,-1,-1));
+       .setColor(new CColor(-1,-16110286,-1,-1,-1)); // this is a grey blue color
        ;
     
     // reposition the Label for controller 'brushradius'
@@ -100,7 +100,7 @@ private class BrushPalette {
     else if (!paletteIsMinimized)
     {
       // draw display brushes
-      paintLayer.tint(255, 255);
+      paintLayer.tint(255, 255); // tint opaque white
       for (int i = 0; i < brushTypes.length; i++)
       {
         switch(panelPosition)
