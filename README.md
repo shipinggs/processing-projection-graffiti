@@ -9,7 +9,8 @@ Prerequisites
   1. `Spout for Processing`
   2. `ControlP5`
   3. `oscP5`
-
+* Download & install [smoothboard](http://www.smoothboard.net/). This is only necessary if you want to do projection graffiti. 
+* You would also need at least one Wiimote for projection graffiti.
 
 Getting started
 -----
@@ -18,11 +19,7 @@ Getting started
 3. Run the code and make your own graffiti!
 
 
-Projection Tracking Prerequisites
-------
-1. Donwload & install [smoothboard](http://www.smoothboard.net/)
-
-Projection Tracking: Equipment set up
+Equipment Setup Steps For Projection Graffiti. 
 ------
 1. Boot Laptop.
 2. Put tripods without wiimotes in position. See [this](http://www.smoothboard.net/files/graphics/info/Wiimote_Whiteboard_Setup.jpg) for an idea on good positions to place the wiimotes.
