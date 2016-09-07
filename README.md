@@ -1,6 +1,6 @@
 # processing-projection-graffiti
 Paint software on steroids built for light projection graffiti.
-Inspired by http://johnnylee.net/projects/wii/
+Inspired by http://johnnylee.net/projects/wii/ and http://www.instructables.com/id/PROJECTION-BOMBING/?ALLSTEPS
 
 Prerequisites
 ------
@@ -10,16 +10,16 @@ Prerequisites
   2. `ControlP5`
   3. `oscP5`
 * Download & install [smoothboard](http://www.smoothboard.net/). This is only necessary if you want to do projection graffiti. 
-* You would also need at least one Wiimote and an [IR pen/spraycan](http://johnnylee.net/projects/wii/pen.jpg) for projection graffiti.
+* You would also need at least one Wiimote, an [IR pen/spraycan](http://johnnylee.net/projects/wii/pen.jpg), and a projector connected to a power source for projection graffiti.
 
-Getting started
+Getting Started
 -----
 1. Clone this repository.
 2. Open any `.pde` file with `Processing` app.
 3. Run the code and make your own graffiti!
 
 
-Equipment Setup Steps For Projection Graffiti. 
+Equipment Setup Steps For Projection Graffiti
 ------
 1. Boot Laptop.
 2. Put tripods without wiimotes in position. See [this](http://www.smoothboard.net/files/graphics/info/Wiimote_Whiteboard_Setup.jpg) for an idea on good positions to place the wiimotes.
@@ -29,9 +29,20 @@ Equipment Setup Steps For Projection Graffiti.
 6. Press `A` button on wiimotes to calibrate.
 7. When calibration is complete, open `paint_with_palette.pde` with Processing and Run.
 
+
+Default Keyboard Configuration
+------
+* RESET: SPACEBAR
+* SAVE SCREEN: `s`
+* LOAD IMAGE: `l`. You can change the image file to load by changing the `loadingFileName` string in `paint_with_palette.pde`
+* UNDO: `LEFT` arrow key
+* REDO: `RIGHT` arrow key
+
 ------
 
-Additional settings configuration:
------
+Additional Settings Configuration
+------
 * Number of wiimotes to use: In Smoothboard application, click 'Settings' --> 'General' --> 'Wiimotes'. Select new number of wiimotes to use and restart application
-* Cursor shown/not shown: In `paint_with_palette.pde` go to `setup()` function, find `cursor(CROSS)` or `noCursor()`. Comment/uncomment the necessary line.
+* Number of strokes before saving the screen as an image to `data/timestamps`: In `paint_with_palette.pde`, amend `NUM_STROKES_AUTO_SAVE` variable.
+* Cursor shown/not shown: In `paint_with_palette.pde`, go to `setup()` function, find `cursor(CROSS)` or `noCursor()`. Comment/uncomment the necessary line.
+* Position of tool panel: In `paint_with_palette.pde`, find `toolPanelPosition` and change that to `top`, `bottom`, `left`, or `right`.
