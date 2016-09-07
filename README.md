@@ -10,7 +10,7 @@ Prerequisites
   2. `ControlP5`
   3. `oscP5`
 * Download & install [smoothboard](http://www.smoothboard.net/). This is only necessary if you want to do projection graffiti. 
-* You would also need at least one Wiimote for projection graffiti.
+* You would also need at least one Wiimote and an [IR pen/spraycan](http://johnnylee.net/projects/wii/pen.jpg) for projection graffiti.
 
 Getting started
 -----
