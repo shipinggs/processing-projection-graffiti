@@ -42,7 +42,7 @@ Default Keyboard Configuration
 
 Additional Settings Configuration
 ------
-* Number of wiimotes to use: In Smoothboard application, click 'Settings' --> 'General' --> 'Wiimotes'. Select new number of wiimotes to use and restart application
-* Number of strokes before saving the screen as an image to `/timestamps` folder: In `paint_with_palette.pde`, amend `NUM_STROKES_AUTO_SAVE` variable.
-* Cursor shown/not shown: In `paint_with_palette.pde`, go to `setup()` function, find `cursor(CROSS)` or `noCursor()`. Comment/uncomment the necessary line.
-* Position of tool panel: In `paint_with_palette.pde`, find `toolPanelPosition` and change that to `top`, `bottom`, `left`, or `right`.
+* **Number of wiimotes to use**: In Smoothboard application, click 'Settings' --> 'General' --> 'Wiimotes'. Select new number of wiimotes to use and restart application
+* **Number of strokes before saving the screen** as an image to `/timestamps` folder: In `paint_with_palette.pde`, amend `NUM_STROKES_AUTO_SAVE` variable.
+* **Cursor shown/not shown**: In `paint_with_palette.pde`, go to `setup()` function, find `cursor(CROSS)` or `noCursor()`. Comment/uncomment the necessary line.
+* **Position of tool panel**: In `paint_with_palette.pde`, find `toolPanelPosition` and change that to `top`, `bottom`, `left`, or `right`.
