@@ -5,7 +5,7 @@ import controlP5.*;
 import java.util.*;
 import java.lang.Math;
 
-//window width and heights for easy changes
+// Window width and heights for easy changes
 final int W = 1920;
 final int H = 1200;
 final boolean spoutOn = false;
@@ -17,6 +17,14 @@ private char LOAD_KEY = 'l';
 private char UNDO_KEY = LEFT;
 private char REDO_KEY = RIGHT;
 
+// Save screen to image in timestamps folder
+// Load screen from image in timestamps folder
+private String loadingFileName = "timestamps/1473219705817.png";
+private int NUM_STROKES_AUTO_SAVE = 15;
+
+// For generating timestamp when saving screen. see saveScreen()
+private Calendar cal;
+
 // Panel attributes
 private String toolPanelPosition = "left";
 private color toolPanelColor = color(0);
@@ -26,9 +34,6 @@ private int currentBrushRadius;
 private ToolPanel toolPanel;
 private BrushFactory brushFactory;
 private ControlP5 cp5;
-
-// for generating timestamp when saving screen. see saveScreen()
-private Calendar cal;
 
 // to store drips created
 private static ArrayList<Drip> drips = new ArrayList<Drip>();
@@ -98,7 +103,7 @@ void setup()
   paintLayer.beginDraw();
   paintLayer.clear();
   
-  // initialize undo/redo array of images
+  // Initialize undo/redo array of images
   for (int i = 0; i < imageCarousel.length; i++)
   {
     imageCarousel[i] = paintLayer.get();
@@ -144,7 +149,7 @@ void draw()
     }
     
 
-    //OSC implementation here
+    // OSC implementation here
     OscMessage myMessageX = new OscMessage("/ClickX");
     myMessageX.add(mouseX); 
     OscMessage myMessageY = new OscMessage("/ClickY");
@@ -164,10 +169,10 @@ void draw()
     oscP5.send(myMessageRed, myRemoteLocation); 
     oscP5.send(myMessageGreen, myRemoteLocation); 
     oscP5.send(myMessageBlue, myRemoteLocation); 
-    //end of OSC implementation
+    // End of OSC implementation
   }
 
-  // animate drips dropping if there are any
+  // Animate drips dropping if there are any
   for (Drip drip : drips)
   {
     drip.render();
@@ -176,7 +181,7 @@ void draw()
   toolPanel.render();
   paintLayer.endDraw();  //end of things to draw on the particular layer
 
-  //layer arrangement
+  // Layer arrangement
   if (spoutOn)
   {
     image(spoutInLayer, 0, 0); //bottom: bottom spout layer
@@ -187,7 +192,7 @@ void draw()
     image(spoutInTopLayer, 0, 0); //top: top spout layer
     spoutOut.sendTexture(paintLayer); //send the paint out via spout
   }
-} //end of draw
+} // End of draw
 
 
 void keyPressed()
@@ -198,8 +203,7 @@ void keyPressed()
   }
   else if (key == LOAD_KEY) // load screen
   {
-    String fileName = "timestamps/.png";
-    loadScreen(fileName);
+    loadScreen(loadingFileName);
   }
   else if (key == SAVE_KEY) // save screen
   {
@@ -211,6 +215,7 @@ void keyPressed()
     {
       --undoSteps;
       ++redoSteps;
+      --totalStrokeCount;
       currentImagesIndex  = (currentImagesIndex - 1 + imageCarousel.length) % imageCarousel.length;
       clear();
       paintLayer.beginDraw();
@@ -223,6 +228,7 @@ void keyPressed()
     {
       ++undoSteps;
       --redoSteps;
+      ++totalStrokeCount;
       currentImagesIndex = (currentImagesIndex + 1) % imageCarousel.length;
       paintLayer.beginDraw();
       paintLayer.clear();
@@ -246,7 +252,7 @@ void mousePressed()
 
 void mouseReleased()
 {  
-  if (totalStrokeCount > 0 && totalStrokeCount%20 == 0)
+  if (totalStrokeCount > 0 && totalStrokeCount%NUM_STROKES_AUTO_SAVE == 0)
   {
     saveScreen();
   }
@@ -291,10 +297,10 @@ private void resetScreen()
   totalStrokeCount = 0;  
 }
 
-private void loadScreen(String fileName)
+private void loadScreen(String loadingFileName)
 {
   PImage img;
-  img = loadImage(fileName);
+  img = loadImage(loadingFileName);
   paintLayer.beginDraw();
   paintLayer.clear();
   paintLayer.image(img, 0, 0);
