@@ -32,11 +32,11 @@ Equipment Setup Steps For Projection Graffiti
 
 Default Keyboard Configuration
 ------
-* RESET: `SPACEBAR`
-* SAVE SCREEN: `s`
-* LOAD IMAGE: `l`. You can change the image file to load by changing the `loadingFileName` string in `paint_with_palette.pde`
-* UNDO: `LEFT` arrow key
-* REDO: `RIGHT` arrow key
+* Reset: `SPACEBAR`
+* Save: `s`
+* Load: `l`. You can change the image file to load by changing the `loadingFileName` string in `paint_with_palette.pde`
+* Undo: `LEFT` arrow key
+* Redo: `RIGHT` arrow key
 
 ------
 
