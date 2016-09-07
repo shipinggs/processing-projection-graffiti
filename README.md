@@ -24,13 +24,13 @@ Projection Tracking Prerequisites
 
 Projection Tracking: Equipment set up
 ------
-1. Boot Laptop
-2. Put tripods without wiimotes in position
-3. Launch Smoothboard application
-4. Press the `1` and `2` buttons on wiimotes to turn their bluetooths on
+1. Boot Laptop.
+2. Put tripods without wiimotes in position. See [this](http://www.smoothboard.net/files/graphics/info/Wiimote_Whiteboard_Setup.jpg) for an idea on good positions to place the wiimotes.
+3. Launch Smoothboard application.
+4. Press the `1` and `2` buttons on wiimotes to turn their bluetooths on.
 5. Once Smoothboard application has connected to wiimotes and launched,  mount wiimotes on tripods. Note which wiimote is the primary wiimote and place this one on the primary tripod. The primary wiimote can be identified by looking at the 4 lights at the bottom of the wiimote. The primary wiimote will have the first light lit.
 6. Press `A` button on wiimotes to calibrate.
-7. When calibration is complete, open `paint_with_palette.pde` with Processing and Run
+7. When calibration is complete, open `paint_with_palette.pde` with Processing and Run.
 
 ------
 
